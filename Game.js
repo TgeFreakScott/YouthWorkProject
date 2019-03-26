@@ -1,16 +1,31 @@
 class Game
 {
-    constructor()
+  constructor()
     {
-        this.init();
+        this.boundRecursiveUpdate = this.update.bind(this);
+
+        this.canvas = document.getElementById("myCanvas");
+        canvas.id = "myCanvas";
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerWidth;
+        this.ctx = canvas.getContext("2d");
+        document.body.appendChild(canvas); 
     }
+
     init()
     {
-        this.canvas = document.getElementById("myCanvas");
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerWidth;
-        this.ctx = this.canvas.getContext("2d");
-        document.body.appendChild(this.canvas);
+        document.addEventListener("keydown",this.keyDownHandler.bind(null, this));
     }
+
+    update()
+    {
+        this.draw();
+    }
+
+    draw()
+    {
+        this.ctx.clearRect(0,0,canvas.width, canvas.height);
+    }
+
 }
 
