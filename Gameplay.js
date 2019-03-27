@@ -1,9 +1,9 @@
-Class Gameplay extends Scene
+class Gameplay extends Scene
 {
 
     constructor(sceneTitle, sceneManager)
     {
-        super(sceneTitle);//Calls the scene parent constructor from Scene
+      //  super(sceneTitle);//Calls the scene parent constructor from Scene
 
     }
 

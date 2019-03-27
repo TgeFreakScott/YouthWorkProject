@@ -51,12 +51,6 @@ class Game
 
     update()
     {
-<<<<<<< HEAD
-        //this.GamePad();
-
-
-=======
->>>>>>> 7a0913e6da60a23402dad6060de9e673a808119d
       var now = Date.now();//takes time from computer
       var deltaTime = (now - this.previousTime);
       this.previousTime = now;
@@ -115,10 +109,6 @@ class Game
             }
 
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> 7a0913e6da60a23402dad6060de9e673a808119d
 
     GamePad()
     {
@@ -126,20 +116,14 @@ class Game
       gamepads = navigator.getGamepads[0];
       var button = document.querySelector("#button");
       var axis = document.querySelector("#axis");
-      axis.innerHTML = "X Axis State: " + Math.floor(gamepads.axes[0] + "Y: "+ Math.floor(gamepads.axes[1]);
-
-
+      axis.innerHTML = "X Axis State: " + Math.floor(gamepads.axes[0] + "Y: "+ Math.floor(gamepads.axes[1]));
 
       var buttons =  gamepads.buttons;
 
-      if(buttons[0].pressed === true)
+      if(buttons[0].pressed == true)
       {
         console.log("button pressed");
       }
 
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 7a0913e6da60a23402dad6060de9e673a808119d
 }
