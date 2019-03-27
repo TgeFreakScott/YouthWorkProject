@@ -1,7 +1,7 @@
 class Game
 {
   constructor()
-    { 
+    {
         this.boundRecursiveUpdate = this.update.bind(this);
 
         this.canvas = document.getElementById("canvas");
@@ -9,16 +9,43 @@ class Game
         canvas.width = window.innerWidth;
         canvas.height = window.innerWidth;
         this.ctx = canvas.getContext("2d");
-        document.body.appendChild(this.canvas); 
+        document.body.appendChild(this.canvas);
     }
 
     init()
     {
         document.addEventListener("keydown",this.keyDownHandler.bind(null, this));
+
+        var gamepads = {};
+        var button = document.querySelector("#button");
+        var axis = document.querySelector("#axis");
+
+        function gamepadHandler(event, connecting)
+        {
+          var gamepad = event.gamepad;
+          // Note:
+          // gamepad === navigator.getGamepads()[gamepad.index]
+
+          if (connecting)
+          {
+            gamepads[gamepad.index] = gamepad;
+          }
+
+          else
+          {
+            delete gamepads[gamepad.index];
+          }
+
+        }
+
+        document.addEventListener("gamepadconnected", function(e) { gamepadHandler(e, true); }, false);
+        document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
+
     }
 
     update()
     {
+        //this.GamePad();
         this.draw();
     }
 
@@ -29,13 +56,13 @@ class Game
     keyDownHandler(game , e)
     {
         // A 65
-        // D 68 
-        // W 87 
-        // S 83 
+        // D 68
+        // W 87
+        // S 83
         // R 82
-        // Down 40 
-        // Up 38 
-        // Left 37 
+        // Down 40
+        // Up 38
+        // Left 37
         // Right 39
         // SpaceBar = 32
 
@@ -43,13 +70,15 @@ class Game
         {
             game.player.tempX = game.player.posX;
             game.player.posX -= game.player.moveSpeed;
+
+
         }
 
         if(e.keyCode === 68)//RIGHT
         {
             game.player.tempX = game.player.posX;
             game.player.posX += game.player.moveSpeed;
-            
+
         }
         if(e.keyCode === 38)//UP
         {
@@ -68,7 +97,25 @@ class Game
             {
                  e.preventDefault();
             }
-          
-        }
-}
 
+        }
+
+    GamePad()
+    {
+      //var gamepads = {};
+      gamepads = navigator.getGamepads[0];
+      var button = document.querySelector("#button");
+      var axis = document.querySelector("#axis");
+      axis.innerHTML = "X Axis State: " + Math.floor(gamepads.axes[0] + "Y: "+ Math.floor(gamepads.axes[1]);
+
+
+
+      var buttons =  gamepads.buttons;
+
+      if(buttons[0].pressed === true)
+      {
+        console.log("button pressed");
+      }
+
+    }
+}
