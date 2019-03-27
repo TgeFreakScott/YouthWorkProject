@@ -10,21 +10,12 @@ class Game
         canvas.height = window.innerWidth;
         this.ctx = canvas.getContext("2d");
         document.body.appendChild(this.canvas);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 8a58851b5abf0bad528bf3ffdaa8343077de718c
 
         this.sceneManager = new ScreenManager(this.ctx, this.canvas);
         this.sceneManager.addScene(new Menu("Menu", this.sceneManager));
         this.sceneManager.addScene(new Gameplay("Gameplay", this.sceneManager));
         this.sceneManager.goToScene("Title");
         this.sceneManager.renderCurrentScene(this.ctx);
-<<<<<<< HEAD
->>>>>>> e2e07710ac295ffcd125e52daa81eb0cd7534131
-=======
->>>>>>> 8a58851b5abf0bad528bf3ffdaa8343077de718c
     }
 
     init()
@@ -60,22 +51,14 @@ class Game
 
     update()
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
         //this.GamePad();
-        this.draw();
-=======
-=======
->>>>>>> 8a58851b5abf0bad528bf3ffdaa8343077de718c
+
+
       var now = Date.now();//takes time from computer
       var deltaTime = (now - this.previousTime);
       this.previousTime = now;
       this.sceneManager.updateCurrentScene(deltaTime);
       this.draw();
-<<<<<<< HEAD
->>>>>>> e2e07710ac295ffcd125e52daa81eb0cd7534131
-=======
->>>>>>> 8a58851b5abf0bad528bf3ffdaa8343077de718c
     }
 
     draw()
@@ -129,8 +112,7 @@ class Game
             }
 
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
     GamePad()
     {
@@ -150,8 +132,5 @@ class Game
       }
 
     }
-=======
->>>>>>> e2e07710ac295ffcd125e52daa81eb0cd7534131
-=======
->>>>>>> 8a58851b5abf0bad528bf3ffdaa8343077de718c
+
 }
