@@ -10,6 +10,15 @@ class Game
         canvas.height = window.innerWidth;
         this.ctx = canvas.getContext("2d");
         document.body.appendChild(this.canvas);
+<<<<<<< HEAD
+=======
+
+        this.sceneManager = new ScreenManager(this.ctx, this.canvas);
+        this.sceneManager.addScene(new Menu("Menu", this.sceneManager));
+        this.sceneManager.addScene(new Gameplay("Gameplay", this.sceneManager));
+        this.sceneManager.goToScene("Title");
+        this.sceneManager.renderCurrentScene(this.ctx);
+>>>>>>> e2e07710ac295ffcd125e52daa81eb0cd7534131
     }
 
     init()
@@ -45,13 +54,22 @@ class Game
 
     update()
     {
+<<<<<<< HEAD
         //this.GamePad();
         this.draw();
+=======
+      var now = Date.now();//takes time from computer
+      var deltaTime = (now - this.previousTime);
+      this.previousTime = now;
+      this.sceneManager.updateCurrentScene(deltaTime);
+      this.draw();
+>>>>>>> e2e07710ac295ffcd125e52daa81eb0cd7534131
     }
 
     draw()
     {
-        this.ctx.clearRect(0,0,canvas.width, canvas.height);
+      this.ctx.clearRect(0,0,canvas.height, canvas.height);
+      this.sceneManager.renderCurrentScene(this.ctx);
     }
     keyDownHandler(game , e)
     {
@@ -99,6 +117,7 @@ class Game
             }
 
         }
+<<<<<<< HEAD
 
     GamePad()
     {
@@ -118,4 +137,6 @@ class Game
       }
 
     }
+=======
+>>>>>>> e2e07710ac295ffcd125e52daa81eb0cd7534131
 }
