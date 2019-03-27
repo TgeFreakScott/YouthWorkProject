@@ -51,15 +51,7 @@ class Game
 
     update()
     {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
         //this.GamePad();
-
-
->>>>>>> c651330a26721ff22a52546efca823b61b4b9f53
->>>>>>> ba69ec3cf5563f190a48876c493fff944c155ab4
       var now = Date.now();//takes time from computer
       var deltaTime = (now - this.previousTime);
       this.previousTime = now;
