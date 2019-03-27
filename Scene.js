@@ -25,7 +25,7 @@ class Scene
         console.log("stopping: " + this.title);
     }
 
-    updtae(deltaTime)
+    update(deltaTime)
     {
 
 
