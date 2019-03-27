@@ -1,4 +1,4 @@
-Class Gameplay extends Scene
+class Gameplay extends Scene
 {
 
     constructor(sceneTitle, sceneManager)

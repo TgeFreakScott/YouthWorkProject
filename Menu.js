@@ -1,4 +1,4 @@
-Class Menu extends Scene
+class Menu extends Scene
 {
 
     constructor(sceneTitle, sceneManager)
