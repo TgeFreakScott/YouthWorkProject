@@ -5,15 +5,14 @@ class Menu extends Scene
     {
         super(sceneTitle, sceneManager, context);//Calls the scene parent constructor from Scene
         this.ctx = context;
-        this.playSprite = new Sprite(this.ctx, this.menuPlayButtonOptions);
+        this.playSprite = new Sprite(this.ctx, this.playerImageOptions);
     }
 
-    render(ctx)
+    render()
     {
-        ctx.clearRect(0,0,canvas.height, canvas.width);
-        ctx.font = "50px serif";
-        ctx.fillText(this.title, 10,50);
-
+        this.ctx.clearRect(0,0,canvas.height, canvas.width);
+        this.ctx.font = "50px serif";
+        this.ctx.fillText(this.title, 10,50);
         document.body.style.backgroundColor = "#87CEEB" //SKY BLUE
         this.playSprite.render();
     }
@@ -23,3 +22,8 @@ class Menu extends Scene
         this.playSprite.update(deltaTime);
     }
 }
+
+//WHY?!
+//HOW COULD YOU?
+//YOU WERE THE CHOSEN ONE!!!!!!!!!!! ;)
+//.......ew

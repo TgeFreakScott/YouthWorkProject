@@ -12,8 +12,8 @@ class Game
         document.body.appendChild(this.canvas);
 
         this.sceneManager = new ScreenManager(this.ctx, this.canvas);
-        this.sceneManager.addScene(new Menu("Menu", this.sceneManager));
-        this.sceneManager.addScene(new Gameplay("Gameplay", this.sceneManager));
+        this.sceneManager.addScene(new Menu("Menu", this.sceneManager, this.ctx));
+        this.sceneManager.addScene(new Gameplay("Gameplay", this.sceneManager, this.ctx));
         this.sceneManager.goToScene("Menu");
         this.sceneManager.renderCurrentScene(this.ctx);
     }
@@ -21,13 +21,32 @@ class Game
     init()
     {
         document.addEventListener("keydown",this.keyDownHandler.bind(null, this));
-        document.addEventListener("gamepadconnected", function(e) { gamepadHandler(e, true); }, false);
-        document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
+        document.addEventListener("gamepadconnected", function(e) { console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.", e.gamepad.index, e.gamepad.id, e.gamepad.buttons.length, e.gamepad.axes.length);});
+        document.addEventListener("gamepaddisconnected", function(e) { console.log("Gamepad disconnected from index %d: %s",e.gamepad.index, e.gamepad.id);});
+        //document.addEventListener("gamepad", this.gamepadHandler.bind(null, this), false);
+        //document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
+
+        //Connecting controller to Javascript, semi works, kinda, not really.
 
         var gamepads = {};
-        var button = document.querySelector("#button");
-        var axis = document.querySelector("#axis");
 
+        function gamepadHandler(event, connecting)
+        {
+          var gamepad = event.gamepad;
+          // Note:
+          // gamepad === navigator.getGamepads()[gamepad.index]
+
+          if (connecting)
+          {
+            gamepads[gamepad.index] = gamepad;
+          }
+          else {
+            delete gamepads[gamepad.index];
+          }
+        }
+
+        document.addEventListener("gamepadconnected", function(e) { gamepadHandler(e, true); }, false);
+        document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
 
 
     }
@@ -93,7 +112,7 @@ class Game
 
         }
 
-    gamepadHandler(game, e)
+    gamepadHandler(game , e)
     {
       var gamepad = event.gamepad;
       // Note:
@@ -101,65 +120,64 @@ class Game
 
       if (connecting)
       {
-        gamepads[gamepad.index] = gamepad;
+        game.gamepads[gamepad.index] = gamepad;
+        console.log("connecting");
       }
 
       else
       {
-        delete gamepads[gamepad.index];
+        delete game.gamepads[gamepad.index];
+        console.log("Disconnecting");
       }
 
-      gamepads = navigator.getGamepads[0];
-      var button = document.querySelector("#button");
-      var axis = document.querySelector("#axis");
-      axis.innerHTML = "X Axis State: " + Math.floor(gamepads.axes[0] + "Y: "+ Math.floor(gamepads.axes[1]));
+      game.gamepads = navigator.getGamepads[0];
 
-      var buttons =  gamepads.buttons;
+      var buttons =  game.gamepads.buttons;
 
       // button: X
-      if(e.buttons[0] == true)
+      if(e.buttons[0].pressed === true)
       {
         console.log("button pressed");
       }
 
       // button: A
-      if(buttons[1].pressed == true)
+      if(buttons[1].pressed === true)
       {
         console.log("button pressed");
       }
 
       // button: B
-      if(buttons[2].pressed == true)
+      if(buttons[2].pressed === true)
       {
         console.log("button pressed");
       }
 
       // button: Y
-      if(buttons[3].pressed == true)
+      if(buttons[3].pressed === true)
       {
         console.log("button pressed");
       }
 
       // button: L
-      if(buttons[4].pressed == true)
+      if(buttons[4].pressed === true)
       {
         console.log("button pressed");
       }
 
       // button: R
-      if(buttons[5].pressed == true)
+      if(buttons[5].pressed === true)
       {
         console.log("button pressed");
       }
 
       // button: Select
-      if(buttons[8].pressed == true)
+      if(buttons[8].pressed === true)
       {
         console.log("button pressed");
       }
 
       // button: Start
-      if(buttons[9].pressed == true)
+      if(buttons[9].pressed === true)
       {
         console.log("button pressed");
       }

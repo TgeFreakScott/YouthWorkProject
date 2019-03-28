@@ -54,6 +54,6 @@ class ScreenManager
 
       renderCurrentScene()
       {
-        this.currScene.render(this.ctx);
+        this.currScene.render();
       }
 }
