@@ -1,3 +1,4 @@
+
 /**
  * This class holds variables needed to create a sprite that doesn't move
  */

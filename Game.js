@@ -14,44 +14,27 @@ class Game
         this.sceneManager = new ScreenManager(this.ctx, this.canvas);
         this.sceneManager.addScene(new Menu("Menu", this.sceneManager));
         this.sceneManager.addScene(new Gameplay("Gameplay", this.sceneManager));
-        this.sceneManager.goToScene("Title");
+        this.sceneManager.goToScene("Menu");
         this.sceneManager.renderCurrentScene(this.ctx);
     }
 
     init()
     {
         document.addEventListener("keydown",this.keyDownHandler.bind(null, this));
+        document.addEventListener("gamepadconnected", function(e) { gamepadHandler(e, true); }, false);
+        document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
 
         var gamepads = {};
         var button = document.querySelector("#button");
         var axis = document.querySelector("#axis");
 
-        function gamepadHandler(event, connecting)
-        {
-          var gamepad = event.gamepad;
-          // Note:
-          // gamepad === navigator.getGamepads()[gamepad.index]
 
-          if (connecting)
-          {
-            gamepads[gamepad.index] = gamepad;
-          }
-
-          else
-          {
-            delete gamepads[gamepad.index];
-          }
-
-        }
-
-        document.addEventListener("gamepadconnected", function(e) { gamepadHandler(e, true); }, false);
-        document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
 
     }
 
     update()
     {
-        //this.GamePad();
+      //this.GamePad();
       var now = Date.now();//takes time from computer
       var deltaTime = (now - this.previousTime);
       this.previousTime = now;
@@ -64,6 +47,7 @@ class Game
       this.ctx.clearRect(0,0,canvas.height, canvas.height);
       this.sceneManager.renderCurrentScene(this.ctx);
     }
+
     keyDownHandler(game , e)
     {
         // A 65
@@ -81,16 +65,14 @@ class Game
         {
             game.player.tempX = game.player.posX;
             game.player.posX -= game.player.moveSpeed;
-
-
         }
 
         if(e.keyCode === 68)//RIGHT
         {
             game.player.tempX = game.player.posX;
             game.player.posX += game.player.moveSpeed;
-
         }
+
         if(e.keyCode === 38)//UP
         {
             if(game.playerFall === false)
@@ -111,9 +93,22 @@ class Game
 
         }
 
-    GamePad()
+    gamepadHandler(game, e)
     {
-      //var gamepads = {};
+      var gamepad = event.gamepad;
+      // Note:
+      // gamepad === navigator.getGamepads()[gamepad.index]
+
+      if (connecting)
+      {
+        gamepads[gamepad.index] = gamepad;
+      }
+
+      else
+      {
+        delete gamepads[gamepad.index];
+      }
+
       gamepads = navigator.getGamepads[0];
       var button = document.querySelector("#button");
       var axis = document.querySelector("#axis");
@@ -121,7 +116,50 @@ class Game
 
       var buttons =  gamepads.buttons;
 
-      if(buttons[0].pressed == true)
+      // button: X
+      if(e.buttons[0] == true)
+      {
+        console.log("button pressed");
+      }
+
+      // button: A
+      if(buttons[1].pressed == true)
+      {
+        console.log("button pressed");
+      }
+
+      // button: B
+      if(buttons[2].pressed == true)
+      {
+        console.log("button pressed");
+      }
+
+      // button: Y
+      if(buttons[3].pressed == true)
+      {
+        console.log("button pressed");
+      }
+
+      // button: L
+      if(buttons[4].pressed == true)
+      {
+        console.log("button pressed");
+      }
+
+      // button: R
+      if(buttons[5].pressed == true)
+      {
+        console.log("button pressed");
+      }
+
+      // button: Select
+      if(buttons[8].pressed == true)
+      {
+        console.log("button pressed");
+      }
+
+      // button: Start
+      if(buttons[9].pressed == true)
       {
         console.log("button pressed");
       }

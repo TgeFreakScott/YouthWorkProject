@@ -1,18 +1,16 @@
-/**
- * Scene is parent class used by all the scenes
- *
- */
-
 class Scene
 {
     /**
     Inialises the sceneName for the class.
     @param {string} sceneName - The title for the scene.
-  */
+    **/
 
-    constructor(sceneName)
+    constructor(sceneName,sceneManager, context)
     {
         this.title = sceneName;
+        this.sceneManager = sceneManager;
+        this.playerImageOptions = {filename: 'pacman-spritesheet.png', x:0, y:0, width:106, height:106, fps:6000, numberOfFrames:5};
+        this.ctx = context;
     }
 
     start()
@@ -33,8 +31,8 @@ class Scene
     render(canvas)
     {
         //var context = document.getElementById("myCanvas").getContext("2d");
-        ctx.font = "50px serif";
-        ctx.fillText(this.title,100,100);
+        this.ctx.font = "50px serif";
+        this.ctx.fillText(this.title,100,100);
         document.body.style.backgroundColor = "#ffffff";
 
     }

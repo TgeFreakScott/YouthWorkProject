@@ -1,10 +1,11 @@
 class Menu extends Scene
 {
 
-    constructor(sceneTitle, sceneManager)
+    constructor(sceneTitle, sceneManager, context)
     {
-        super(sceneTitle);//Calls the scene parent constructor from Scene
-
+        super(sceneTitle, sceneManager, context);//Calls the scene parent constructor from Scene
+        this.ctx = context;
+        this.playSprite = new Sprite(this.ctx, this.menuPlayButtonOptions);
     }
 
     render(ctx)
@@ -14,10 +15,11 @@ class Menu extends Scene
         ctx.fillText(this.title, 10,50);
 
         document.body.style.backgroundColor = "#87CEEB" //SKY BLUE
+        this.playSprite.render();
     }
 
     update(deltaTime)
     {
-
+        this.playSprite.update(deltaTime);
     }
 }
