@@ -23,10 +23,6 @@ class Game
         document.addEventListener("keydown",this.keyDownHandler.bind(null, this));
         document.addEventListener("gamepadconnected", function(e) { console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.", e.gamepad.index, e.gamepad.id, e.gamepad.buttons.length, e.gamepad.axes.length);});
         document.addEventListener("gamepaddisconnected", function(e) { console.log("Gamepad disconnected from index %d: %s",e.gamepad.index, e.gamepad.id);});
-        //document.addEventListener("gamepad", this.gamepadHandler.bind(null, this), false);
-        //document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
-
-        //Connecting controller to Javascript, semi works, kinda, not really.
 
         var gamepads = {};
 
@@ -40,7 +36,8 @@ class Game
           {
             gamepads[gamepad.index] = gamepad;
           }
-          else {
+          else
+          {
             delete gamepads[gamepad.index];
           }
         }
