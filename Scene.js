@@ -9,8 +9,8 @@ class Scene
     {
         this.title = sceneName;
         this.sceneManager = sceneManager;
-        this.playerImageOptions = {filename: 'pacman-spritesheet.png', x:0, y:0, width:106, height:106, fps:6000, numberOfFrames:5};
         this.ctx = context;
+        this.playerImageOptions = {filename: 'PacMan.png', x:100, y:100, width:573, height:105, fps:600, numberOfFrames:5};
     }
 
     start()
@@ -26,15 +26,10 @@ class Scene
     update(deltaTime)
     {
 
-
     }
     render(canvas)
     {
-        //var context = document.getElementById("myCanvas").getContext("2d");
-        this.ctx.font = "50px serif";
-        this.ctx.fillText(this.title,100,100);
-        document.body.style.backgroundColor = "#ffffff";
-
+        this.ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
     }
 
     getTitle()

@@ -2,20 +2,27 @@ class Game
 {
   constructor()
     {
+        this.canvas = {};
+        this.initCanvas();
         this.boundRecursiveUpdate = this.update.bind(this);
-
-        this.canvas = document.getElementById("canvas");
-        canvas.id = "canvas";
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerWidth;
-        this.ctx = canvas.getContext("2d");
-        document.body.appendChild(this.canvas);
-
+        this.boundDraw = this.draw.bind(this);
         this.sceneManager = new ScreenManager(this.ctx, this.canvas);
-        this.sceneManager.addScene(new Menu("Menu", this.sceneManager, this.ctx));
-        this.sceneManager.addScene(new Gameplay("Gameplay", this.sceneManager, this.ctx));
-        this.sceneManager.goToScene("Menu");
+        this.menu = new Menu("Menu", this.sceneManager, this.ctx);
+        this.gamePlay = new Gameplay("Gameplay", this.sceneManager, this.ctx);
+        this.sceneManager.addScene(this.menu);
+        this.sceneManager.addScene(this.gamePlay);
+        this.sceneManager.goToScene(this.menu.title);
         this.sceneManager.renderCurrentScene(this.ctx);
+    }
+
+    initCanvas()
+    {
+        this.canvas = document.getElementById("canvas");
+        this.canvas.id = "mycanvas";
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerWidth;
+        this.ctx = this.canvas.getContext("2d");
+        document.body.appendChild(this.canvas);
     }
 
     init()
@@ -44,23 +51,22 @@ class Game
 
         document.addEventListener("gamepadconnected", function(e) { gamepadHandler(e, true); }, false);
         document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
-
-
     }
 
     update()
     {
+      window.requestAnimationFrame(this.boundRecursiveUpdate);
       //this.GamePad();
-      var now = Date.now();//takes time from computer
-      var deltaTime = (now - this.previousTime);
-      this.previousTime = now;
-      this.sceneManager.updateCurrentScene(deltaTime);
-      this.draw();
+      this.now = Date.now();//takes time from computer
+      this.deltaTime = (this.now - this.previousTime);
+      this.previousTime = this.now;
+      this.sceneManager.updateCurrentScene(this.deltaTime);
+      this.boundDraw();
     }
 
     draw()
     {
-      this.ctx.clearRect(0,0,canvas.height, canvas.height);
+      this.ctx.clearRect(0,0,this.canvas.height, this.canvas.height);
       this.sceneManager.renderCurrentScene(this.ctx);
     }
 

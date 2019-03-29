@@ -9,7 +9,7 @@ class Gameplay extends Scene
 
     render()
     {
-        this.ctx.clearRect(0,0,canvas.height, canvas.width);
+        super.render();
         this.ctx.font = "50px serif";
         this.ctx.fillText(this.title, 10,50);
 
@@ -18,6 +18,6 @@ class Gameplay extends Scene
 
     update(deltaTime)
     {
-
+        super.update(deltaTime);
     }
 }
