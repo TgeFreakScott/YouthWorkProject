@@ -28,7 +28,7 @@ class staticSprite
     */
     render()
     {
-        if(this.loaded == true)
+        if(this.loaded === true)
         {
             this.ctx.drawImage(this.spriteSheet, this.x, this.y);
         }

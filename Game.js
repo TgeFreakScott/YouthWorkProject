@@ -18,44 +18,46 @@ class Game
     initCanvas()
     {
         this.canvas = document.getElementById("canvas");
-        this.canvas.id = "mycanvas";
+        this.canvas.id = "canvas";
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerWidth;
         this.ctx = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
+        this.init();
     }
 
     init()
     {
         document.addEventListener("keydown",this.keyDownHandler.bind(null, this));
-        document.addEventListener("gamepadconnected", function(e) { console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.", e.gamepad.index, e.gamepad.id, e.gamepad.buttons.length, e.gamepad.axes.length);});
-        document.addEventListener("gamepaddisconnected", function(e) { console.log("Gamepad disconnected from index %d: %s",e.gamepad.index, e.gamepad.id);});
+      //  document.addEventListener("gamepadconnected", function(e) { console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.", e.gamepad.index, e.gamepad.id, e.gamepad.buttons.length, e.gamepad.axes.length);});
+      //  document.addEventListener("gamepaddisconnected", function(e) { console.log("Gamepad disconnected from index %d: %s",e.gamepad.index, e.gamepad.id);});
 
-        var gamepads = {};
+      //  var gamepads = {};
 
-        function gamepadHandler(event, connecting)
-        {
-          var gamepad = event.gamepad;
+      //  function gamepadHandler(event, connecting)
+      //  {
+      //    var gamepad = event.gamepad;
           // Note:
           // gamepad === navigator.getGamepads()[gamepad.index]
 
-          if (connecting)
-          {
-            gamepads[gamepad.index] = gamepad;
-          }
-          else
-          {
-            delete gamepads[gamepad.index];
-          }
-        }
+      //    if (connecting)
+      //    {
+      //      gamepads[gamepad.index] = gamepad;
+      //    }
+      //    else
+      //    {
+      //      delete gamepads[gamepad.index];
+      //    }
+      //  }
 
-        document.addEventListener("gamepadconnected", function(e) { gamepadHandler(e, true); }, false);
-        document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
+      //  document.addEventListener("gamepadconnected", function(e) { gamepadHandler(e, true); }, false);
+      //  document.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
     }
 
     update()
     {
       window.requestAnimationFrame(this.boundRecursiveUpdate);
+
       //this.GamePad();
       this.now = Date.now();//takes time from computer
       this.deltaTime = (this.now - this.previousTime);
@@ -66,7 +68,7 @@ class Game
 
     draw()
     {
-      this.ctx.clearRect(0,0,this.canvas.height, this.canvas.height);
+      this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
       this.sceneManager.renderCurrentScene(this.ctx);
     }
 

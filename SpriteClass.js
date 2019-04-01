@@ -59,7 +59,14 @@ class Sprite
     {
         if(this.loaded == true)
         {
-            this.ctx.drawImage(this.spriteSheet, this.frameIndex * this.width/ this.numberOfFrames, 0, this.width/ this.numberOfFrames, this.height, this.x, this.y, this.width/ this.numberOfFrames, this.height);
+            this.ctx.drawImage(this.spriteSheet,
+              this.frameIndex * this.width/ this.numberOfFrames, 
+              0,
+              this.width/ this.numberOfFrames,
+              this.height,
+              this.x, this.y,
+              this.width/ this.numberOfFrames,
+              this.height);
         }
     }
 }
