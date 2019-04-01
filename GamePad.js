@@ -14,7 +14,7 @@ var gamepadAPI = {
 
 	update: function() {
 		gamepadAPI.buttonsCache = [];
-		for(var k=0; k<gamepadAPI.buttonsStatus.length; k++)
+		for(var k = 0 ; k < gamepadAPI.buttonsStatus.length; k++)
     {
 			gamepadAPI.buttonsCache[k] = gamepadAPI.buttonsStatus[k];
 		}
@@ -22,9 +22,10 @@ var gamepadAPI = {
 		gamepadAPI.buttonsStatus = [];
 		var c = gamepadAPI.controller || {};
 		var pressed = [];
+
 		if(c.buttons)
     {
-			for(var b=0,t=c.buttons.length; b<t; b++)
+			for(var b = 0, t = c.buttons.length; b < t; b++)
       {
 				if(c.buttons[b].pressed)
         {
@@ -33,9 +34,10 @@ var gamepadAPI = {
 			}
 		}
 		var axes = [];
+
 		if(c.axes)
     {
-			for(var a=0,x=c.axes.length; a<x; a++)
+			for(var a = 0, x = c.axes.length; a < x; a++)
       {
 				axes.push(c.axes[a].toFixed(2));
 			}
@@ -46,15 +48,16 @@ var gamepadAPI = {
 	},
 	buttonPressed: function(button, hold)
   {
+				console.log('Gamepad button.');
 		var newPress = false;
-		for(var i=0,s=gamepadAPI.buttonsStatus.length; i<s; i++)
+		for(var i=0,s=gamepadAPI.buttonsStatus.length; i < s; i++)
     {
 			if(gamepadAPI.buttonsStatus[i] == button)
       {
 				newPress = true;
 				if(!hold)
         {
-					for(var j=0,p=gamepadAPI.buttonsCache.length; j<p; j++)
+					for(var j = 0, p = gamepadAPI.buttonsCache.length; j < p; j++)
           {
 						if(gamepadAPI.buttonsCache[j] == button)
             {
@@ -91,3 +94,4 @@ var gamepadAPI = {
 
 window.addEventListener("gamepadconnected", gamepadAPI.connect);
 window.addEventListener("gamepaddisconnected", gamepadAPI.disconnect);
+window.addEventListener("Buttonpressed", gamepadAPI.buttonPressed);

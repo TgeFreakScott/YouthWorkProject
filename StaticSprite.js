@@ -18,8 +18,7 @@ class staticSprite
         this.spriteSheet = new Image();
         var spriteClass = this;
         this.spriteSheet.addEventListener('load', function() {
-            spriteClass.loaded = true;
-        }, false);
+            spriteClass.loaded = true; }, false);
         this.spriteSheet.src = imageOptions.filename; // Set source path
     }
 

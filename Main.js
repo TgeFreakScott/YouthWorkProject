@@ -1,7 +1,6 @@
 function main()
 {
     const game = new Game();
-    game.init();
     game.update();
 
     //uses the mouse click trigger the next scene
