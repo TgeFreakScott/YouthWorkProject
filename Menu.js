@@ -113,7 +113,7 @@ class Menu extends Scene
               this.playSprite.x -= 5;
             }
 
-            if (this.buttonPressed(controller.buttons[1]))
+            else if (this.buttonPressed(controller.buttons[1]))
             {
               this.playSprite.x += 5;
             }
@@ -123,7 +123,7 @@ class Menu extends Scene
               this.playSprite.y -= 5;
             }
 
-            if (this.buttonPressed(controller.buttons[2]))
+            else if (this.buttonPressed(controller.buttons[2]))
             {
               this.playSprite.y += 5;
             }
