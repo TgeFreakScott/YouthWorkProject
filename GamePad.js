@@ -1,4 +1,4 @@
-var gamepadAPI = {
+/*var gamepadAPI = {
 	controller: {},
 	turbo: false,
 	connect: function(evt) {
@@ -94,4 +94,4 @@ var gamepadAPI = {
 
 window.addEventListener("gamepadconnected", gamepadAPI.connect);
 window.addEventListener("gamepaddisconnected", gamepadAPI.disconnect);
-window.addEventListener("Buttonpressed", gamepadAPI.buttonPressed);
+window.addEventListener("Buttonpressed", gamepadAPI.buttonPressed);*/
