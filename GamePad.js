@@ -1,3 +1,11 @@
+
+//if (this.buttonPressed(controller.buttons[3]))
+//{
+//  this.playSprite.x -= 5;
+//}
+
+
+
 /*var gamepadAPI = {
 	controller: {},
 	turbo: false,

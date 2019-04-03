@@ -46,7 +46,7 @@ class Menu extends Scene
         document.body.removeChild(d);
         delete controllers[gamepad.index];
     }
-    
+
     addgamepad(gamepad)
     {
         this.controllers[gamepad.index] = gamepad;
@@ -128,6 +128,10 @@ class Menu extends Scene
             {
               this.playSprite.y += 5;
             }
+            //if (this.buttonPressed(controller.buttons[3]))
+            //{
+            //  this.playSprite.x -= 5;
+            //}
         }
     }
 

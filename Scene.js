@@ -10,7 +10,7 @@ class Scene
         this.title = sceneName;
         this.sceneManager = sceneManager;
         this.ctx = context;
-        this.playerImageOptions = {filename: 'PacMan.png', x:50, y:50, width:573, height:105, fps:80, numberOfFrames:5};
+        this.playerImageOptions = {filename: 'Sprite/pinkJump.png', x:50, y:50, width:993, height:294, fps:80, numberOfFrames:3};
     }
 
     start()
