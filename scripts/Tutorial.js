@@ -129,9 +129,12 @@ class Tutorial extends Scene
           }
           if (this.buttonPressed(controller.buttons[1]))
           {
-              this.sceneManager.goToScene(this.sceneTitles.Menu);
-              window.removeEventListener("gamepadconnected", this.connectHandlerBind, false);
-              window.removeEventListener("gamepaddisconnected", this.disconnectHandlerBind, false);
+              if(this.pageTwoDraw)
+              {
+                  this.sceneManager.goToScene(this.sceneTitles.Menu);
+                  window.removeEventListener("gamepadconnected", this.connectHandlerBind, false);
+                  window.removeEventListener("gamepaddisconnected", this.disconnectHandlerBind, false);
+              }
           }
       }
   }
