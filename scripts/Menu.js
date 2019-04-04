@@ -26,10 +26,6 @@ class Menu extends Scene
         this.ctx.font = "50px serif";
         this.ctx.fillText(this.title, 10,50);
         document.body.style.backgroundColor = "#7EC0EE" //SKY BLUE
-
-        var particles = this.add.particles('Sprite/pinkCapture.png');
-        var emitter = this.particles.createEmitter({speed: 100,scale: { start: 1, end: 0 },blendMode: 'ADD'});
-
         this.playSprite.render();
     }
 
