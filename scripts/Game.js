@@ -13,7 +13,7 @@ class Game
         this.sceneManager.addScene(this.tutorial);
         this.sceneManager.addScene(this.menu);
         this.sceneManager.addScene(this.gamePlay);
-        this.sceneManager.goToScene(this.tutorial.title);
+        this.sceneManager.goToScene(this.menu.title);
         this.sceneManager.renderCurrentScene(this.ctx);
     }
 
