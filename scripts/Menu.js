@@ -23,7 +23,6 @@ class Menu extends Scene
     render()
     {
         super.render();
-
         this.ctx.font = "50px serif";
         this.ctx.fillText(this.title, 10,50);
         document.body.style.backgroundColor = "#7EC0EE" //SKY BLUE
@@ -128,10 +127,12 @@ class Menu extends Scene
             {
               this.playSprite.y += 5;
             }
-            //if (this.buttonPressed(controller.buttons[3]))
-            //{
-            //  this.playSprite.x -= 5;
-            //}
+            if (this.buttonPressed(controller.buttons[1]))
+            {
+                this.sceneManager.goToScene(this.sceneTitles.Gameplay);
+                window.removeEventListener("gamepadconnected", this.connectHandlerBind, false);
+                window.removeEventListener("gamepaddisconnected", this.disconnectHandlerBind, false);
+            }
         }
     }
 

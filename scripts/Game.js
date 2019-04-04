@@ -7,11 +7,13 @@ class Game
         this.boundRecursiveUpdate = this.update.bind(this);
         this.boundDraw = this.draw.bind(this);
         this.sceneManager = new ScreenManager(this.ctx, this.canvas);
-        this.menu = new Menu("Menu", this.sceneManager, this.ctx);
-        this.gamePlay = new Gameplay("Gameplay", this.sceneManager, this.ctx);
+        this.tutorial = new Tutorial("Tutorial Screen", this.sceneManager, this.ctx);
+        this.menu = new Menu("Menu Screen", this.sceneManager, this.ctx);
+        this.gamePlay = new Gameplay("Gameplay Screen", this.sceneManager, this.ctx);
+        this.sceneManager.addScene(this.tutorial);
         this.sceneManager.addScene(this.menu);
         this.sceneManager.addScene(this.gamePlay);
-        this.sceneManager.goToScene(this.menu.title);
+        this.sceneManager.goToScene(this.tutorial.title);
         this.sceneManager.renderCurrentScene(this.ctx);
     }
 

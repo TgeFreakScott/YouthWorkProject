@@ -5,7 +5,10 @@ class Tutorial extends Scene
       super(sceneTitle, sceneManager, context);//Calls the scene parent constructor from Scene
       this.haveEvents = 'ongamepadconnected' in window;
       this.controllers = {};
-      //this.tutorialSprite = new staticSprite(this.ctx, this.playerImageOptions);
+      this.page1 = new staticSprite(this.ctx, this.page1Options);
+      this.page2 = new staticSprite(this.ctx, this.page2Options);
+      this.pageOneDraw = true;
+      this.pageTwoDraw = false;
       this.canvas = document.getElementById("mycanvas");
       this.connectHandlerBind = this.connecthandler.bind(null, this);
       this.disconnectHandlerBind = this.disconnecthandler.bind(null, this);
@@ -22,11 +25,17 @@ class Tutorial extends Scene
   render()
   {
       super.render();
-
       this.ctx.font = "50px serif";
       this.ctx.fillText(this.title, 10,50);
       document.body.style.backgroundColor = "#7EC0EE" //SKY BLUE
-      //this.tutorialSprite.render();
+      if(this.pageOneDraw && !this.pageTwoDraw)
+      {
+        this.page1.render();
+      }
+      if(this.pageTwoDraw && !this.pageOneDraw)
+      {
+        this.page2.render();
+      }
   }
 
   connecthandler(game,e)
@@ -108,29 +117,22 @@ class Tutorial extends Scene
       for (j in this.controllers)
       {
           var controller = this.controllers[j];
-          /*if (controller.axes[0] === -1)
+          if (controller.axes[0] === -1)
           {
-            this.playSprite.x -= 5;
+            this.pageOneDraw = true;
+            this.pageTwoDraw = false;
           }
-
           else if (controller.axes[0] === 1)
           {
-            this.playSprite.x += 5;
+            this.pageOneDraw = false;
+            this.pageTwoDraw = true;
           }
-
-          if (controller.axes[1] === -1)
+          if (this.buttonPressed(controller.buttons[1]))
           {
-            this.playSprite.y -= 5;
+              this.sceneManager.goToScene(this.sceneTitles.Menu);
+              window.removeEventListener("gamepadconnected", this.connectHandlerBind, false);
+              window.removeEventListener("gamepaddisconnected", this.disconnectHandlerBind, false);
           }
-
-          else if (controller.axes[1] === 1)
-          {
-            this.playSprite.y += 5;
-          }*/
-          //if (this.buttonPressed(controller.buttons[3]))
-          //{
-          //  this.playSprite.x -= 5;
-          //}
       }
   }
 
