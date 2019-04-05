@@ -1,4 +1,4 @@
-/**
+    /**
  * This class holds variables needed to create a sprite
  */
 class Sprite
@@ -60,7 +60,7 @@ class Sprite
         if(this.loaded == true)
         {
             this.ctx.drawImage(this.spriteSheet,
-              this.frameIndex * this.width/ this.numberOfFrames, 
+              this.frameIndex * this.width/ this.numberOfFrames,
               0,
               this.width/ this.numberOfFrames,
               this.height,
