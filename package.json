@@ -9,7 +9,8 @@
   "dependencies": {
     "express": "^4.16.4",
     "formidable": "^1.2.1",
-    "phaser": "^3.16.2"
+    "phaser": "^3.16.2",
+    "server": "^1.0.18"
   },
   "devDependencies": {},
   "scripts": {
