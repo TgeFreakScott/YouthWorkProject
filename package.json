@@ -12,7 +12,11 @@
     "phaser": "^3.16.2",
     "server": "^1.0.18"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "raw-loader": "^2.0.0",
+    "webpack": "^4.29.6",
+    "webpack-dev-server": "^3.2.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
