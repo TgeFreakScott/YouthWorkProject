@@ -2,7 +2,7 @@
   "name": "claw",
   "version": "1.0.0",
   "description": "The Claw Game",
-  "main": "index.js",
+  "main": "scripts/Main.js",
   "directories": {
     "lib": "lib"
   },
@@ -15,10 +15,12 @@
   "devDependencies": {
     "raw-loader": "^2.0.0",
     "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack",
+    "start": "npm run build && webpack-dev-server --port=8080"
   },
   "repository": {
     "type": "git",
