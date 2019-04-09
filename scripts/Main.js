@@ -67,11 +67,6 @@ function main()
 
     function update()
     {
-      if (jumpButton.isDown)
-      {
-       // jump code goes here!
-       redSprite.x += 4;
-      }
         if (this.input.gamepad.total === 0)
         {
             return;
