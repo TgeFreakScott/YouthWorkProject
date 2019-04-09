@@ -35,11 +35,11 @@ function main()
       this.load.image('red', 'Sprite/redCapture.png');
       this.load.spritesheet('pink', 'Sprite/pinkJump.png', { frameWidth: 331, frameHeight: 294 });
       setInterval(function() { iconChange();}, 10);
+
     }
 
     function create()
     {
-
       var pinkAnimation = this.anims.create({
           key: 'walk',
           frames: this.anims.generateFrameNumbers('pink'),
@@ -51,7 +51,7 @@ function main()
       var sprite = this.add.sprite(50, 300, 'pink').setScale(0.6);
       sprite.play('walk');
 
-      this.tweens.add({targets: sprite,x: 750,duration: 8800,ease: 'Linear'});
+      this.tweens.add({targets: sprite,x: 750, duration: 8800,ease: 'Linear'});
 
       sprite.on('animationrepeat-walk', function () {
           var blueSpawn = this.add.image(sprite.x - 32, 300, 'blue').setScale(0.2);
@@ -60,8 +60,8 @@ function main()
             props: {x: {value: '-=64', ease: 'Power1'},
             y: {value: '+=50', ease: 'Bounce.easeOut'}},duration: 750});},this);
 
-      redSprite = this.add.sprite(400, 300, 'red').setScale(0.5);
-
+      redSprite = this.add.sprite(400, 300, 'red').setScale(0.5).setInteractive();
+      this.input.setPollAlways();
     }
 
 
