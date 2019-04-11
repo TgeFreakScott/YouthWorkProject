@@ -1,0 +1,73 @@
+<html><head>
+    <meta name="viewport" content="width=device-width">
+    <title>rotate</title>
+  </head><body>
+  <script src="scripts/phaser.js"></script>
+  <script>
+var config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 800,
+    backgroundColor: '#2d2d2d',
+    parent: 'The-Claw',
+    input: {gamepad: true},
+    scene: {
+              preload: preload,
+              create: create,
+              update: update
+          }
+};
+
+var sprite;
+var otherSprite;
+var group;
+var game = new Phaser.Game(config);
+
+
+function preload ()
+{
+    this.load.image('arrow', 'Sprite/arrow.png');
+    this.load.image('red', 'Sprite/redCapture.png');
+}
+
+function create ()
+{
+    otherSprite =  this.add.sprite(400, 400, 'red');
+    otherSprite.setScale(0.6);
+    group = this.add.group({
+        key: 'arrow',
+        setXY: { x: otherSprite.x, y: (otherSprite.y - 105) },
+        setScale: { x: 0.1, y: 0.1}
+      });
+    //Phaser.Utils.Array.Each(otherSprite, this.physics.moveToObject, this.physics, group.getChildren(), 120);
+    this.input.setPollAlways();
+}
+
+function update()
+{
+    if (this.input.gamepad.total === 0)
+    {
+        return;
+    }
+
+    var pad1 = this.input.gamepad.getPad(0);
+
+    if (pad1.axes.length)
+    {
+        var redAxisH = pad1.axes[0].getValue();
+        var redAxisV = pad1.axes[1].getValue();
+        if(redAxisH < 0)
+        {
+          Phaser.Actions.RotateAround(group.getChildren(), { x: otherSprite.x, y: otherSprite.y }, -0.1);
+          Phaser.Actions.Rotate(group.getChildren(), -0.1, -0.1);
+        }
+        if(redAxisH > 0)
+        {
+          Phaser.Actions.RotateAround(group.getChildren(), { x: otherSprite.x, y: otherSprite.y }, 0.1);
+          Phaser.Actions.Rotate(group.getChildren(), 0.1, 0.1);
+        }
+    }
+}
+
+</script>
+</body></html>
