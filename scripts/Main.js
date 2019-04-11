@@ -18,15 +18,20 @@ function main()
 
     var config = {
         type: Phaser.AUTO,
-        parent: 'phaser-example',
+        parent: 'The-Claw',
         width: 800,
         height: 600,
         pixelArt: true,
-        physics: {
+        physics:{
           default: 'arcade',
-          arcade: { debug: true, gravity: { y: 60 },
-          collideWorldBounds: true } },
-
+          arcade: {
+                    debug: true,
+                    gravity: { y: 60 },
+                    collideWorldBounds: true
+                  },
+          matter: { debug: true, gravity: {y:60} },
+          impact: { debug: true }
+        },
         input: {gamepad: true},
         scene: { preload: preload, create: create, update: update  }
     };
@@ -40,6 +45,10 @@ function main()
     var greenSprite
     var yellowSprite
 
+    var pipeSprite
+    var pipeBodySprite
+
+
     var sprite1
     var sprite2
 
@@ -47,6 +56,8 @@ function main()
 
     function preload()
     {
+      //loads image by ("Name your giving to sprite" , "the sprite location")
+      //player Sprites
       this.load.image('blue', 'Sprite/blueCapture.png');
       this.load.image('red', 'Sprite/redCapture.png');
       this.load.image('grey', 'Sprite/greyCapture.png');
@@ -54,19 +65,25 @@ function main()
       this.load.image('green', 'Sprite/greenCapture.png');
       this.load.image('yellow', 'Sprite/yellowCapture.png');
 
+      //claw Sprites
+      this.load.image('pipe','Sprite/clawBar.png');
+      this.load.image('pipeBody','Sprite/clawBarBody.png');
+
+      //Loading in animated Sprites
       //this.load.spritesheet('pink', 'Sprite/pinkJump.png', { frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('greyMove', 'Sprite/greyPlayer.png', { frameWidth: 331, frameHeight: 294 });
+
+      //Favicon image Function
       setInterval(function() { iconChange();}, 10);
 
     }
 
     function create()
     {
-       this.physics.world.gravity.y = 60;
+       //this.physics.world.gravity.y = 120;
 
-
-       var group = this.physics.add.group({
+      /* var group = this.physics.add.group({
             angularDrag: 5,
             angularVelocity: 60,
             defaultKey: 'red',
@@ -75,8 +92,17 @@ function main()
             collideWorldBounds: true,
             dragX: 60,
             dragY: 60
-       });
+       }); */
 
+
+//CIRCLE PHYSICS TEST
+      var circle1 = this.physics.add.image(100, 400, 'pink')
+      var circle2 = this.physics.add.image(500, 500, 'blue');
+
+      circle1.setCircle(155).setScale(0.2).setCollideWorldBounds(true).setBounce(1).setVelocity(150);
+      circle2.setCircle(155).setScale(0.5).setCollideWorldBounds(true).setBounce(1).setVelocity(-200, 60);
+
+    this.physics.add.collider(circle1, circle2);
       // group.create(300, 300).setGravity(0, 120);
 
           var redAnimation = this.anims.create({
@@ -110,8 +136,12 @@ function main()
 
           //this.tweens.add({targets: sprite,x: 750, duration: 8800,ease: 'Linear'});
 
-          redSprite = this.add.sprite(100, 100, 'red').setScale(0.4).setInteractive();
-          greySprite = this.add.sprite(200, 200, 'grey').setScale(0.4).setInteractive();
+          pipeSprite = this.add.sprite(400, 50, 'pipe').setScale(0.5).setInteractive();
+          pipeBodySprite = this.add.sprite(100, 50, 'pipeBody').setScale(0.5).setInteractive();
+
+
+          //redSprite = this.add.sprite(100, 100, 'red').setScale(0.4).setInteractive();
+          //greySprite = this.add.sprite(200, 200, 'grey').setScale(0.4).setInteractive();
           //pinkSprite = this.add.sprite(300, 300, 'pink').setScale(0.4).setInteractive();
           //yellowSprite = this.add.sprite(400, 400, 'yellow').setScale(0.4).setInteractive();
           //blueSprite = this.add.sprite(500, 500, 'blue').setScale(0.4).setInteractive();
