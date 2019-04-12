@@ -11,6 +11,15 @@ var config = {
     backgroundColor: '#2d2d2d',
     parent: 'The-Claw',
     input: {gamepad: true},
+    physics: {
+        default:'matter',
+        matter: {
+            debug: false,
+        },
+        plugins: {
+                attractors: true
+            }
+    },
     scene: {
               preload: preload,
               create: create,
@@ -18,29 +27,56 @@ var config = {
           }
 };
 
-var sprite;
 var otherSprite;
-var group;
+var redArrow;
+var rotationValue = 0.1;
 var game = new Phaser.Game(config);
 
 
 function preload ()
 {
-    this.load.image('arrow', 'Sprite/arrow.png');
+    this.load.image('redArrow', 'Sprite/redArrow.png');
     this.load.image('red', 'Sprite/redCapture.png');
 }
 
 function create ()
 {
-    otherSprite =  this.add.sprite(400, 400, 'red');
-    otherSprite.setScale(0.6);
-    group = this.add.group({
-        key: 'arrow',
-        setXY: { x: otherSprite.x, y: (otherSprite.y - 105) },
-        setScale: { x: 0.1, y: 0.1}
-      });
-    //Phaser.Utils.Array.Each(otherSprite, this.physics.moveToObject, this.physics, group.getChildren(), 120);
+  //image
+  this.matter.world.setBounds();
+    var velocity = new Phaser.Math.Vector2();
+    otherSprite = this.matter.add.image(50, 300, 'red')
+        .setScale(0.3)
+        .setMass(0)
+        .setBounce(0)
+        .setFixedRotation(true)
+        .setFriction(0)
+        .setAngularVelocity(0);
+    otherSprite.setBody({type: 'circle',radius: 50});
+    redArrow = this.matter.add.image(50, 300, 'redArrow', null,
+    {plugin:
+      {attractors:
+        [function (bodyA, bodyB)
+          { return
+            {
+              (((bodyA.position.x - bodyB.position.x) * 9999999999999999) * ((bodyA.position.x - bodyB.position.x) * 9999999999999999)),
+              (((bodyA.position.y - bodyB.position.y) * 9999999999999999) * ((bodyA.position.y - bodyB.position.y) * 9999999999999999))
+            };
+          }
+        ]
+      }
+    })
+        .setScale(0.1)
+        .setMass(1)
+        .setBounce(0)
+        .setAngularVelocity(0)
+        .setIgnoreGravity(true)
+        .setFixedRotation(true)
+        .setInteractive();
     this.input.setPollAlways();
+    this.input.on('pointermove', function (pointer)
+   {
+   }, this);
+   this.matter.add.constraint(otherSprite, redArrow, 105, 1);
 }
 
 function update()
@@ -55,16 +91,14 @@ function update()
     if (pad1.axes.length)
     {
         var redAxisH = pad1.axes[0].getValue();
-        var redAxisV = pad1.axes[1].getValue();
-        if(redAxisH < 0)
+        var redAxisV = -1;
+        if(redAxisH < 0 || redAxisH > 0)
         {
-          Phaser.Actions.RotateAround(group.getChildren(), { x: otherSprite.x, y: otherSprite.y }, -0.1);
-          Phaser.Actions.Rotate(group.getChildren(), -0.1, -0.1);
+          redArrow.x += 20 * redAxisH;
         }
-        if(redAxisH > 0)
+        else
         {
-          Phaser.Actions.RotateAround(group.getChildren(), { x: otherSprite.x, y: otherSprite.y }, 0.1);
-          Phaser.Actions.Rotate(group.getChildren(), 0.1, 0.1);
+          redArrow.y += 20 * redAxisV;
         }
     }
 }
