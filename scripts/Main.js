@@ -29,7 +29,7 @@ function main()
           update: update,
           physics:{
                   arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
-                  matter: { debug: true, gravity: {y:60} },
+                  matter: { debug: true },
                   impact: { debug: true }},
                 }
     };
@@ -45,6 +45,8 @@ function main()
 
     var pipeSprite
     var pipeBodySprite
+    var pipeBodySprite2
+    var clawBodySprite
 
 
     var sprite1
@@ -67,12 +69,15 @@ function main()
       //claw Sprites
       this.load.image('pipe','Sprite/clawBar.png');
       this.load.image('pipeBody','Sprite/clawBarBody.png');
+      this.load.image('clawBody','Sprite/clawBody.png');
+
+      this.load.image('greyArrow', 'Sprite/greyArrow.png');
 
       //Loading in animated Sprites
       //this.load.spritesheet('pink', 'Sprite/pinkJump.png', { frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('greyMove', 'Sprite/greyPlayer.png', { frameWidth: 331, frameHeight: 294 });
-      this.load.image('greyArrow', 'Sprite/greyArrow.png');
+
 
       //Favicon image Function
       setInterval(function() { iconChange();}, 10);
@@ -81,35 +86,64 @@ function main()
 
     function create()
     {
-       //this.physics.world.gravity.y = 120;
+      this.matter.world.setBounds();
 
-      /* var group = this.physics.add.group({
-            angularDrag: 5,
-            angularVelocity: 60,
-            defaultKey: 'red',
-            bounceX: 1,
-            bounceY: 1.1,
-            collideWorldBounds: true,
-            dragX: 60,
-            dragY: 60
-       }); */
+      //var Bodies = Phaser.Physics.Matter.Matter.Bodies;
+      //var rect = Bodies.rectangle(0, 0, -10, 10);
+      //var circle = Bodies.circle(-100, -100, 24);
+      //var compoundBody = Phaser.Physics.Matter.Matter.Body.create({parts: [ rect, circle ]});
 
 
 //CIRCLE PHYSICS TEST
-      var circle1 = this.physics.add.image(100, 400, 'pink')
-      var circle2 = this.physics.add.image(500, 500, 'blue');
+      var circle1 = this.matter.add.image(100, 400, 'pink')
+      var circle2 = this.matter.add.image(500, 500, 'blue');
 
-      circle1.setCircle(155).setScale(0.2).setCollideWorldBounds(true).setBounce(1).setVelocity(150);
-      circle2.setCircle(155).setScale(0.5).setCollideWorldBounds(true).setBounce(1).setVelocity(-200, 60);
+      circle1
+      .setCircle(155)
+      .setScale(0.2)
+      //.setCollideWorldBounds(true)
+      .setBounce(1)
+      .setVelocity(15);
 
-      this.physics.add.collider(circle1, circle2);
+      circle2
+      .setCircle(155)
+      .setScale(0.5)
+      //.setCollideWorldBounds(true)
+      .setBounce(1)
+      .setVelocity(-2, 6);
+
+      pipeBodySprite2 = this.matter.add.image(300, 150, 'pipeBody',{ shape: 'square'})
+      .setMass(500)
+      .setIgnoreGravity(true)
+      .setStatic(true)
+      .setScale(0.1);
+
+      pipeBodySprite = this.matter.add.image(300, 100, 'pipeBody',{ shape: 'square'})
+      .setFixedRotation()
+      .setMass(500)
+      .setIgnoreGravity(true)
+      .setStatic(true);
+
+      clawBodySprite = this.matter.add.image(0, 0, 'clawBody')
+      //.setOrigin(0.5,0)
+      .setScale(0.5)
+      .setMass(0.1);
+      //.setFixedRotation();
+
+    //  clawBodySprite.setExistingBody(compoundBody);
+
+      //clawBodySprite.body.setBounds(100,100);
+
+      this.matter.add.constraint(pipeBodySprite, pipeBodySprite2, 500, 0.1);
+      this.matter.add.constraint(pipeBodySprite2, clawBodySprite, 126, 1);
+
       // group.create(300, 300).setGravity(0, 120);
 
       var redAnimation = this.anims.create({
           key: 'walk',
           frames: this.anims.generateFrameNumbers('redMove'),
           frameRate: 6,
-          repeat: -1
+          repeat: -1,
       });
       var greyAnimation = this.anims.create({
             key: 'walk1',
@@ -118,26 +152,34 @@ function main()
             repeat: -1
       });
 
-        sprite1 = this.physics.add.sprite(50, 300, 'redMove')
-            .setScale(0.6)
-            .setCollideWorldBounds(true)
+
+        sprite1 = this.matter.add.sprite(50, 300, 'redMove')
+            .setScale(0.3)
+            .setMass(2)
+            .setBounce(1)
+            .setFixedRotation(0)
+            .setAngularVelocity(0)
             .setInteractive();
 
+        sprite1.setBody({type: 'circle',radius: 40});
         sprite1.play('walk');
 
         sprite2 = this.physics.add.sprite(50, 300, 'greyMove')
-            .setScale(0.6)
+            .setScale(0.3)
             .setCollideWorldBounds(true)
             .setInteractive();
 
         sprite2.play('walk1');
 
+        this.physics.add.collider(circle1, circle2);
         this.physics.add.collider(sprite1, sprite2);
+        this.physics.add.collider(sprite1, circle1);
+        this.physics.add.collider(sprite1, circle2);
+        this.physics.add.collider(sprite2, circle1);
+        this.physics.add.collider(sprite2, circle2);
 
-        //this.tweens.add({targets: sprite,x: 750, duration: 8800,ease: 'Linear'});
-
-        pipeSprite = this.add.sprite(400, 50, 'pipe').setScale(0.5).setInteractive();
-        pipeBodySprite = this.add.sprite(100, 50, 'pipeBody').setScale(0.5).setInteractive();
+        //pipeSprite = this.add.sprite(400, 50, 'pipe').setScale(0.5).setInteractive();
+        //pipeBodySprite = this.add.sprite(100, 50, 'pipeBody').setScale(0.5).setInteractive();
 
         greyArrowGroup = this.add.group({
             key: 'greyArrow',
@@ -145,9 +187,10 @@ function main()
             setScale: { x: 0.1, y: 0.1}
           });
 
-          Phaser.Actions.SetXY(greyArrowGroup.getChildren(),sprite2.x,(sprite2.y - 105));
 
 
+        this.physics.accelerateToObject(sprite2, greyArrowGroup.getChildren(), 1, 50, 50);
+        //console.log('velocity', sprite2.body.velocity.x);
         //redSprite = this.add.sprite(100, 100, 'red').setScale(0.4).setInteractive();
         //greySprite = this.add.sprite(200, 200, 'grey').setScale(0.4).setInteractive();
         //pinkSprite = this.add.sprite(300, 300, 'pink').setScale(0.4).setInteractive();
@@ -158,24 +201,11 @@ function main()
         this.input.setPollAlways();
 
         //var image = this.add.image(sprite.x - 32, 300, 'blue').setScale(0.2);
-
-        /*var tween = this.tweens.add(
-        //  {
-        //    targets: image,
-        //    props:
-        //    {
-        //      x: {value: '-=64', ease: 'Power1'},
-        //      y: {value: '+=50', ease: 'Bounce.easeOut'}
-            },
-              duration: 750,
-              repeat: 100,
-              delay: 10
-            });
-        tween.seek(0.5);*/
     }
 
     function update()
     {
+        Phaser.Actions.SetXY(greyArrowGroup.getChildren(),sprite2.x,(sprite2.y - 105));
         if (this.input.gamepad.total === 0)
         {
             return;
@@ -191,8 +221,8 @@ function main()
             var redAxisH = pad1.axes[0].getValue();
             var redAxisV = pad1.axes[1].getValue();
 
-            sprite1.x += 4 * redAxisH;
-            sprite1.y += 4 * redAxisV;
+            sprite1.x += 20 * redAxisH;
+            sprite1.y += 20 * redAxisV;
             if(redAxisH < 0 && !redLeft)
             {
               sprite1.flipX = true;
@@ -213,8 +243,8 @@ function main()
             var greyAxisH = pad2.axes[0].getValue();
             var greyAxisV = pad2.axes[1].getValue();
 
-            sprite2.x += 4 * greyAxisH;
-            sprite2.y += 4 * greyAxisV;
+            //sprite2.x += 4 * greyAxisH;
+            //sprite2.y += 4 * greyAxisV;
 
             if(greyAxisH < 0 && !greyLeft)
             {
