@@ -36,28 +36,31 @@ function main()
 
     var counter = 100;
 
-    var redSprite
-    var greySprite
-    var blueSprite
-    var pinkSprite
-    var greenSprite
-    var yellowSprite
+    var redSprite;
+    var greySprite;
+    var blueSprite;
+    var pinkSprite;
+    var greenSprite;
+    var yellowSprite;
 
-    var pipeSprite
-    var pipeBodySprite
-    var pipeBodySprite2
-    var clawBodySprite
+    var pipeSprite;
+    var pipeBodySprite;
+    var pipeBodySprite2;
+    var clawBodySprite;
 
 
-    var sprite1
-    var sprite2
+    var sprite1;
+    var sprite2;
     var greyArrowGroup;
+
+    var cursors;
 
     var game = new Phaser.Game(config);
 
     function preload()
     {
       //loads image by ("Name your giving to sprite" , "the sprite location")
+
       //player Sprites
       this.load.image('blue', 'Sprite/blueCapture.png');
       this.load.image('red', 'Sprite/redCapture.png');
@@ -87,12 +90,7 @@ function main()
     function create()
     {
       this.matter.world.setBounds();
-
-      //var Bodies = Phaser.Physics.Matter.Matter.Bodies;
-      //var rect = Bodies.rectangle(0, 0, -10, 10);
-      //var circle = Bodies.circle(-100, -100, 24);
-      //var compoundBody = Phaser.Physics.Matter.Matter.Body.create({parts: [ rect, circle ]});
-
+      cursors = this.input.keyboard.createCursorKeys();
 
 //CIRCLE PHYSICS TEST
       var circle1 = this.matter.add.image(100, 400, 'pink')
@@ -112,30 +110,37 @@ function main()
       .setBounce(1)
       .setVelocity(-2, 6);
 
-      pipeBodySprite2 = this.matter.add.image(300, 150, 'pipeBody',{ shape: 'square'})
-      .setMass(500)
-      .setIgnoreGravity(true)
-      .setStatic(true)
+      pipeBodySprite2 = this.matter.add.image(300, 160, 'pipeBody',{ shape: 'square'})
+      .setMass(0.0001)
+      .setIgnoreGravity(false)
+      //.setStatic(true)
       .setScale(0.1);
 
       pipeBodySprite = this.matter.add.image(300, 100, 'pipeBody',{ shape: 'square'})
       .setFixedRotation()
-      .setMass(500)
-      .setIgnoreGravity(true)
-      .setStatic(true);
+      .setMass(50000)
+      .setIgnoreGravity(true);
 
       clawBodySprite = this.matter.add.image(0, 0, 'clawBody')
       //.setOrigin(0.5,0)
       .setScale(0.5)
-      .setMass(0.1);
+      .setMass(0.0001);
       //.setFixedRotation();
 
-    //  clawBodySprite.setExistingBody(compoundBody);
+      this.matter.add.constraint(pipeBodySprite, pipeBodySprite2, 40, 1);
+      //this.matter.add.constraint(pipeBodySprite2, clawBodySprite, 126, 1);
 
-      //clawBodySprite.body.setBounds(100,100);
+      var constraint = Phaser.Physics.Matter.Matter.Constraint.create(
+      {
+        bodyA: pipeBodySprite2.body,
+        bodyB: clawBodySprite.body,
+        pointA: {x: 0, y: 0 },
+        pointB: {x: 0, y: -100 },
+        length: 50,
+        stiffness: 1
+      });
 
-      this.matter.add.constraint(pipeBodySprite, pipeBodySprite2, 500, 0.1);
-      this.matter.add.constraint(pipeBodySprite2, clawBodySprite, 126, 1);
+      this.matter.world.add(constraint);
 
       // group.create(300, 300).setGravity(0, 120);
 
@@ -209,6 +214,19 @@ function main()
         if (this.input.gamepad.total === 0)
         {
             return;
+        }
+
+        if (cursors.left.isDown)
+        {
+            pipeBodySprite.thrustBack(100);
+        }
+        else if (cursors.up.isDown)
+        {
+            pipeBodySprite.thrustLeft(100);
+        }
+        else if (cursors.right.isDown)
+        {
+          pipeBodySprite.thrust(100);
         }
 
         var pad1 = this.input.gamepad.getPad(0);
