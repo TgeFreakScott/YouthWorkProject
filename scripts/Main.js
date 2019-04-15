@@ -5,6 +5,7 @@ function main()
   var redRight = true;
   var greyLeft = false;
   var greyRight = true;
+
   function iconChange()
   {
     setTimeout(function(){ document.getElementById("icon").href = "Sprite/frame_0.png";}, 1000);
@@ -54,6 +55,7 @@ function main()
     var greyArrowGroup;
 
     var cursors;
+    var constraint;
 
     var game = new Phaser.Game(config);
 
@@ -110,11 +112,8 @@ function main()
       .setBounce(1)
       .setVelocity(-2, 6);
 
-      pipeBodySprite2 = this.matter.add.image(300, 160, 'pipeBody',{ shape: 'square'})
-      .setMass(0.0001)
-      .setIgnoreGravity(false)
-      //.setStatic(true)
-      .setScale(0.1);
+      //pipeBodySprite2 = this.matter.add.image(300, 160, 'pipeBody',{ shape: 'square'}).setMass(0.1).setIgnoreGravity(false)
+      //.setStatic(true).setScale(0.1);
 
       pipeBodySprite = this.matter.add.image(300, 100, 'pipeBody',{ shape: 'square'})
       .setFixedRotation()
@@ -124,19 +123,19 @@ function main()
       clawBodySprite = this.matter.add.image(0, 0, 'clawBody')
       //.setOrigin(0.5,0)
       .setScale(0.5)
-      .setMass(0.0001);
+      .setMass(0.1);
       //.setFixedRotation();
 
-      this.matter.add.constraint(pipeBodySprite, pipeBodySprite2, 40, 1);
+    //  this.matter.add.constraint(pipeBodySprite, pipeBodySprite2, 40, 1);
       //this.matter.add.constraint(pipeBodySprite2, clawBodySprite, 126, 1);
 
-      var constraint = Phaser.Physics.Matter.Matter.Constraint.create(
+      constraint = Phaser.Physics.Matter.Matter.Constraint.create(
       {
-        bodyA: pipeBodySprite2.body,
+        bodyA: pipeBodySprite.body,
         bodyB: clawBodySprite.body,
-        pointA: {x: 0, y: 0 },
+        pointA: {x: 0, y: 45 },
         pointB: {x: 0, y: -100 },
-        length: 50,
+        length: 7,
         stiffness: 1
       });
 
@@ -160,7 +159,7 @@ function main()
 
         sprite1 = this.matter.add.sprite(50, 300, 'redMove')
             .setScale(0.3)
-            .setMass(2)
+            .setMass(0.01)
             .setBounce(1)
             .setFixedRotation(0)
             .setAngularVelocity(0)
@@ -218,15 +217,26 @@ function main()
 
         if (cursors.left.isDown)
         {
-            pipeBodySprite.thrustBack(100);
+            pipeBodySprite.thrustBack(80);
         }
         else if (cursors.up.isDown)
         {
-            pipeBodySprite.thrustLeft(100);
+          if(constraint.length > 4)
+          {
+            constraint.length--;
+          }
         }
         else if (cursors.right.isDown)
         {
           pipeBodySprite.thrust(100);
+        }
+        else if (cursors.down.isDown)
+        {
+            //pipeBodySprite.thrustRight(80);
+          if(constraint.length < 200)
+          {
+            constraint.length++;
+          }
         }
 
         var pad1 = this.input.gamepad.getPad(0);
@@ -306,7 +316,37 @@ function main()
         }*/
 
     }
+function playerMovement()
+{
+  var otherSprite;
+  var redArrow;
+  var rotationValue = 0.1;
+  //In create Function
+  redArrow = this.matter.add.image(50, 300, 'redArrow', null,)
+      .setScale(0.1)
+      .setMass(1)
+      .setBounce(0)
+      .setIgnoreGravity(true)
+      .setFixedRotation(true)
+      .setInteractive();
+  this.matter.add.constraint(otherSprite, redArrow, 50, 0.1);
+  //In update
+  redArrow.thrustLeft(0.01);
+  var pad1 = this.input.gamepad.getPad(0);
 
+  if (pad1.axes.length)
+  {
+      var redAxisH = pad1.axes[0].getValue();
+      if(redAxisH > 0)
+      {
+          redArrow.rotation += 0.1;
+      }
+      if(redAxisH < 0)
+      {
+          redArrow.rotation -= 0.1;
+      }
+  }
+}
 
 
 }
