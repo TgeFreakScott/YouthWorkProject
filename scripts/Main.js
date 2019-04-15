@@ -30,7 +30,7 @@ function main()
           update: update,
           physics:{
                   arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
-                  matter: { debug: true },
+                  matter: { debug: true, gravity: { y: 6 } },
                   impact: { debug: true }},
                 }
     };
@@ -57,6 +57,10 @@ function main()
     var cursors;
     var constraint;
 
+    var otherSprite;
+    var redArrow;
+    var rotationValue = 0.1;
+
     var game = new Phaser.Game(config);
 
     function preload()
@@ -77,6 +81,7 @@ function main()
       this.load.image('clawBody','Sprite/clawBody.png');
 
       this.load.image('greyArrow', 'Sprite/greyArrow.png');
+      this.load.image('redArrow', 'Sprite/redArrow.png');
 
       //Loading in animated Sprites
       //this.load.spritesheet('pink', 'Sprite/pinkJump.png', { frameWidth: 331, frameHeight: 294 });
@@ -125,6 +130,16 @@ function main()
       .setScale(0.5)
       .setMass(0.1);
       //.setFixedRotation();
+
+      redArrow = this.matter.add.image(50, 300, 'redArrow', null,)
+          .setScale(0.1)
+          .setMass(1)
+          .setBounce(0)
+          .setIgnoreGravity(true)
+          .setFixedRotation(true)
+          .setInteractive();
+
+
 
     //  this.matter.add.constraint(pipeBodySprite, pipeBodySprite2, 40, 1);
       //this.matter.add.constraint(pipeBodySprite2, clawBodySprite, 126, 1);
@@ -192,6 +207,7 @@ function main()
           });
 
 
+        this.matter.add.constraint(circle1, redArrow, 50, 0.1);
 
         this.physics.accelerateToObject(sprite2, greyArrowGroup.getChildren(), 1, 50, 50);
         //console.log('velocity', sprite2.body.velocity.x);
@@ -210,6 +226,8 @@ function main()
     function update()
     {
         Phaser.Actions.SetXY(greyArrowGroup.getChildren(),sprite2.x,(sprite2.y - 105));
+        redArrow.thrustLeft(0.01);
+
         if (this.input.gamepad.total === 0)
         {
             return;
@@ -219,18 +237,18 @@ function main()
         {
             pipeBodySprite.thrustBack(80);
         }
-        else if (cursors.up.isDown)
+        if (cursors.up.isDown)
         {
           if(constraint.length > 4)
           {
             constraint.length--;
           }
         }
-        else if (cursors.right.isDown)
+        if (cursors.right.isDown)
         {
           pipeBodySprite.thrust(100);
         }
-        else if (cursors.down.isDown)
+        if (cursors.down.isDown)
         {
             //pipeBodySprite.thrustRight(80);
           if(constraint.length < 200)
@@ -253,12 +271,14 @@ function main()
             sprite1.y += 20 * redAxisV;
             if(redAxisH < 0 && !redLeft)
             {
+              redArrow.rotation += 0.1;
               sprite1.flipX = true;
               redLeft = true;
               redRight = false;
             }
             if(redAxisH > 0 && !redRight)
             {
+              redArrow.rotation -= 0.1;
               sprite1.flipX = false;
               redLeft = false;
               redRight = true;
@@ -316,37 +336,6 @@ function main()
         }*/
 
     }
-function playerMovement()
-{
-  var otherSprite;
-  var redArrow;
-  var rotationValue = 0.1;
-  //In create Function
-  redArrow = this.matter.add.image(50, 300, 'redArrow', null,)
-      .setScale(0.1)
-      .setMass(1)
-      .setBounce(0)
-      .setIgnoreGravity(true)
-      .setFixedRotation(true)
-      .setInteractive();
-  this.matter.add.constraint(otherSprite, redArrow, 50, 0.1);
-  //In update
-  redArrow.thrustLeft(0.01);
-  var pad1 = this.input.gamepad.getPad(0);
-
-  if (pad1.axes.length)
-  {
-      var redAxisH = pad1.axes[0].getValue();
-      if(redAxisH > 0)
-      {
-          redArrow.rotation += 0.1;
-      }
-      if(redAxisH < 0)
-      {
-          redArrow.rotation -= 0.1;
-      }
-  }
-}
 
 
 }
