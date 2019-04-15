@@ -11,14 +11,14 @@ var config = {
     backgroundColor: '#2d2d2d',
     parent: 'The-Claw',
     input: {gamepad: true},
-    physics: {
+    physics:
+    {
         default:'matter',
-        matter: {
+        matter:
+        {
             debug: false,
-        },
-        plugins: {
-                attractors: true
-            }
+            gravity: {y: 9.8}
+        }
     },
     scene: {
               preload: preload,
@@ -48,39 +48,24 @@ function create ()
         .setScale(0.3)
         .setMass(0)
         .setBounce(0)
-        .setFixedRotation(true)
-        .setFriction(0)
+        .setStatic(true)
+        .setFriction(0.1)
         .setAngularVelocity(0);
     otherSprite.setBody({type: 'circle',radius: 50});
-    redArrow = this.matter.add.image(50, 300, 'redArrow', null,
-    {plugin:
-      {attractors:
-        [function (bodyA, bodyB)
-          { return
-            {
-              (((bodyA.position.x - bodyB.position.x) * 9999999999999999) * ((bodyA.position.x - bodyB.position.x) * 9999999999999999)),
-              (((bodyA.position.y - bodyB.position.y) * 9999999999999999) * ((bodyA.position.y - bodyB.position.y) * 9999999999999999))
-            };
-          }
-        ]
-      }
-    })
+    redArrow = this.matter.add.image(50, 300, 'redArrow', null,)
         .setScale(0.1)
         .setMass(1)
         .setBounce(0)
-        .setAngularVelocity(0)
         .setIgnoreGravity(true)
         .setFixedRotation(true)
         .setInteractive();
     this.input.setPollAlways();
-    this.input.on('pointermove', function (pointer)
-   {
-   }, this);
-   this.matter.add.constraint(otherSprite, redArrow, 105, 1);
+   this.matter.add.constraint(otherSprite, redArrow, 50, 0.1);
 }
 
 function update()
 {
+    redArrow.thrustLeft(0.01);
     if (this.input.gamepad.total === 0)
     {
         return;
@@ -91,14 +76,13 @@ function update()
     if (pad1.axes.length)
     {
         var redAxisH = pad1.axes[0].getValue();
-        var redAxisV = -1;
-        if(redAxisH < 0 || redAxisH > 0)
+        if(redAxisH > 0)
         {
-          redArrow.x += 20 * redAxisH;
+            redArrow.rotation += 0.1;
         }
-        else
+        if(redAxisH < 0)
         {
-          redArrow.y += 20 * redAxisV;
+            redArrow.rotation -= 0.1;
         }
     }
 }
