@@ -16,9 +16,6 @@ function main()
     setTimeout(function(){ document.getElementById("icon").href = "Sprite/frame_3.png";}, 4000);
   }
 
-    //const game = new Game();
-    //game.update();
-
     var config = {
         type: Phaser.AUTO,
         parent: 'The-Claw',
@@ -74,7 +71,6 @@ function main()
       //loads image by ("Name your giving to sprite" , "the sprite location")
 
       //player Sprites
-
       this.load.image('red', 'Sprite/redCapture.png','Sprite/physics/redShape.json');
       this.load.image('grey', 'Sprite/greyCapture.png','Sprite/physics/greyShape.json');
       this.load.image('green', 'Sprite/greenCapture.png','Sprite/physics/greenShape.json');
@@ -214,7 +210,7 @@ function main()
         sprite2.play('walk1');
 
         //this.matter.add.constraint(sprite1, redArrow, 50, 0.1);
-        this.matter.add.constraint(sprite2, greyArrow, 50, 0.1);
+        //this.matter.add.constraint(sprite2, greyArrow, 50, 0.1);
 
         this.input.setPollAlways();
         //var image = this.add.image(sprite.x - 32, 300, 'blue').setScale(0.2);
@@ -222,7 +218,7 @@ function main()
 
     function update()
     {
-        greyArrow.thrustLeft(0.01);
+        greyArrow.thrustLeft(0.001);
         //redArrow.thrustLeft(0.01);
 
         if (this.input.gamepad.total === 0)
@@ -288,6 +284,7 @@ function main()
         if(pad1.buttons.length)
         {
             var redButton = pad1.buttons[1].value;
+
             if (redButton === 1 && !redJump)
             {
                 redJump = true;
@@ -297,6 +294,7 @@ function main()
             {
                 redJump = false;
             }
+
         }
 
         if(pad2.axes.length)
