@@ -3,8 +3,10 @@ function main()
 
   var redLeft = false;
   var redRight = true;
+  var redJump = false;
   var greyLeft = false;
   var greyRight = true;
+  var greyJump = false;
 
   function iconChange()
   {
@@ -52,46 +54,52 @@ function main()
 
     var sprite1;
     var sprite2;
-    var greyArrowGroup;
+
+    var pinkTest;
+    var blueTest;
 
     var cursors;
     var constraint;
 
-    var otherSprite;
     var redArrow;
+    var greyArrow;
     var rotationValue = 0.1;
 
     var game = new Phaser.Game(config);
 
     function preload()
     {
+      //Favicon image Function
+      setInterval(function() { iconChange();}, 10);
       //loads image by ("Name your giving to sprite" , "the sprite location")
 
       //player Sprites
-      this.load.image('blue', 'Sprite/blueCapture.png');
-      this.load.image('red', 'Sprite/redCapture.png');
-      this.load.image('grey', 'Sprite/greyCapture.png');
-      this.load.image('pink', 'Sprite/pinkCapture.png');
-      this.load.image('green', 'Sprite/greenCapture.png');
-      this.load.image('yellow', 'Sprite/yellowCapture.png');
+
+      this.load.image('red', 'Sprite/redCapture.png','Sprite/physics/redShape.json');
+      this.load.image('grey', 'Sprite/greyCapture.png','Sprite/physics/greyShape.json');
+      this.load.image('green', 'Sprite/greenCapture.png','Sprite/physics/greenShape.json');
+      this.load.image('yellow', 'Sprite/yellowCapture.png','Sprite/physics/yellowShape.json');
+      this.load.image('pink', 'Sprite/pinkCapture.png', 'Sprite/physics/pinkShape.json');
+      this.load.image('clawBody', 'Sprite/clawBody.png', 'Sprite/physics/clawBodyShape.json');
+      this.load.image('blue', 'Sprite/blueCapture.png', 'Sprite/physics/blueShape.json' );
 
       //claw Sprites
       this.load.image('pipe','Sprite/clawBar.png');
       this.load.image('pipeBody','Sprite/clawBarBody.png');
-      this.load.image('clawBody','Sprite/clawBody.png');
+      //this.load.image('clawBody','Sprite/clawBody.png');
 
       this.load.image('greyArrow', 'Sprite/greyArrow.png');
       this.load.image('redArrow', 'Sprite/redArrow.png');
 
       //Loading in animated Sprites
-      //this.load.spritesheet('pink', 'Sprite/pinkJump.png', { frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
-      this.load.spritesheet('greyMove', 'Sprite/greyPlayer.png', { frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('greyMove' ,'Sprite/greyPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
 
-
-      //Favicon image Function
-      setInterval(function() { iconChange();}, 10);
-
+      this.load.json('clawShape', 'Sprite/physics/clawBodyShape.json');
+      this.load.json('blueShape', 'Sprite/physics/blueShape.json');
+      this.load.json('pinkShape', 'Sprite/physics/pinkShape.json');
+      this.load.json('greyShape', 'Sprite/physics/greyShape.json');
+      this.load.json('redShape', 'Sprite/physics/redShape.json');
     }
 
     function create()
@@ -99,46 +107,57 @@ function main()
       this.matter.world.setBounds();
       cursors = this.input.keyboard.createCursorKeys();
 
-//CIRCLE PHYSICS TEST
-      var circle1 = this.matter.add.image(100, 400, 'pink')
-      var circle2 = this.matter.add.image(500, 500, 'blue');
+      //var align = this.add.image(0, 200, 'clawSheet', 'clawBody').setOrigin(0);
+      var shapeClaw = this.cache.json.get('clawShape');
+      var shapeBlue = this.cache.json.get('blueShape');
+      var shapePink = this.cache.json.get('pinkShape');
+      var shapeGrey = this.cache.json.get('greyShape');
+      var shapeRed = this.cache.json.get('redShape');
 
-      circle1
-      .setCircle(155)
+//CIRCLE PHYSICS TEST
+      pinkTest = this.matter.add.image(100, 400, 'pink','pink',{shape: shapePink.pinkCapture })
       .setScale(0.2)
       //.setCollideWorldBounds(true)
       .setBounce(1)
       .setVelocity(15);
 
-      circle2
-      .setCircle(155)
+
+      blueTest = this.matter.add.image(450, 450, 'blue','blue', {shape: shapeBlue.blueCapture })
       .setScale(0.5)
       //.setCollideWorldBounds(true)
       .setBounce(1)
       .setVelocity(-2, 6);
 
+
       //pipeBodySprite2 = this.matter.add.image(300, 160, 'pipeBody',{ shape: 'square'}).setMass(0.1).setIgnoreGravity(false)
       //.setStatic(true).setScale(0.1);
 
-      pipeBodySprite = this.matter.add.image(300, 100, 'pipeBody',{ shape: 'square'})
+      pipeBodySprite = this.matter.add.image(300, 10, 'pipeBody',{ shape: 'square'})
       .setFixedRotation()
       .setMass(50000)
       .setIgnoreGravity(true);
 
-      clawBodySprite = this.matter.add.image(0, 0, 'clawBody')
+      clawBodySprite = this.matter.add.image(300, 700,'clawBody' ,'clawBody', {shape: shapeClaw.clawBody})
       //.setOrigin(0.5,0)
       .setScale(0.5)
       .setMass(0.1);
       //.setFixedRotation();
 
+      greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
+          .setScale(0.1)
+          .setMass(1)
+          .setBounce(0)
+          .setIgnoreGravity(false)
+          .setFixedRotation(true)
+          .setInteractive();
+
       redArrow = this.matter.add.image(50, 300, 'redArrow', null,)
           .setScale(0.1)
           .setMass(1)
           .setBounce(0)
-          .setIgnoreGravity(true)
+          .setIgnoreGravity(false)
           .setFixedRotation(true)
           .setInteractive();
-
 
 
     //  this.matter.add.constraint(pipeBodySprite, pipeBodySprite2, 40, 1);
@@ -149,8 +168,8 @@ function main()
         bodyA: pipeBodySprite.body,
         bodyB: clawBodySprite.body,
         pointA: {x: 0, y: 45 },
-        pointB: {x: 0, y: -100 },
-        length: 7,
+        pointB: {x: 0, y: -110 },
+        length: 8,
         stiffness: 1
       });
 
@@ -164,6 +183,7 @@ function main()
           frameRate: 6,
           repeat: -1,
       });
+
       var greyAnimation = this.anims.create({
             key: 'walk1',
             frames: this.anims.generateFrameNumbers('greyMove'),
@@ -172,74 +192,52 @@ function main()
       });
 
 
-        sprite1 = this.matter.add.sprite(50, 300, 'redMove')
+        sprite1 = this.matter.add.sprite(50, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
             .setScale(0.3)
-            .setMass(0.01)
-            .setBounce(1)
-            .setFixedRotation(0)
-            .setAngularVelocity(0)
+            .setMass(35)
+            .setBounce(0.3)
+            .setFixedRotation(true)
+            //.setAngularVelocity(0)
             .setInteractive();
 
-        sprite1.setBody({type: 'circle',radius: 40});
+        //sprite1.setBody({type: 'circle',radius: 40});
         sprite1.play('walk');
 
-        sprite2 = this.physics.add.sprite(50, 300, 'greyMove')
-            .setScale(0.3)
-            .setCollideWorldBounds(true)
-            .setInteractive();
+        sprite2 = this.matter.add.sprite(50, 300, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
+          .setScale(0.3)
+          .setMass(0.01)
+          .setBounce(1)
+          .setFixedRotation(true)
+          .setAngularVelocity(0)
 
+        //sprite2.setBody({type: 'circle',radius: 40});
         sprite2.play('walk1');
 
-        this.physics.add.collider(circle1, circle2);
-        this.physics.add.collider(sprite1, sprite2);
-        this.physics.add.collider(sprite1, circle1);
-        this.physics.add.collider(sprite1, circle2);
-        this.physics.add.collider(sprite2, circle1);
-        this.physics.add.collider(sprite2, circle2);
-
-        //pipeSprite = this.add.sprite(400, 50, 'pipe').setScale(0.5).setInteractive();
-        //pipeBodySprite = this.add.sprite(100, 50, 'pipeBody').setScale(0.5).setInteractive();
-
-        greyArrowGroup = this.add.group({
-            key: 'greyArrow',
-            setXY: { x: sprite2.x, y: (sprite2.y - 105) },
-            setScale: { x: 0.1, y: 0.1}
-          });
-
-
-        this.matter.add.constraint(circle1, redArrow, 50, 0.1);
-
-        this.physics.accelerateToObject(sprite2, greyArrowGroup.getChildren(), 1, 50, 50);
-        //console.log('velocity', sprite2.body.velocity.x);
-        //redSprite = this.add.sprite(100, 100, 'red').setScale(0.4).setInteractive();
-        //greySprite = this.add.sprite(200, 200, 'grey').setScale(0.4).setInteractive();
-        //pinkSprite = this.add.sprite(300, 300, 'pink').setScale(0.4).setInteractive();
-        //yellowSprite = this.add.sprite(400, 400, 'yellow').setScale(0.4).setInteractive();
-        //blueSprite = this.add.sprite(500, 500, 'blue').setScale(0.4).setInteractive();
-        //greenSprite = this.add.sprite(600, 600, 'green').setScale(0.4).setInteractive();
+        //this.matter.add.constraint(sprite1, redArrow, 50, 0.1);
+        this.matter.add.constraint(sprite2, greyArrow, 50, 0.1);
 
         this.input.setPollAlways();
-
         //var image = this.add.image(sprite.x - 32, 300, 'blue').setScale(0.2);
     }
 
     function update()
     {
-        Phaser.Actions.SetXY(greyArrowGroup.getChildren(),sprite2.x,(sprite2.y - 105));
-        redArrow.thrustLeft(0.01);
+        greyArrow.thrustLeft(0.01);
+        //redArrow.thrustLeft(0.01);
 
         if (this.input.gamepad.total === 0)
         {
             return;
         }
 
+        // Keyboard for Claw Machine
         if (cursors.left.isDown)
         {
             pipeBodySprite.thrustBack(80);
         }
         if (cursors.up.isDown)
         {
-          if(constraint.length > 4)
+          if(constraint.length > 6)
           {
             constraint.length--;
           }
@@ -257,6 +255,7 @@ function main()
           }
         }
 
+
         var pad1 = this.input.gamepad.getPad(0);
         var pad2 = this.input.gamepad.getPad(1);
         //var pad3 = this.input.gamepad.getPad(2);
@@ -269,47 +268,85 @@ function main()
 
             sprite1.x += 20 * redAxisH;
             sprite1.y += 20 * redAxisV;
-            if(redAxisH < 0 && !redLeft)
+
+            if(redAxisH > 0)
             {
-              redArrow.rotation += 0.1;
-              sprite1.flipX = true;
+              redArrow.rotation -= 0.1;
               redLeft = true;
               redRight = false;
             }
-            if(redAxisH > 0 && !redRight)
+            if(redAxisH < 0)
             {
-              redArrow.rotation -= 0.1;
-              sprite1.flipX = false;
+              redArrow.rotation += 0.1;
               redLeft = false;
               redRight = true;
             }
 
+
+        }
+
+        if(pad1.buttons.length)
+        {
+            var redButton = pad1.buttons[1].value;
+            if (redButton === 1 && !redJump)
+            {
+                redJump = true;
+                sprite1.setVelocityY(-25);
+            }
+            if (redButton === 0)
+            {
+                redJump = false;
+            }
         }
 
         if(pad2.axes.length)
         {
             var greyAxisH = pad2.axes[0].getValue();
-            var greyAxisV = pad2.axes[1].getValue();
 
-            //sprite2.x += 4 * greyAxisH;
-            //sprite2.y += 4 * greyAxisV;
-
-            if(greyAxisH < 0 && !greyLeft)
+            if(greyAxisH < 0)
             {
-              Phaser.Actions.RotateAround(greyArrowGroup.getChildren(), { x: sprite2.x, y: sprite2.y }, -0.1);
-              Phaser.Actions.Rotate(greyArrowGroup.getChildren(), -0.1, -0.1);
-              sprite2.flipX = true;
+              greyArrow.rotation -= 0.1;
               greyLeft = true;
               greyRight = false;
             }
-            if(greyAxisH > 0 && !greyRight)
+            if(greyAxisH > 0)
             {
-              Phaser.Actions.RotateAround(greyArrowGroup.getChildren(), { x: sprite2.x, y: sprite2.y }, 0.1);
-              Phaser.Actions.Rotate(greyArrowGroup.getChildren(), 0.1, 0.1);
-              sprite2.flipX = false;
+              greyArrow.rotation += 0.1;
               greyLeft = false;
               greyRight = true;
             }
+        }
+        if(pad2.buttons.length)
+        {
+            var greyButton = pad2.buttons[1].value;
+            if (greyButton === 1 && !greyJump)
+            {
+                greyJump = true;
+                sprite2.setVelocityY(-25);
+            }
+            if (greyButton === 0)
+            {
+                greyJump = false;
+            }
+        }
+        if(!redLeft)
+        {
+          sprite1.flipX = true;
+        }
+
+        if(!redRight)
+        {
+          sprite1.flipX = false;
+        }
+
+        if(!greyLeft)
+        {
+          sprite2.flipX = true;
+        }
+
+        if(!greyRight)
+        {
+          sprite2.flipX = false;
         }
 
         /*if (pad3.axes.length)
@@ -336,6 +373,4 @@ function main()
         }*/
 
     }
-
-
 }
