@@ -303,17 +303,37 @@ function main()
         // Keyboard for Claw Machine
         if (cursors.left.isDown)
         {
-            rightArmToLeftArm.length--;
-            leftConnectToRightConnect.length--;
-            leftConnectToClawTop.length++;
-            rightConnectToClawTop.length++;
+            if(rightArmToLeftArm.length > 1)
+            {
+              rightArmToLeftArm.length--;
+            }
+            if(leftConnectToRightConnect.length > 125)
+            {
+              leftConnectToRightConnect.length--;
+            }
+            if(leftConnectToClawTop.length < 220 && rightConnectToClawTop.length < 220)
+            {
+              leftConnectToClawTop.length++;
+              rightConnectToClawTop.length++;
+            }
+            console.log('length: ' + rightArmToLeftArm.length);
         }
         if (cursors.right.isDown)
         {
-            rightArmToLeftArm.length++;
-            leftConnectToRightConnect.length++;
-            leftConnectToClawTop.length--;
-            rightConnectToClawTop.length--;
+            if(rightArmToLeftArm.length < 200)
+            {
+              rightArmToLeftArm.length++;
+            }
+            if(leftConnectToRightConnect.length < 175)
+            {
+              leftConnectToRightConnect.length++;
+            }
+            if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+            {
+              leftConnectToClawTop.length--;
+              rightConnectToClawTop.length--;
+            }
+            console.log('length: ' + rightArmToLeftArm.length);
         }
 
         if (cursors.left.isDown)
