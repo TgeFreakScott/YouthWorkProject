@@ -1,5 +1,6 @@
 function main()
 {
+//mass is in grams
 
   var redLeft = false;
   var redRight = true;
@@ -20,8 +21,8 @@ function main()
     var config = {
         type: Phaser.AUTO,
         parent: 'The-Claw',
-        width: 800,
-        height: 600,
+        width: 1000,
+        height: 640,
         pixelArt: true,
         input: {gamepad: true},
         scene: {
@@ -30,7 +31,7 @@ function main()
           update: update,
           physics:{
                   arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
-                  matter: { debug: true, gravity: { y: 6 } },
+                  matter: { debug: true, gravity: { y: 9.78 } },
                   impact: { debug: true }},
                 }
     };
@@ -61,16 +62,22 @@ function main()
 
     var greyArrowToGreyPlayer;
 
+    //Constraint Variables
     var clawToPipeBody;
     var leftConnectToClaw;
     var rightConnectToClaw;
     var leftArmToLeftConnect;
     var rightArmToRightConnect;
+    var rightArmToLeftArm;
+    var leftConnectToClawTop;
+    var rightConnectToClawTop;
+    var leftConnectToRightConnect;
 
     var redArrow;
     var greyArrow;
     var rotationValue = 0.1;
     var cursors;
+    var greyJumpTimer;
 
     var game = new Phaser.Game(config);
 
@@ -134,31 +141,32 @@ function main()
       var shapeBucket = this.cache.json.get('bucketShape');
 
       pinkTest = this.matter.add.image(100, 400, 'pink','pink',{shape: shapePink.pinkCapture })
-      .setScale(0.2).setBounce(1).setVelocity(15);
+      .setScale(0.2).setBounce(1).setVelocity(15).setMass(400);
       blueTest = this.matter.add.image(450, 450, 'blue','blue', {shape: shapeBlue.blueCapture })
-      .setScale(0.5).setBounce(1).setVelocity(-2, 6);
+      .setScale(0.5).setBounce(1).setVelocity(-2, 6).setMass(400);
 
       armLeftSprite = this.matter.add.image(300, 200,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
-      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5);
+      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
 
       armRightSprite = this.matter.add.image(500, 200,'armRightBody', 'armRightBody',{ shape: shapeArmRight.armRight})
-      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5);
+      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
 
       armConnectRightSprite = this.matter.add.image(800, 500,'armConnectBody', 'armConnectBody',{ shape: shapeArmConnect.armConnect})
-      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5);
+      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
 
       armConnectLeftSprite = this.matter.add.image(600, 500,'armConnectBody', 'armConnectBody',{ shape: shapeArmConnect.armConnect})
-      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5);
+      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
 
       clawBodySprite = this.matter.add.image(300, 700,'clawBody' ,'clawBody', {shape: shapeClaw.clawBody})
-      .setScale(0.5).setMass(0.1);//.setFixedRotation();
+      .setScale(0.5).setMass(11000);//.setFixedRotation();
 
       pipeBodySprite = this.matter.add.image(400, 50, 'pipeBody',{ shape: 'square'})
-      .setFixedRotation().setMass(5000000).setIgnoreGravity(true).setStatic(true);
+      .setFixedRotation().setMass(50000000).setIgnoreGravity(true).setStatic(true);
 
       leftBucket = this.matter.add.image(40,400, 'bucket','bucket', {shape: shapeBucket.glassPanel})
       .setMass(1).setStatic(true).setScale(0.2);
-      rightBucket = this.matter.add.image(755,400, 'bucket', 'bucket', {shape: shapeBucket.glassPanel})
+
+      rightBucket = this.matter.add.image(955,400, 'bucket', 'bucket', {shape: shapeBucket.glassPanel})
       .setMass(1).setStatic(true).setScale(0.2);
 
 
@@ -173,24 +181,22 @@ function main()
       var redAnimation = this.anims.create({
           key: 'walk',
           frames: this.anims.generateFrameNumbers('redMove'),
-          frameRate: 6,
-          repeat: -1,
+          frameRate: 6, repeat: -1,
       });
 
       var greyAnimation = this.anims.create({
             key: 'walk1',
             frames: this.anims.generateFrameNumbers('greyMove'),
-            frameRate: 6,
-            repeat: -1
+            frameRate: 6, repeat: -1
       });
 
       //Setting JSON collider for Sprite
-        sprite1 = this.matter.add.sprite(50, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
-          .setScale(0.3).setMass(35).setBounce(0.3).setFixedRotation(true).setInteractive();
+        sprite1 = this.matter.add.sprite(600, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
+          .setScale(0.3).setMass(400).setBounce(0.3).setFixedRotation(true).setInteractive();
         sprite1.play('walk');
 
         sprite2 = this.matter.add.sprite(50, 300, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
-          .setScale(0.3).setMass(1).setBounce(1).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+          .setScale(0.3).setMass(400).setBounce(1).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         sprite2.play('walk1');
 
       //Constraints connect 2 Bodies to another by a point
@@ -242,14 +248,52 @@ function main()
       });
       this.matter.world.add(greyArrowToGreyPlayer);
 
+      rightArmToLeftArm = Phaser.Physics.Matter.Matter.Constraint.create(
+      {
+        bodyA: armRightSprite.body, bodyB: armLeftSprite.body,
+        pointA: {x: -5, y: 55 }, pointB: {x: 0, y: 55 },
+        length: 150, stiffness: 1
+      });
+      this.matter.world.add(rightArmToLeftArm);
+
+      leftConnectToRightConnect = Phaser.Physics.Matter.Matter.Constraint.create(
+      {
+        bodyA: armConnectLeftSprite.body, bodyB: armConnectRightSprite.body,
+        pointA: {x: -30, y: 0 }, pointB: {x: 30, y: 0 },
+        length: 170, stiffness: 1
+      });
+      this.matter.world.add(leftConnectToRightConnect);
+
+      leftConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
+      {
+        bodyA: armConnectLeftSprite.body, bodyB: clawBodySprite.body,
+        pointA: {x: -30, y: 0 }, pointB: {x: 0, y: -90 },
+        length: 200, stiffness: 1
+      });
+      this.matter.world.add(leftConnectToClawTop);
+
+      rightConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
+      {
+        bodyA: armConnectRightSprite.body, bodyB: clawBodySprite.body,
+        pointA: {x: 30, y: 0 }, pointB: {x: 0, y: -90 },
+        length: 200, stiffness: 1
+      });
+      this.matter.world.add(rightConnectToClawTop);
+
       this.input.setPollAlways();
+
     }
 
     function update()
     {
-        greyArrow.thrustLeft(0.05);
+        greyArrow.thrustLeft(0.5);
         pipeBodySprite.thrustLeft(3);
         //redArrow.thrustLeft(0.01);
+
+        if(greyArrow.y > sprite2.y)
+        {
+          greyArrow.y = sprite2.y;
+        }
 
         if (this.input.gamepad.total === 0)
         {
@@ -257,6 +301,21 @@ function main()
         }
 
         // Keyboard for Claw Machine
+        if (cursors.left.isDown)
+        {
+            rightArmToLeftArm.length--;
+            leftConnectToRightConnect.length--;
+            leftConnectToClawTop.length++;
+            rightConnectToClawTop.length++;
+        }
+        if (cursors.right.isDown)
+        {
+            rightArmToLeftArm.length++;
+            leftConnectToRightConnect.length++;
+            leftConnectToClawTop.length--;
+            rightConnectToClawTop.length--;
+        }
+
         if (cursors.left.isDown)
         {
             pipeBodySprite.thrustBack(80);
@@ -336,8 +395,8 @@ function main()
               {
                 greyArrow.angle = 90;
               }
-              greyLeft = false;
-              greyRight = true;
+              greyLeft = true;
+              greyRight = false;
             }
             if(greyAxisH < 0) //left
             {
@@ -346,8 +405,8 @@ function main()
               {
                 greyArrow.angle = -90;
               }
-              greyLeft = true;
-              greyRight = false;
+              greyLeft = false;
+              greyRight = true;
             }
         }
         if(pad2.buttons.length)
@@ -360,7 +419,7 @@ function main()
             }
             if (greyButton === 0)
             {
-                greyJump = false;
+                timedEvent = this.time.delayedCall(3500, resetGreyJump, [], this);
             }
         }
         if(!redLeft)
@@ -406,5 +465,10 @@ function main()
             yellowSprite.flipX = (yellowAxisH < 0);
         }*/
 
+    }
+
+    function resetGreyJump()
+    {
+        greyJump = false;
     }
 }
