@@ -1,7 +1,6 @@
 function main()
 {
-//mass is in grams
-
+  //mass is in grams
   var redLeft = false;
   var redRight = true;
   var redJump = false;
@@ -166,10 +165,10 @@ function main()
       .setFixedRotation().setMass(50000000).setIgnoreGravity(true).setStatic(true);
 
       leftBucket = this.matter.add.image(40,400, 'bucket','bucket', {shape: shapeBucket.glassPanel})
-      .setMass(1).setStatic(true).setScale(0.2);
+      .setMass(1000).setStatic(true).setScale(0.3);
 
       rightBucket = this.matter.add.image(955,400, 'bucket', 'bucket', {shape: shapeBucket.glassPanel})
-      .setMass(1).setStatic(true).setScale(0.2);
+      .setMass(1000).setStatic(true).setScale(0.3);
 
 
       greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
@@ -200,11 +199,11 @@ function main()
 
       //Setting JSON collider for Sprite
         sprite1 = this.matter.add.sprite(600, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
-          .setScale(0.3).setMass(400).setBounce(0.3).setFixedRotation(true).setInteractive();
+          .setScale(0.25).setMass(400).setBounce(0.7).setFixedRotation(true).setInteractive();
         sprite1.play('walk');
 
         sprite2 = this.matter.add.sprite(50, 300, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
-          .setScale(0.3).setMass(400).setBounce(0).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+          .setScale(0.25).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         sprite2.play('walk1');
 
       //Constraints connect 2 Bodies to another by a point
@@ -219,72 +218,63 @@ function main()
       leftConnectToClaw = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: armConnectLeftSprite.body, bodyB: clawBodySprite.body,
-        pointA: {x: 35, y: 0 }, pointB: {x: -30, y: 70 },
-        length: 4, stiffness: 1
+        pointA: {x: 35, y: 0 }, pointB: {x: -30, y: 70 },length: 4, stiffness: 1
       });
       this.matter.world.add(leftConnectToClaw);
 
       rightConnectToClaw = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: armConnectRightSprite.body, bodyB: clawBodySprite.body,
-        pointA: {x: -35, y: 0 }, pointB: {x: 30, y: 70 },
-        length: 4, stiffness: 1
+        pointA: {x: -35, y: 0 }, pointB: {x: 30, y: 70 },length: 4, stiffness: 1
       });
       this.matter.world.add(rightConnectToClaw);
 
       leftArmToLeftConnect = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: armLeftSprite.body, bodyB: armConnectLeftSprite.body,
-        pointA: {x: 15, y: -55 }, pointB: {x: -30, y: 0 },
-        length: 4, stiffness: 1
+        pointA: {x: 15, y: -55 }, pointB: {x: -30, y: 0 }, length: 5, stiffness: 1
       });
       this.matter.world.add(leftArmToLeftConnect);
 
       rightArmToRightConnect = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: armRightSprite.body, bodyB: armConnectRightSprite.body,
-        pointA: {x: -15, y: -55 }, pointB: {x: 30, y: 0 },
-        length: 4, stiffness: 1
+        pointA: {x: -15, y: -55 }, pointB: {x: 30, y: 0 }, length: 5, stiffness: 1
       });
       this.matter.world.add(rightArmToRightConnect);
 
       greyArrowToGreyPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: greyArrow.body, bodyB: sprite2.body,
-        pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 },
-        length: 80, stiffness: 1
+        pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
       });
       this.matter.world.add(greyArrowToGreyPlayer);
 
       rightArmToLeftArm = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: armRightSprite.body, bodyB: armLeftSprite.body,
-        pointA: {x: -5, y: 55 }, pointB: {x: 0, y: 55 },
-        length: 150, stiffness: 1
+        pointA: {x: -5, y: 55 }, pointB: {x: 0, y: 55 }, length: 150, stiffness: 1
       });
       this.matter.world.add(rightArmToLeftArm);
 
       leftConnectToRightConnect = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: armConnectLeftSprite.body, bodyB: armConnectRightSprite.body,
-        pointA: {x: -30, y: 0 }, pointB: {x: 30, y: 0 },
-        length: 170, stiffness: 1
+        pointA: {x: -30, y: 0 }, pointB: {x: 30, y: 0 }, length: 170, stiffness: 1
       });
       this.matter.world.add(leftConnectToRightConnect);
 
       leftConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: armConnectLeftSprite.body, bodyB: clawBodySprite.body,
-        pointA: {x: -30, y: 0 }, pointB: {x: 0, y: -90 },
-        length: 200, stiffness: 1
+        pointA: {x: -30, y: 0 }, pointB: {x: 0, y: -90 }, length: 200, stiffness: 1
       });
       this.matter.world.add(leftConnectToClawTop);
 
       rightConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: armConnectRightSprite.body, bodyB: clawBodySprite.body,
-        pointA: {x: 30, y: 0 }, pointB: {x: 0, y: -90 },
-        length: 200, stiffness: 1
+        pointA: {x: 30, y: 0 }, pointB: {x: 0, y: -90 }, length: 200, stiffness: 1
       });
       this.matter.world.add(rightConnectToClawTop);
 
@@ -313,35 +303,33 @@ function main()
         {
             if(rightArmToLeftArm.length > 1)
             {
-              rightArmToLeftArm.length--;
+              rightArmToLeftArm.length = rightArmToLeftArm.length-5;
             }
             if(leftConnectToRightConnect.length > 125)
             {
-              leftConnectToRightConnect.length--;
+              leftConnectToRightConnect.length = leftConnectToRightConnect.length-2;
             }
             if(leftConnectToClawTop.length < 220 && rightConnectToClawTop.length < 220)
             {
-              leftConnectToClawTop.length++;
-              rightConnectToClawTop.length++;
+              leftConnectToClawTop.length = leftConnectToClawTop.length+2;
+              rightConnectToClawTop.length = rightConnectToClawTop.length+2;
             }
-            console.log('length: ' + rightArmToLeftArm.length);
         }
         if (cursors.right.isDown)
         {
             if(rightArmToLeftArm.length < 200)
             {
-              rightArmToLeftArm.length++;
+              rightArmToLeftArm.length = rightArmToLeftArm.length + 5;
             }
             if(leftConnectToRightConnect.length < 175)
             {
-              leftConnectToRightConnect.length++;
+              leftConnectToRightConnect.length = leftConnectToRightConnect.length+2;
             }
             if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
             {
-              leftConnectToClawTop.length--;
-              rightConnectToClawTop.length--;
+              leftConnectToClawTop.length = leftConnectToClawTop.length-2;
+              rightConnectToClawTop.length = rightConnectToClawTop.length-2;
             }
-            console.log('length: ' + rightArmToLeftArm.length);
         }
 
         if (cursors.left.isDown)
@@ -352,7 +340,7 @@ function main()
         {
           if(clawToPipeBody.length > 6)
           {
-            clawToPipeBody.length--;
+            clawToPipeBody.length = clawToPipeBody.length - 5 ;
           }
         }
         if (cursors.right.isDown)
@@ -364,7 +352,7 @@ function main()
             //pipeBodySprite.thrustRight(80);
           if(clawToPipeBody.length < 200)
           {
-            clawToPipeBody.length++;
+              clawToPipeBody.length = clawToPipeBody.length + 5;
           }
         }
 
@@ -384,13 +372,13 @@ function main()
 
             if(redAxisH > 0)
             {
-              redArrow.rotation -= 0.1;
+              redArrow.rotation -= 0.01;
               redLeft = true;
               redRight = false;
             }
             if(redAxisH < 0)
             {
-              redArrow.rotation += 0.1;
+              redArrow.rotation += 0.01;
               redLeft = false;
               redRight = true;
             }
@@ -493,5 +481,6 @@ function main()
 
             yellowSprite.flipX = (yellowAxisH < 0);
         }*/
+
     }
 }
