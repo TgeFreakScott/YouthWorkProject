@@ -77,7 +77,8 @@ function main()
     var greyArrow;
     var rotationValue = 0.1;
     var cursors;
-    var greyJumpTimer;
+    var greyJumpTimer = true;
+    var lastGreyJump = 0;
 
     var game = new Phaser.Game(config);
 
@@ -111,6 +112,7 @@ function main()
       //Loading in animated Sprites
       this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('greyMove' ,'Sprite/greyPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('greyJump' ,'Sprite/greyJump.png' ,{ frameWidth: 331, frameHeight: 294 });
 
       //Loading in JSON file and name
       this.load.json('clawShape', 'Sprite/physics/clawBodyShape.json');
@@ -190,13 +192,19 @@ function main()
             frameRate: 6, repeat: -1
       });
 
+      var greyJumpAnimation = this.anims.create({
+            key: 'greyJump',
+            frames: this.anims.generateFrameNumbers('greyJump'),
+            frameRate: 6, repeat: 1
+      });
+
       //Setting JSON collider for Sprite
         sprite1 = this.matter.add.sprite(600, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
           .setScale(0.3).setMass(400).setBounce(0.3).setFixedRotation(true).setInteractive();
         sprite1.play('walk');
 
         sprite2 = this.matter.add.sprite(50, 300, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
-          .setScale(0.3).setMass(400).setBounce(1).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+          .setScale(0.3).setMass(400).setBounce(0).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         sprite2.play('walk1');
 
       //Constraints connect 2 Bodies to another by a point
@@ -289,7 +297,7 @@ function main()
         greyArrow.thrustLeft(0.5);
         pipeBodySprite.thrustLeft(3);
         //redArrow.thrustLeft(0.01);
-
+        greyJumpTimer = (this.time.now - lastGreyJump) > 550;
         if(greyArrow.y > sprite2.y)
         {
           greyArrow.y = sprite2.y;
@@ -432,14 +440,15 @@ function main()
         if(pad2.buttons.length)
         {
             var greyButton = pad2.buttons[1].value;
-            if (greyButton === 1 && !greyJump)
+            if (greyButton === 1 && greyJumpTimer && !greyJump)
             {
-                greyJump = true;
+                lastGreyJump = this.time.now;
                 sprite2.setVelocityY(-25);
+                greyJump = true;
             }
-            if (greyButton === 0)
+            if (greyButton === 0 )
             {
-                timedEvent = this.time.delayedCall(3500, resetGreyJump, [], this);
+                greyJump = false;
             }
         }
         if(!redLeft)
@@ -484,11 +493,5 @@ function main()
 
             yellowSprite.flipX = (yellowAxisH < 0);
         }*/
-
-    }
-
-    function resetGreyJump()
-    {
-        greyJump = false;
     }
 }
