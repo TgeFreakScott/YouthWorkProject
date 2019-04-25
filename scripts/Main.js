@@ -75,7 +75,10 @@ function main()
     var redArrow;
     var greyArrow;
     var rotationValue = 0.1;
+
     var cursors;
+    var keys;
+
     var greyJumpTimer = true;
     var lastGreyJump = 0;
 
@@ -130,6 +133,7 @@ function main()
     {
       this.matter.world.setBounds();
       cursors = this.input.keyboard.createCursorKeys();
+      keys = this.input.keyboard.addKeys('W,A,S,D');
 
       // Naming Scheme givin to JSON file
       var shapeClaw = this.cache.json.get('clawShape');
@@ -143,27 +147,30 @@ function main()
       var shapeBucket = this.cache.json.get('bucketShape');
 
       pinkTest = this.matter.add.image(100, 400, 'pink','pink',{shape: shapePink.pinkCapture })
-      .setScale(0.2).setBounce(1).setVelocity(15).setMass(400);
+      .setScale(0.2).setBounce(0.6).setMass(400);
       blueTest = this.matter.add.image(450, 450, 'blue','blue', {shape: shapeBlue.blueCapture })
       .setScale(0.25).setBounce(0.6).setMass(400);
 
-      armLeftSprite = this.matter.add.image(300, 200,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
+      armLeftSprite = this.matter.add.image(300, 400,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
       .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
 
-      armRightSprite = this.matter.add.image(500, 200,'armRightBody', 'armRightBody',{ shape: shapeArmRight.armRight})
+      armRightSprite = this.matter.add.image(500, 400,'armRightBody', 'armRightBody',{ shape: shapeArmRight.armRight})
       .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
 
       armConnectRightSprite = this.matter.add.image(800, 500,'armConnectBody', 'armConnectBody',{ shape: shapeArmConnect.armConnect})
       .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
 
-      armConnectLeftSprite = this.matter.add.image(600, 500,'armConnectBody', 'armConnectBody',{ shape: shapeArmConnect.armConnect})
+      armConnectLeftSprite = this.matter.add.image(600, 400,'armConnectBody', 'armConnectBody',{ shape: shapeArmConnect.armConnect})
       .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
 
-      clawBodySprite = this.matter.add.image(300, 700,'clawBody' ,'clawBody', {shape: shapeClaw.clawBody})
+      clawBodySprite = this.matter.add.image(400, 210,'clawBody' ,'clawBody', {shape: shapeClaw.clawBody})
       .setScale(0.5).setMass(11000);//.setFixedRotation();
 
+      pipeSprite = this.matter.add.image(460, 50, 'pipe',{ shape: 'square'})
+      .setFixedRotation().setScale(0.6).setMass(50000000).setIgnoreGravity(true).setStatic(true);
+
       pipeBodySprite = this.matter.add.image(400, 50, 'pipeBody',{ shape: 'square'})
-      .setFixedRotation().setMass(50000000).setIgnoreGravity(true).setStatic(true);
+      .setFixedRotation().setScale(0.7).setMass(22000).setIgnoreGravity(true).setStatic({x:false, y:true});
 
       leftBucket = this.matter.add.image(40,400, 'bucket','bucket', {shape: shapeBucket.glassPanel})
       .setMass(1000).setStatic(true).setScale(0.3);
@@ -212,8 +219,8 @@ function main()
       clawToPipeBody = Phaser.Physics.Matter.Matter.Constraint.create(
       {
         bodyA: pipeBodySprite.body, bodyB: clawBodySprite.body,
-        pointA: {x: 0, y: 45 }, pointB: {x: 0, y: -110 },
-        length: 8, stiffness: 1
+        pointA: {x: 0, y: 40 }, pointB: {x: 0, y: -110 },
+        length: 18, stiffness: 1
       });
       this.matter.world.add(clawToPipeBody);
 
@@ -336,20 +343,27 @@ function main()
             }
         }
 
-        if (cursors.left.isDown)
+        if (keys.A.isDown)
         {
             pipeBodySprite.thrustBack(80);
+            if(pipeBodySprite.x > 50)
+            {
+              pipeBodySprite.x = pipeBodySprite.x - 5;
+            }
         }
         if (cursors.up.isDown)
         {
-          if(clawToPipeBody.length > 6)
+          if(clawToPipeBody.length > 8)
           {
             clawToPipeBody.length = clawToPipeBody.length - 5 ;
           }
         }
-        if (cursors.right.isDown)
+        if (keys.D.isDown)
         {
-          pipeBodySprite.thrust(100);
+          if(pipeBodySprite.x < 950)
+          {
+            pipeBodySprite.x = pipeBodySprite.x + 5;
+          }
         }
         if (cursors.down.isDown)
         {
