@@ -111,6 +111,7 @@ function main()
       //Loading in animated Sprites
       this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('greyMove' ,'Sprite/greyPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
+
       this.load.spritesheet('greyJump' ,'Sprite/greyJump.png' ,{ frameWidth: 331, frameHeight: 294 });
 
       //Loading in JSON file and name
@@ -144,7 +145,7 @@ function main()
       pinkTest = this.matter.add.image(100, 400, 'pink','pink',{shape: shapePink.pinkCapture })
       .setScale(0.2).setBounce(1).setVelocity(15).setMass(400);
       blueTest = this.matter.add.image(450, 450, 'blue','blue', {shape: shapeBlue.blueCapture })
-      .setScale(0.5).setBounce(1).setVelocity(-2, 6).setMass(400);
+      .setScale(0.25).setBounce(0.6).setMass(400);
 
       armLeftSprite = this.matter.add.image(300, 200,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
       .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
@@ -178,7 +179,8 @@ function main()
       redArrow = this.matter.add.image(50, 300, 'redArrow', null,)
           .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
           .setFixedRotation(true).setSensor(true).setInteractive();
-          //Creates Animation for Sprite
+
+      //Creates Animation for Sprite
       var redAnimation = this.anims.create({
           key: 'walk',
           frames: this.anims.generateFrameNumbers('redMove'),
@@ -194,7 +196,7 @@ function main()
       var greyJumpAnimation = this.anims.create({
             key: 'greyJump',
             frames: this.anims.generateFrameNumbers('greyJump'),
-            frameRate: 6, repeat: 1
+            frameRate: 8, repeat: -1
       });
 
       //Setting JSON collider for Sprite
@@ -202,7 +204,7 @@ function main()
           .setScale(0.25).setMass(400).setBounce(0.7).setFixedRotation(true).setInteractive();
         sprite1.play('walk');
 
-        sprite2 = this.matter.add.sprite(50, 300, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
+        sprite2 = this.matter.add.sprite(300, 500, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
           .setScale(0.25).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         sprite2.play('walk1');
 
@@ -287,7 +289,9 @@ function main()
         greyArrow.thrustLeft(0.5);
         pipeBodySprite.thrustLeft(3);
         //redArrow.thrustLeft(0.01);
+
         greyJumpTimer = (this.time.now - lastGreyJump) > 550;
+
         if(greyArrow.y > sprite2.y)
         {
           greyArrow.y = sprite2.y;
@@ -319,7 +323,7 @@ function main()
         {
             if(rightArmToLeftArm.length < 200)
             {
-              rightArmToLeftArm.length = rightArmToLeftArm.length + 5;
+              rightArmToLeftArm.length = rightArmToLeftArm.length + 7;
             }
             if(leftConnectToRightConnect.length < 175)
             {
@@ -430,6 +434,7 @@ function main()
             var greyButton = pad2.buttons[1].value;
             if (greyButton === 1 && greyJumpTimer && !greyJump)
             {
+                sprite2.anims.play('greyJump');
                 lastGreyJump = this.time.now;
                 sprite2.setVelocityY(-25);
                 greyJump = true;
@@ -437,6 +442,7 @@ function main()
             if (greyButton === 0 )
             {
                 greyJump = false;
+                sprite2.anims.play('walk1', true);
             }
         }
         if(!redLeft)
