@@ -23,3 +23,11 @@ app.get('/',function(req,res){
 server.listen(8081,function(){ // Listens to port 8081
     console.log('Listening on '+server.address().port);
 });
+
+/*socket.on('position',function(data)
+{
+    console.log('position to '+data.x+', '+data.y);
+    socket.player.x = data.x;
+    socket.player.y = data.y;
+    io.emit('move',socket.player);
+});*/

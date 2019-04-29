@@ -296,6 +296,7 @@ function main()
         greyArrow.thrustLeft(0.5);
         pipeBodySprite.thrustLeft(3);
         //redArrow.thrustLeft(0.01);
+        //Client.sendPosition(sprite2.x, sprite2.y);
 
         greyJumpTimer = (this.time.now - lastGreyJump) > 550;
 
@@ -503,4 +504,14 @@ function main()
         }*/
 
     }
+
+    /*function movePlayer(id,x,y)
+    {
+      var player = Game.playerMap[id];
+      var distance = Phaser.Math.distance(player.x,player.y,x,y);
+      var duration = distance*10;
+      var tween = game.add.tween(player);
+      tween.to({x:x,y:y}, duration);
+      tween.start();
+    }*/
 }
