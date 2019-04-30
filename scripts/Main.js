@@ -10,46 +10,55 @@ var CustomPipeline2 = new Phaser.Class({
             game: game,
             renderer: game.renderer,
             fragShader: [
-            "precision mediump float;",
+              "precision mediump float;",
 
-            "uniform float     time;",
-            "uniform vec2      resolution;",
-            "uniform sampler2D uMainSampler;",
-            "varying vec2 outTexCoord;",
+              //"in" attributes from our vertex shader
+              "varying vec4 outColor;",
+              "varying vec2 outTexCoord;",
 
-            "#define MAX_ITER 4",
+              //declare uniforms
+              "uniform sampler2D u_texture;",
+              "uniform float resolution;",
+              "uniform float radius;",
+              "uniform vec2 dir;",
 
-            "void main( void )",
-            "{",
-                "vec2 v_texCoord = gl_FragCoord.xy / resolution;",
+              "void main() {",
+              //this will be our RGBA sum
+              "vec4 sum = vec4(0.0);",
 
-                "vec2 p =  v_texCoord * 8.0 - vec2(20.0);",
-                "vec2 i = p;",
-                "float c = 1.0;",
-                "float inten = .05;",
+              //our original texcoord for this fragment
+              "vec2 tc = outTexCoord;",
 
-                "for (int n = 0; n < MAX_ITER; n++)",
-                "{",
-                    "float t = time * (1.0 - (3.0 / float(n+1)));",
+              //the amount to blur, i.e. how far off center to sample from
+              //1.0 -> blur by one pixel
+              //2.0 -> blur by two pixels, etc.
+              "float blur = radius/resolution;",
 
-                    "i = p + vec2(cos(t - i.x) + sin(t + i.y),",
-                    "sin(t - i.y) + cos(t + i.x));",
+              //the direction of our blur
+              //(1.0, 0.0) -> x-axis blur
+              //(0.0, 1.0) -> y-axis blur
+              "float hstep = dir.x;",
+              "float vstep = dir.y;",
 
-                    "c += 1.0/length(vec2(p.x / (sin(i.x+t)/inten),",
-                    "p.y / (cos(i.y+t)/inten)));",
-                "}",
+              //apply blurring, using a 9-tap filter with predefined gaussian weights",
 
-                "c /= float(MAX_ITER);",
-                "c = 1.5 - sqrt(c);",
+              "sum += texture2D(u_texture, vec2(tc.x - 4.0*blur*hstep, tc.y - 4.0*blur*vstep)) * 0.0162162162;",
+              "sum += texture2D(u_texture, vec2(tc.x - 3.0*blur*hstep, tc.y - 3.0*blur*vstep)) * 0.0540540541;",
+              "sum += texture2D(u_texture, vec2(tc.x - 2.0*blur*hstep, tc.y - 2.0*blur*vstep)) * 0.1216216216;",
+              "sum += texture2D(u_texture, vec2(tc.x - 1.0*blur*hstep, tc.y - 1.0*blur*vstep)) * 0.1945945946;",
 
-                "vec4 texColor = vec4(0.0, 0.01, 0.015, 1.0);",
+              "sum += texture2D(u_texture, vec2(tc.x, tc.y)) * 0.2270270270;",
 
-                "texColor.rgb *= (1.0 / (1.0 - (c + 0.05)));",
-                "vec4 pixel = texture2D(uMainSampler, outTexCoord);",
+              "sum += texture2D(u_texture, vec2(tc.x + 1.0*blur*hstep, tc.y + 1.0*blur*vstep)) * 0.1945945946;",
+              "sum += texture2D(u_texture, vec2(tc.x + 2.0*blur*hstep, tc.y + 2.0*blur*vstep)) * 0.1216216216;",
+              "sum += texture2D(u_texture, vec2(tc.x + 3.0*blur*hstep, tc.y + 3.0*blur*vstep)) * 0.0540540541;",
+              "sum += texture2D(u_texture, vec2(tc.x + 4.0*blur*hstep, tc.y + 4.0*blur*vstep)) * 0.0162162162;",
 
-                "gl_FragColor = pixel + texColor;",
-            "}"
-            ].join('\n')
+              //discard alpha for our simple demo,return
+              "gl_FragColor =  vec4(sum.rgb, 1.0);",
+              "}"
+
+          ].join('\n')
         });
     }
 
@@ -112,6 +121,7 @@ function main()
     var leftBucket;
     var rightBucket;
     var backgroundSprite;
+    var floorSprite;
 
     var sprite1;
     var sprite2;
@@ -151,8 +161,9 @@ function main()
 
 
       customPipeline = game.renderer.addPipeline('Custom', new CustomPipeline2(game));
-      customPipeline.setFloat2('resolution', game.config.width, game.config.height);
-
+      customPipeline.setFloat1('resolution', game.config.width, game.config.height);
+      customPipeline.setFloat1('radius', 1.0);
+      customPipeline.setFloat2('dir', 1.0, 1.0);
 
       //loads image by ("Name your giving to sprite" , "the sprite location" , "JSON file location")
       //player Sprites
@@ -168,7 +179,8 @@ function main()
       this.load.image('armRightBody', 'Sprite/armRight.png', 'Sprite/physics/armRightShape.json');
       this.load.image('armConnectBody', 'Sprite/armConnect.png', 'Sprite/physics/armConnectShape.json');
       this.load.image('bucket', 'Sprite/glassPanel.png', 'Sprite/physics/glassPrison.json');
-      this.load.image('background', 'Sprite/background.png')
+      this.load.image('background', 'Sprite/background.png');
+      this.load.image('floor', 'Sprite/floor.png');
 
       //claw Sprites
       this.load.image('pipe','Sprite/clawBar.png');
@@ -200,7 +212,6 @@ function main()
       this.matter.world.setBounds();
       cursors = this.input.keyboard.createCursorKeys();
       keys = this.input.keyboard.addKeys('W,A,S,D');
-      this.cameras.main.setRenderToTexture(customPipeline);
 
       // Naming Scheme givin to JSON file
       var shapeClaw = this.cache.json.get('clawShape');
@@ -213,7 +224,8 @@ function main()
       var shapeArmConnect = this.cache.json.get('armConnectShape');
       var shapeBucket = this.cache.json.get('bucketShape');
 
-      backgroundSprite = this.add.image(500,300,'background').setScale(1.15);
+      backgroundSprite = this.add.image(500,300,'background').setScale(1.15).setAlpha(0.4);
+      floorSprite = this.matter.add.image(500,930,'floor',{ shape: 'square'}).setScale(1.1).setAlpha(1).setStatic(true);
 
       pinkTest = this.matter.add.image(250, 400, 'pink','pink',{shape: shapePink.pinkCapture })
       .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
@@ -221,10 +233,10 @@ function main()
       .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
 
       armLeftSprite = this.matter.add.image(300, 400,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
-      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(100).setMass(2750);
+      .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(1000).setMass(2750);
 
       armRightSprite = this.matter.add.image(500, 400,'armRightBody', 'armRightBody',{ shape: shapeArmRight.armRight})
-      .setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(100).setMass(2750);
+      .setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(1000).setMass(2750);
 
       armConnectRightSprite = this.matter.add.image(800, 500,'armConnectBody', 'armConnectBody',{ shape: shapeArmConnect.armConnect})
       .setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(100).setMass(2750);
@@ -248,12 +260,11 @@ function main()
       sprite2 = this.matter.add.sprite(300, 500, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
       .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
 
-      leftBucket = this.matter.add.image(5,580, 'bucket','bucket', {shape: shapeBucket.glassPanel})
-      .setMass(1000).setStatic(true).setDensity(100000).setScale(0.4);
+      leftBucket = this.matter.add.image(-15,570, 'bucket','bucket', {shape: shapeBucket.glassPanel})
+      .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
-      rightBucket = this.matter.add.image(985,580, 'bucket', 'bucket', {shape: shapeBucket.glassPanel})
-      .setMass(1000).setStatic(true).setDensity(100000).setScale(0.4);
-
+      rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket', {shape: shapeBucket.glassPanel})
+      .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
       greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
           .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
@@ -281,9 +292,17 @@ function main()
             frameRate: 8, repeat: -1
       });
 
-
         sprite1.play('walk');
         sprite2.play('walk1');
+
+        this.cameras.main.setRenderToTexture(customPipeline);
+
+        var extracam = this.cameras.add();
+
+        this.cameras.main.ignore(pinkTest);
+
+        extracam.ignore(backgroundSprite);
+
 
       //Constraints connect 2 Bodies to another by a point
       clawToPipeBody = Phaser.Physics.Matter.Matter.Constraint.create(
@@ -365,7 +384,7 @@ function main()
     {
 
       customPipeline.setFloat1('time', time);
-      time += 0.005;
+      //time += 0.005;
 
         greyArrow.thrustLeft(0.5);
         pipeBodySprite.thrustLeft(3);
@@ -442,7 +461,7 @@ function main()
         if (cursors.down.isDown)
         {
             //pipeBodySprite.thrustRight(80);
-          if(clawToPipeBody.length < 220)
+          if(clawToPipeBody.length < 215)
           {
               clawToPipeBody.length = clawToPipeBody.length + 5;
           }
