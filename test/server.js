@@ -3,61 +3,50 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 
+var players = {};
+
 app.use('/css',express.static(__dirname + '/css'));
 app.use('/scripts',express.static(__dirname + '/scripts'));
 app.use('/Sprite',express.static(__dirname + '/Sprite'));
 
-app.get('/',function(req,res){
-    res.sendFile(__dirname+'/game.html');
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/game.html');
 });
 
-io.on('connection', function(socket)
-{
+io.on('connection', function (socket) {
   console.log('a user connected');
+  // create a new player and add it to our players object
+  players[socket.id] =
+  {
+    rotation: 0,
+    x: Math.floor(Math.random() * 700) + 50,
+    y: Math.floor(Math.random() * 500) + 50,
+    playerId: socket.id
+  };
+  // send the players object to the new player
+  socket.emit('currentPlayers', players);
+  // update all other players of the new player
+  socket.broadcast.emit('newPlayer', players[socket.id]);
+
+  // when a player disconnects, remove them from our players object
+  socket.on('disconnect', function ()
+  {
+    console.log('user disconnected');
+    // remove this player from our players object
+    delete players[socket.id];
+    // emit a message to all players to remove this player
+    io.emit('disconnect', socket.id);
+  });
+  // when a player moves, update the player data
+  socket.on('playerMovement', function (movementData)
+  {
+    players[socket.id].x = movementData.x;
+    players[socket.id].y = movementData.y;
+    // emit a message to all players about the player that moved
+    socket.broadcast.emit('playerMoved', players[socket.id]);
+  });
 });
 
-app.get('/',function(req,res){
-    res.sendFile(__dirname+'/index.html');
+server.listen(8081, function () {
+  console.log(`Listening on ${server.address().port}`);
 });
-
-server.listen(8081,function(){ // Listens to port 8081
-    console.log('Listening on '+server.address().port);
-});
-server.lastPlayderID = 0; // Keep track of the last id assigned to a new player
-
-io.on('connection',function(socket){
-
-    socket.on('newplayer',function(){
-        socket.player = {
-            id: server.lastPlayderID++,
-            x: randomInt(100,400),
-            y: randomInt(100,400)
-        };
-        socket.emit('allplayers',getAllPlayers());
-        socket.broadcast.emit('newplayer',socket.player);
-
-        socket.on('click',function(data){
-            console.log('click to '+data.x+', '+data.y);
-            socket.player.x = data.x;
-            socket.player.y = data.y;
-            io.emit('move',socket.player);
-        });
-
-        socket.on('disconnect',function(){
-            io.emit('remove',socket.player.id);
-        });
-    });
-});
-
-function getAllPlayers(){
-    var players = [];
-    Object.keys(io.sockets.connected).forEach(function(socketID){
-        var player = io.sockets.connected[socketID].player;
-        if(player) players.push(player);
-    });
-    return players;
-}
-
-function randomInt (low, high) {
-    return Math.floor(Math.random() * (high - low) + low);
-}
