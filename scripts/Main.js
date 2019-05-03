@@ -383,13 +383,8 @@ function main()
     function update()
     {
 
-<<<<<<< HEAD
-        customPipeline.setFloat1('time', time);
-        time += 0.005;
-=======
       customPipeline.setFloat1('time', time);
       //time += 0.005;
->>>>>>> 99967aeb9aa84231e6b70d5d8eeb4ec29861f1a2
 
         greyArrow.thrustLeft(0.5);
         pipeBodySprite.thrustLeft(3);

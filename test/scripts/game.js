@@ -18,7 +18,7 @@ var config = {
               impact: { debug: true }},
             }
     };
-
+    var players = [];
     var game = new Phaser.Game(config);
     var pinkSprite;
     var blueSprite;
