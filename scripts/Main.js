@@ -99,7 +99,10 @@ function main()
                   arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
                   matter: { debug: true, gravity: { y: 9.78 } },
                   impact: { debug: true }},
-                }
+                },
+        audio: {
+            disableWebAudio: true
+        }
     };
 
     var redSprite;
@@ -148,6 +151,7 @@ function main()
 
     var cursors;
     var keys;
+    var music;
 
     var greyJumpTimer = true;
     var lastGreyJump = 0;
@@ -165,8 +169,8 @@ function main()
       customPipeline.setFloat1('radius', 1.0);
       customPipeline.setFloat2('dir', 1.0, 1.0);
 
-      //Loading in test music 
-      this.load.audio('test', ['assets/audio/musicTest.mp3', 'assets/audio/musicTest.ogg'])
+      //Loading in test music
+      this.load.audio('test', ['assets/audio/musicTest.mp3', 'assets/audio/musicTest.ogg']);
 
       //loads image by ("Name your giving to sprite" , "the sprite location" , "JSON file location")
       //player Sprites
@@ -216,8 +220,8 @@ function main()
       cursors = this.input.keyboard.createCursorKeys();
       keys = this.input.keyboard.addKeys('W,A,S,D');
 
-      //music create 
-      music = game.add.audio('test');
+      //music create
+      music = this.sound.add('test');
       music.play();
 
       // Naming Scheme givin to JSON file
