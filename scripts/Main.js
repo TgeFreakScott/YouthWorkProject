@@ -165,6 +165,9 @@ function main()
       customPipeline.setFloat1('radius', 1.0);
       customPipeline.setFloat2('dir', 1.0, 1.0);
 
+      //Loading in test music 
+      this.load.audio('test', ['assets/audio/musicTest.mp3', 'assets/audio/musicTest.ogg'])
+
       //loads image by ("Name your giving to sprite" , "the sprite location" , "JSON file location")
       //player Sprites
       this.load.image('red', 'Sprite/redCapture.png','Sprite/physics/redShape.json');
@@ -212,6 +215,10 @@ function main()
       this.matter.world.setBounds();
       cursors = this.input.keyboard.createCursorKeys();
       keys = this.input.keyboard.addKeys('W,A,S,D');
+
+      //music create 
+      music = game.add.audio('test');
+      music.play();
 
       // Naming Scheme givin to JSON file
       var shapeClaw = this.cache.json.get('clawShape');
