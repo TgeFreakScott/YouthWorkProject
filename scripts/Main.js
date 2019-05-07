@@ -220,6 +220,22 @@ function main()
       cursors = this.input.keyboard.createCursorKeys();
       keys = this.input.keyboard.addKeys('W,A,S,D');
 
+      var Bodies = Phaser.Physics.Matter.Matter.Bodies;
+
+      var rectA = Bodies.rectangle(0, 0, 70, 24);
+      var rectB = Bodies.rectangle(0, 0, 24, 70);
+      var circleA = Bodies.circle(-10, 0, 24);
+      var circleB = Bodies.circle(10, 0, 24);
+      var circleC = Bodies.circle(0, -10, 24);
+      var circleD = Bodies.circle(0, 10, 24);
+
+      var compoundBody = Phaser.Physics.Matter.Matter.Body.create({
+          parts: [ rectA, rectB, circleA, circleB, circleC, circleD ]
+      });
+
+      //var block = this.matter.add.image(150, 0, 'block');
+      //block.setExistingBody(compoundBody);
+
       //music create
       music = this.sound.add('test');
       music.play();
@@ -239,7 +255,7 @@ function main()
       floorSprite = this.matter.add.image(500,930,'floor',{ shape: 'square'}).setScale(1.1).setAlpha(1).setStatic(true);
 
       pinkTest = this.matter.add.image(250, 400, 'pink','pink',{shape: shapePink.pinkCapture })
-      .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
+      .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);//.setExistingBody(compoundBody);
       blueTest = this.matter.add.image(450, 450, 'blue','blue', {shape: shapeBlue.blueCapture })
       .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
 
@@ -270,6 +286,9 @@ function main()
 
       sprite2 = this.matter.add.sprite(300, 500, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
       .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+      sprite2.setExistingBody(compoundBody);
+      sprite2.setPosition(300,500).setScale(0.2).setMass(400)
+      .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
 
       leftBucket = this.matter.add.image(-15,570, 'bucket','bucket', {shape: shapeBucket.glassPanel})
       .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
@@ -313,7 +332,6 @@ function main()
         this.cameras.main.ignore(pinkTest);
 
         extracam.ignore(backgroundSprite);
-
 
       //Constraints connect 2 Bodies to another by a point
       clawToPipeBody = Phaser.Physics.Matter.Matter.Constraint.create(
