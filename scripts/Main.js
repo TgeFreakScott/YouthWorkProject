@@ -222,16 +222,24 @@ function main()
 
       var Bodies = Phaser.Physics.Matter.Matter.Bodies;
 
-      var rectA = Bodies.rectangle(0, 0, 70, 24);
-      var rectB = Bodies.rectangle(0, 0, 24, 70);
-      var circleA = Bodies.circle(-10, 0, 24);
-      var circleB = Bodies.circle(10, 0, 24);
-      var circleC = Bodies.circle(0, -10, 24);
-      var circleD = Bodies.circle(0, 10, 24);
+      var rectA = Bodies.rectangle(0, 0, 50, 14);
+      var rectB = Bodies.rectangle(0, 0, 14, 50);
+      var circleA = Bodies.circle(-10, 0, 14);
+      var circleB = Bodies.circle(10, 0, 14);
+      var circleC = Bodies.circle(0, -10, 14);
+      var circleD = Bodies.circle(0, 10, 14);
 
-      var compoundBody = Phaser.Physics.Matter.Matter.Body.create({
-          parts: [ rectA, rectB, circleA, circleB, circleC, circleD ]
-      });
+      var rectC = Bodies.rectangle(0, 0, 50, 14);
+      var rectD = Bodies.rectangle(0, 0, 14, 50);
+      var circleE = Bodies.circle(-10, 0, 14);
+      var circleF = Bodies.circle(10, 0, 14);
+      var circleG = Bodies.circle(0, -10, 14);
+      var circleH = Bodies.circle(0, 10, 14);
+
+      var compoundBody = Phaser.Physics.Matter.Matter.Body.create(
+        {parts: [ rectA, rectB, circleA, circleB, circleC, circleD ]});
+      var compoundBody2 = Phaser.Physics.Matter.Matter.Body.create(
+        {parts: [ rectC, rectD, circleE, circleF, circleG, circleH ]});
 
       //var block = this.matter.add.image(150, 0, 'block');
       //block.setExistingBody(compoundBody);
@@ -283,6 +291,9 @@ function main()
       //Setting JSON collider for Sprite
       sprite1 = this.matter.add.sprite(600, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
       .setScale(0.2).setMass(400).setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
+      sprite1.setExistingBody(compoundBody2);
+      sprite1.setPosition(600,300).setScale(0.2).setMass(400)
+      .setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
 
       sprite2 = this.matter.add.sprite(300, 500, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
       .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
