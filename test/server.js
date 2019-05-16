@@ -12,8 +12,6 @@ app.get('/',function(req,res){
 });
 
 var players = {};
-var numberofPlayersConnected = 0;
-const MAXPLAYERS = 8;
 
 io.on('connection', function (socket) {
   console.log('a user connected');
@@ -25,13 +23,11 @@ io.on('connection', function (socket) {
     y: Math.floor(Math.random() * 500) + 50,
     playerId: socket.id
   };
-  numberofPlayersConnected++;
   // send the players object to the new player
   socket.emit('currentPlayers', players);
   // update all other players of the new player
   socket.broadcast.emit('newPlayer', players[socket.id]);
 
-  io.emit('numberOfPlayers', numberofPlayersConnected);
 
   // when a player disconnects, remove them from our players object
   socket.on('disconnect', function ()

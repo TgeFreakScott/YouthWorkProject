@@ -25,7 +25,8 @@ var config = {
     var pinkSprite;
     var greenSprite;
     var yellowSprite;
-    var currentPlayerCount;
+    var numberofPlayersConnected = 0;
+    const MAXPLAYERS = 8;
     function preload()
         {
           this.load.image('pink', 'Sprite/pinkCapture.png', 'Sprite/physics/pinkShape.json');
@@ -57,10 +58,6 @@ var config = {
           this.socket.on('newPlayer', function (playerInfo)
           {
             addPlayer(self, playerInfo);
-          });
-          this.socket.on('numberOfPlayers', function (numberofPlayersConnected)
-          {
-            currentPlayerCount = numberofPlayersConnected;
           });
           this.socket.on('disconnect', function (playerId)
           {
@@ -139,27 +136,32 @@ var config = {
             }
             function addPlayer(self, playerInfo)
             {
-              switch(currentPlayerCount)
+              switch(numberofPlayersConnected)
               {
                 case 0:
                   pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
-                  players[currentPlayerCount] = pinkSprite;
+                  players[numberofPlayersConnected] = pinkSprite;
+                  numberofPlayersConnected++;
                   break;
                 case 1:
                   blueSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
-                  players[currentPlayerCount] = blueSprite;
+                  players[numberofPlayersConnected] = blueSprite;
+                  numberofPlayersConnected++;
                   break;
                 case 2:
                   greySprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2).setCollideWorldBounds(true);
-                  players[currentPlayerCount] = greySprite;
+                  players[numberofPlayersConnected] = greySprite;
+                  numberofPlayersConnected++;
                   break;
                 case 3:
                   greenSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2).setCollideWorldBounds(true);
-                  players[currentPlayerCount] = greenSprite;
+                  players[numberofPlayersConnected] = greenSprite;
+                  numberofPlayersConnected++;
                   break;
                 case 4:
                   yellowSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2).setCollideWorldBounds(true);
-                  players[currentPlayerCount] = yellowSprite;
+                  players[numberofPlayersConnected] = yellowSprite;
+                  numberofPlayersConnected++;
                   break;
                 case 5:
                   break;
