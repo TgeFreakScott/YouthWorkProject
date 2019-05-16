@@ -5,6 +5,8 @@ var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 
 var players = {};
+var numberofPlayersConnected = 0;
+const MAXPLAYERS = 8;
 
 app.use('/css',express.static(__dirname + '/css'));
 app.use('/scripts',express.static(__dirname + '/scripts'));
@@ -28,6 +30,9 @@ io.on('connection', function (socket) {
   socket.emit('currentPlayers', players);
   // update all other players of the new player
   socket.broadcast.emit('newPlayer', players[socket.id]);
+
+  socket.emit('numberOfPlayers', numberofPlayersConnected);
+  socket.broadcast.emit('numberOfNewPlayers', numberofPlayersConnected);
 
   // when a player disconnects, remove them from our players object
   socket.on('disconnect', function ()

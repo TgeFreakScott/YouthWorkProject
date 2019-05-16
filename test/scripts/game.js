@@ -20,14 +20,24 @@ var config = {
     };
     var players = [];
     var game = new Phaser.Game(config);
-    var pinkSprite;
+    var greySprite;
     var blueSprite;
+    var pinkSprite;
+    var greenSprite;
+    var yellowSprite;
+    var currentPlayerCount;
     function preload()
         {
           this.load.image('pink', 'Sprite/pinkCapture.png', 'Sprite/physics/pinkShape.json');
           this.load.json('pinkShape', 'Sprite/physics/pinkShape.json');
           this.load.image('blue', 'Sprite/blueCapture.png', 'Sprite/physics/blueShape.json' );
           this.load.json('blueShape', 'Sprite/physics/blueShape.json');
+          this.load.image('grey', 'Sprite/greyCapture.png', 'Sprite/physics/greyShape.json');
+          this.load.json('greyShape', 'Sprite/physics/greyShape.json');
+          this.load.image('green', 'Sprite/greenCapture.png', 'Sprite/physics/greenShape.json' );
+          this.load.json('greenShape', 'Sprite/physics/greenShape.json');
+          this.load.image('yellow', 'Sprite/yellowCapture.png', 'Sprite/physics/yellowShape.json');
+          this.load.json('yellowShape', 'Sprite/physics/yellowShape.json');
         }
         function create()
         {
@@ -42,15 +52,15 @@ var config = {
               {
                 addPlayer(self, players[id]);
               }
-              else
-              {
-                addOtherPlayers(self, players[id]);
-              }
             });
           });
           this.socket.on('newPlayer', function (playerInfo)
           {
-            addOtherPlayers(self, playerInfo);
+            addPlayer(self, playerInfo);
+          });
+          this.socket.on('numberOfPlayers', function (numberofPlayersConnected)
+          {
+            currentPlayerCount = numberofPlayersConnected;
           });
           this.socket.on('disconnect', function (playerId)
           {
@@ -130,8 +140,37 @@ var config = {
 
         function addPlayer(self, playerInfo)
         {
-          var shapePink = self.cache.json.get('pinkShape');
-          self.ship = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
+          switch()
+          {
+            case 0:
+              pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
+              players[currentPlayerCount] = pinkSprite;
+              break;
+            case 1:
+              blueSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
+              players[currentPlayerCount] = blueSprite;
+              break;
+            case 2:
+              greySprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2).setCollideWorldBounds(true);
+              players[currentPlayerCount] = greySprite;
+              break;
+            case 3:
+              greenSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2).setCollideWorldBounds(true);
+              players[currentPlayerCount] = greenSprite;
+              break;
+            case 4:
+              yellowSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2).setCollideWorldBounds(true);
+              players[currentPlayerCount] = yellowSprite;
+              break;
+            case 5:
+              break;
+            case 6:
+              break;
+            case 7:
+              break;
+            default:
+              break;
+          }
         }
 
         function addOtherPlayers(self, playerInfo)
