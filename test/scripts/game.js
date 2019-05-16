@@ -90,10 +90,10 @@ var config = {
 
         function update()
         {
-
+          /*
             if (this.ship)
             {
-              /*var pad1 = this.input.gamepad.getPad(0);
+              var pad1 = this.input.gamepad.getPad(0);
               if (pad1.axes.length)
               {
                   var pinkAxisH = pad1.axes[0].getValue();
@@ -103,7 +103,7 @@ var config = {
                   this.ship.y += 4 * pinkAxisV;
 
                   this.ship.flipX = (pinkAxisH < 0);
-              }*/
+              }
               if (this.cursors.left.isDown)
               {
                 this.ship.x --;
@@ -135,12 +135,13 @@ var config = {
                 x: this.ship.x,
                 y: this.ship.y
               };
+              */
             }
         }
 
         function addPlayer(self, playerInfo)
         {
-          switch()
+          switch(currentPlayerCount)
           {
             case 0:
               pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
