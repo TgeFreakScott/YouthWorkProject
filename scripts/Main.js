@@ -152,6 +152,10 @@ function main()
     var cursors;
     var keys;
     var music;
+    var textTimer;
+    var timer = 180;
+    var textLives;
+    var lives = 5;
 
     var greyJumpTimer = true;
     var lastGreyJump = 0;
@@ -222,24 +226,52 @@ function main()
 
       var Bodies = Phaser.Physics.Matter.Matter.Bodies;
 
-      var rectA = Bodies.rectangle(0, 0, 50, 14);
-      var rectB = Bodies.rectangle(0, 0, 14, 50);
-      var circleA = Bodies.circle(-10, 0, 14);
-      var circleB = Bodies.circle(10, 0, 14);
-      var circleC = Bodies.circle(0, -10, 14);
-      var circleD = Bodies.circle(0, 10, 14);
+      var rectA1 = Bodies.rectangle(0, 0, 50, 14);
+      var rectA2 = Bodies.rectangle(0, 0, 14, 50);
+      var circleA1 = Bodies.circle(-10, 0, 14);
+      var circleA2 = Bodies.circle(10, 0, 14);
+      var circleA3 = Bodies.circle(0, -10, 14);
+      var circleA4 = Bodies.circle(0, 10, 14);
 
-      var rectC = Bodies.rectangle(0, 0, 50, 14);
-      var rectD = Bodies.rectangle(0, 0, 14, 50);
-      var circleE = Bodies.circle(-10, 0, 14);
-      var circleF = Bodies.circle(10, 0, 14);
-      var circleG = Bodies.circle(0, -10, 14);
-      var circleH = Bodies.circle(0, 10, 14);
+      var rectB1 = Bodies.rectangle(0, 0, 50, 14);
+      var rectB2 = Bodies.rectangle(0, 0, 14, 50);
+      var circleB1 = Bodies.circle(-10, 0, 14);
+      var circleB2 = Bodies.circle(10, 0, 14);
+      var circleB3 = Bodies.circle(0, -10, 14);
+      var circleB4 = Bodies.circle(0, 10, 14);
+
+      var rectC1 = Bodies.rectangle(0, 0, 50, 14);
+      var rectC2 = Bodies.rectangle(0, 0, 14, 50);
+      var circleC1 = Bodies.circle(-10, 0, 14);
+      var circleC2 = Bodies.circle(10, 0, 14);
+      var circleC3 = Bodies.circle(0, -10, 14);
+      var circleC4 = Bodies.circle(0, 10, 14);
+
+      var rectD1 = Bodies.rectangle(0, 0, 50, 14);
+      var rectD2 = Bodies.rectangle(0, 0, 14, 50);
+      var circleD1 = Bodies.circle(-10, 0, 14);
+      var circleD2 = Bodies.circle(10, 0, 14);
+      var circleD3 = Bodies.circle(0, -10, 14);
+      var circleD4 = Bodies.circle(0, 10, 14);
+
+      var rectE1 = Bodies.rectangle(0, 0, 50, 14);
+      var rectE2 = Bodies.rectangle(0, 0, 14, 50);
+      var circleE1 = Bodies.circle(-10, 0, 14);
+      var circleE2 = Bodies.circle(10, 0, 14);
+      var circleE3 = Bodies.circle(0, -10, 14);
+      var circleE4 = Bodies.circle(0, 10, 14);
+
 
       var compoundBody = Phaser.Physics.Matter.Matter.Body.create(
-        {parts: [ rectA, rectB, circleA, circleB, circleC, circleD ]});
+        {parts: [ rectA1, rectA2, circleA1, circleA2, circleA3, circleA4 ]});
       var compoundBody2 = Phaser.Physics.Matter.Matter.Body.create(
-        {parts: [ rectC, rectD, circleE, circleF, circleG, circleH ]});
+        {parts: [ rectB1, rectB2, circleB1, circleB2, circleB3, circleB4 ]});
+      var compoundBody3 = Phaser.Physics.Matter.Matter.Body.create(
+        {parts: [ rectC1, rectC2, circleC1, circleC2, circleC3, circleC4 ]});
+      var compoundBody4 = Phaser.Physics.Matter.Matter.Body.create(
+        {parts: [ rectD1, rectD2, circleD1, circleD2, circleD3, circleD4 ]});
+      var compoundBody5 = Phaser.Physics.Matter.Matter.Body.create(
+        {parts: [ rectE1, rectE2, circleE1, circleE2, circleE3, circleE4 ]});
 
       //var block = this.matter.add.image(150, 0, 'block');
       //block.setExistingBody(compoundBody);
@@ -416,13 +448,21 @@ function main()
       });
       this.matter.world.add(rightConnectToClawTop);
 
+      textTimer = this.add.text(30, 100, 'Timer: ' + timer, { font: '20px Arial' }).setFontSize(20);
+      textTimer.setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000);
+      textLives = this.add.text(30, 120, 'Lives: ' + lives).setFontSize(20);
+      textLives.setTint(0xff000f, 0xfff000, 0x00000f, 0xf00000);
+
       this.input.setPollAlways();
 
     }
 
     function update()
     {
-
+      if(timer > 0)
+      {
+        textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
+      }
       customPipeline.setFloat1('time', time);
       //time += 0.005;
 
