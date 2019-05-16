@@ -1,20 +1,19 @@
-const port = 8081;
-const express = require('express');
-const app = express();
+var express = require('express');
+var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
-
-var players = {};
-var numberofPlayersConnected = 0;
-const MAXPLAYERS = 8;
 
 app.use('/css',express.static(__dirname + '/css'));
 app.use('/scripts',express.static(__dirname + '/scripts'));
 app.use('/Sprite',express.static(__dirname + '/Sprite'));
 
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/game.html');
+app.get('/',function(req,res){
+    res.sendFile(__dirname+'/game.html');
 });
+
+var players = {};
+var numberofPlayersConnected = 0;
+const MAXPLAYERS = 8;
 
 io.on('connection', function (socket) {
   console.log('a user connected');
@@ -53,6 +52,6 @@ io.on('connection', function (socket) {
   });
 });
 
-server.listen(port, function () {
+server.listen(8081,function(){
   console.log(`Listening on ${server.address().port}`);
 });

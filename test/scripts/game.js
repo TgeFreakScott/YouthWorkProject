@@ -137,48 +137,46 @@ var config = {
               };
               */
             }
-        }
+            function addPlayer(self, playerInfo)
+            {
+              switch(currentPlayerCount)
+              {
+                case 0:
+                  pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
+                  players[currentPlayerCount] = pinkSprite;
+                  break;
+                case 1:
+                  blueSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
+                  players[currentPlayerCount] = blueSprite;
+                  break;
+                case 2:
+                  greySprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2).setCollideWorldBounds(true);
+                  players[currentPlayerCount] = greySprite;
+                  break;
+                case 3:
+                  greenSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2).setCollideWorldBounds(true);
+                  players[currentPlayerCount] = greenSprite;
+                  break;
+                case 4:
+                  yellowSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2).setCollideWorldBounds(true);
+                  players[currentPlayerCount] = yellowSprite;
+                  break;
+                case 5:
+                  break;
+                case 6:
+                  break;
+                case 7:
+                  break;
+                default:
+                  break;
+              }
+            }
 
-        function addPlayer(self, playerInfo)
-        {
-          switch(currentPlayerCount)
-          {
-            case 0:
-              pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
-              players[currentPlayerCount] = pinkSprite;
-              break;
-            case 1:
-              blueSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
-              players[currentPlayerCount] = blueSprite;
-              break;
-            case 2:
-              greySprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2).setCollideWorldBounds(true);
-              players[currentPlayerCount] = greySprite;
-              break;
-            case 3:
-              greenSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2).setCollideWorldBounds(true);
-              players[currentPlayerCount] = greenSprite;
-              break;
-            case 4:
-              yellowSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2).setCollideWorldBounds(true);
-              players[currentPlayerCount] = yellowSprite;
-              break;
-            case 5:
-              break;
-            case 6:
-              break;
-            case 7:
-              break;
-            default:
-              break;
-          }
-        }
-
-        function addOtherPlayers(self, playerInfo)
-        {
-          var shapePink = self.cache.json.get('blueShape');
-          const otherPlayer = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
-          otherPlayer.playerId = playerInfo.playerId;
-          self.otherPlayers.add(otherPlayer);
-        }
-  }
+            function addOtherPlayers(self, playerInfo)
+            {
+              var shapePink = self.cache.json.get('blueShape');
+              const otherPlayer = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
+              otherPlayer.playerId = playerInfo.playerId;
+              self.otherPlayers.add(otherPlayer);
+            }
+    }
