@@ -152,6 +152,10 @@ function main()
     var cursors;
     var keys;
     var music;
+    var textTimer;
+    var timer = 180;
+    var textLives;
+    var lives = 5;
 
     var greyJumpTimer = true;
     var lastGreyJump = 0;
@@ -259,7 +263,7 @@ function main()
 
 
       var compoundBody = Phaser.Physics.Matter.Matter.Body.create(
-        {parts: [ rectA, rectA2, circleA1, circleA2, circleA3, circleA4 ]});
+        {parts: [ rectA1, rectA2, circleA1, circleA2, circleA3, circleA4 ]});
       var compoundBody2 = Phaser.Physics.Matter.Matter.Body.create(
         {parts: [ rectB1, rectB2, circleB1, circleB2, circleB3, circleB4 ]});
       var compoundBody3 = Phaser.Physics.Matter.Matter.Body.create(
@@ -444,13 +448,21 @@ function main()
       });
       this.matter.world.add(rightConnectToClawTop);
 
+      textTimer = this.add.text(30, 100, 'Timer: ' + timer, { font: '20px Arial' }).setFontSize(20);
+      textTimer.setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000);
+      textLives = this.add.text(30, 120, 'Lives: ' + lives).setFontSize(20);
+      textLives.setTint(0xff000f, 0xfff000, 0x00000f, 0xf00000);
+
       this.input.setPollAlways();
 
     }
 
     function update()
     {
-
+      if(timer > 0)
+      {
+        textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
+      }
       customPipeline.setFloat1('time', time);
       //time += 0.005;
 
