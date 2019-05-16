@@ -1,5 +1,6 @@
-var express = require('express');
-var app = express();
+const port = 8081;
+const express = require('express');
+const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 
@@ -47,6 +48,6 @@ io.on('connection', function (socket) {
   });
 });
 
-server.listen(8081, function () {
+server.listen(port, function () {
   console.log(`Listening on ${server.address().port}`);
 });
