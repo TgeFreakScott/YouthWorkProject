@@ -38,6 +38,7 @@ io.on('connection', function (socket) {
     delete players[socket.id];
     // emit a message to all players to remove this player
     io.emit('disconnect', socket.id);
+    playersConnected--;
   });
   // when a player moves, update the player data
   socket.on('playerMovement', function (movementData)
