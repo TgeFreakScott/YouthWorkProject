@@ -22,6 +22,7 @@ io.on('connection', function (socket) {
     rotation: 0,
     x: Math.floor(Math.random() * 700) + 50,
     y: Math.floor(Math.random() * 500) + 50,
+    playerNumber: playersConnected,
     playerId: socket.id
   };
   playersConnected++;
@@ -29,9 +30,6 @@ io.on('connection', function (socket) {
   socket.emit('currentPlayers', players);
   // update all other players of the new player
   socket.broadcast.emit('newPlayer', players[socket.id]);
-
-  io.emit('PlayerCount', playersConnected);
-
   // when a player disconnects, remove them from our players object
   socket.on('disconnect', function ()
   {

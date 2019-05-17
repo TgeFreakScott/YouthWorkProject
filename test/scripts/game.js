@@ -26,7 +26,6 @@ var config = {
     var greenSprite;
     var yellowSprite;
     var numberofPlayersConnected = 0;
-    const MAXPLAYERS = 8;
     function preload()
         {
           this.load.image('pink', 'Sprite/pinkCapture.png', 'Sprite/physics/pinkShape.json');
@@ -93,6 +92,10 @@ var config = {
 
         function update()
         {
+          this.socket.on('PlayerCount', function(playersConnected)
+          {
+            numberofPlayersConnected = playersConnected;
+          });
           /*
             if (this.ship)
             {
@@ -123,51 +126,112 @@ var config = {
               else if (this.cursors.down.isDown)
               {
                 this.ship.y ++;
-              }
+              }*/
               // emit player movement
-              var x = this.ship.x;
-              var y = this.ship.y;
-              if (this.ship.oldPosition && (x !== this.ship.oldPosition.x || y !== this.ship.oldPosition.y))
+              if(pinkSprite)
               {
-                this.socket.emit('playerMovement', { x: this.ship.x, y: this.ship.y});
+                var pinkX = pinkSprite.x;
+                var pinkY = pinkSprite.y;
+                if (pinkSprite.oldPosition && (pinkX !== pinkSprite.oldPosition.x || pinkY !== pinkSprite.oldPosition.y))
+                {
+                  this.socket.emit('playerMovement', { x: pinkSprite.x, y: pinkSprite.y});
+                }
+
+                // save old position data
+                pinkSprite.oldPosition =
+                {
+                  x: pinkSprite.x,
+                  y: pinkSprite.y
+                };
               }
 
-              // save old position data
-              this.ship.oldPosition =
+              if(blueSprite)
               {
-                x: this.ship.x,
-                y: this.ship.y
-              };
-              */
+                var blueX = blueSprite.x;
+                var blueY = blueSprite.y;
+                if (blueSprite.oldPosition && (blueX !== blueSprite.oldPosition.x || blueY !== blueSprite.oldPosition.y))
+                {
+                  this.socket.emit('playerMovement', { x: blueSprite.x, y: blueSprite.y});
+                }
+
+                // save old position data
+                blueSprite.oldPosition =
+                {
+                  x: blueSprite.x,
+                  y: blueSprite.y
+                };
+              }
+
+              if(greySprite)
+              {
+                var greyX = greySprite.x;
+                var greyY = greySprite.y;
+                if (greySprite.oldPosition && (greyX !== greySprite.oldPosition.x || greyY !== greySprite.oldPosition.y))
+                {
+                  this.socket.emit('playerMovement', { x: greySprite.x, y: greySprite.y});
+                }
+
+                // save old position data
+                greySprite.oldPosition =
+                {
+                  x: greySprite.x,
+                  y: greySprite.y
+                };
+              }
+
+              if(greenSprite)
+              {
+                var greenX = greenSprite.x;
+                var greenY = greenSprite.y;
+                if (greenSprite.oldPosition && (greenX !== greenSprite.oldPosition.x || greenY !== greenSprite.oldPosition.y))
+                {
+                  this.socket.emit('playerMovement', { x: greenSprite.x, y: greenSprite.y});
+                }
+
+                // save old position data
+                greenSprite.oldPosition =
+                {
+                  x: greenSprite.x,
+                  y: greenSprite.y
+                };
+              }
+
+              if(yellowSprite)
+              {
+                var yellowX = yellowSprite.x;
+                var yellowY = yellowSprite.y;
+                if (yellowSprite.oldPosition && (yellowX !== yellowSprite.oldPosition.x || yellowY !== yellowSprite.oldPosition.y))
+                {
+                  this.socket.emit('playerMovement', { x: yellowSprite.x, y: yellowSprite.y});
+                }
+
+                // save old position data
+                yellowSprite.oldPosition =
+                {
+                  x: yellowSprite.x,
+                  y: yellowSprite.y
+                };
+              }
+
             }
             function addPlayer(self, playerInfo)
             {
-              switch(numberofPlayersConnected)
+              switch(playerInfo.playerNumber)
               {
                 case 0:
                   pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
-                  players[numberofPlayersConnected] = pinkSprite;
-                  //numberofPlayersConnected++;
                   break;
                 case 1:
                   blueSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
-                  players[numberofPlayersConnected] = blueSprite;
-                  //numberofPlayersConnected++;
                   break;
                 case 2:
                   greySprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2).setCollideWorldBounds(true);
-                  players[numberofPlayersConnected] = greySprite;
-                  //numberofPlayersConnected++;
                   break;
                 case 3:
                   greenSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2).setCollideWorldBounds(true);
-                  players[numberofPlayersConnected] = greenSprite;
-                  //numberofPlayersConnected++;
                   break;
                 case 4:
                   yellowSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2).setCollideWorldBounds(true);
-                  players[numberofPlayersConnected] = yellowSprite;
-                  //numberofPlayersConnected++;
                   break;
                 case 5:
                   break;
