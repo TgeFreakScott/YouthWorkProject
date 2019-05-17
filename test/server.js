@@ -12,6 +12,7 @@ app.get('/',function(req,res){
 });
 
 var players = {};
+var playersConnected = 0;
 
 io.on('connection', function (socket) {
   console.log('a user connected');
@@ -23,11 +24,13 @@ io.on('connection', function (socket) {
     y: Math.floor(Math.random() * 500) + 50,
     playerId: socket.id
   };
+  playersConnected++;
   // send the players object to the new player
   socket.emit('currentPlayers', players);
   // update all other players of the new player
   socket.broadcast.emit('newPlayer', players[socket.id]);
 
+  io.emit('PlayerCount', playersConnected);
 
   // when a player disconnects, remove them from our players object
   socket.on('disconnect', function ()

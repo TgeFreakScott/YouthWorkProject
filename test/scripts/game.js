@@ -69,6 +69,12 @@ var config = {
               }
             });
           });
+
+          this.socket.on('PlayerCount', function(playersConnected)
+          {
+            numberofPlayersConnected = playersConnected;
+          });
+
           this.socket.on('playerMoved', function (playerInfo)
           {
             self.otherPlayers.getChildren().forEach(function (otherPlayer)
@@ -141,27 +147,27 @@ var config = {
                 case 0:
                   pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
                   players[numberofPlayersConnected] = pinkSprite;
-                  numberofPlayersConnected++;
+                  //numberofPlayersConnected++;
                   break;
                 case 1:
                   blueSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
                   players[numberofPlayersConnected] = blueSprite;
-                  numberofPlayersConnected++;
+                  //numberofPlayersConnected++;
                   break;
                 case 2:
                   greySprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2).setCollideWorldBounds(true);
                   players[numberofPlayersConnected] = greySprite;
-                  numberofPlayersConnected++;
+                  //numberofPlayersConnected++;
                   break;
                 case 3:
                   greenSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2).setCollideWorldBounds(true);
                   players[numberofPlayersConnected] = greenSprite;
-                  numberofPlayersConnected++;
+                  //numberofPlayersConnected++;
                   break;
                 case 4:
                   yellowSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2).setCollideWorldBounds(true);
                   players[numberofPlayersConnected] = yellowSprite;
-                  numberofPlayersConnected++;
+                  //numberofPlayersConnected++;
                   break;
                 case 5:
                   break;
