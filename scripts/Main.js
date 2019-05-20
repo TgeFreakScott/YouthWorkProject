@@ -153,12 +153,13 @@ function main()
     var keys;
     var music;
     var textTimer;
-    var timer = 180;
+    var timer = 3;
     var textLives;
     var lives = 5;
-
+    var textGameOver;
     var greyJumpTimer = true;
     var lastGreyJump = 0;
+    var textBool = false;
 
     var game = new Phaser.Game(config);
 
@@ -371,9 +372,7 @@ function main()
         this.cameras.main.setRenderToTexture(customPipeline);
 
         var extracam = this.cameras.add();
-
         this.cameras.main.ignore(pinkTest);
-
         extracam.ignore(backgroundSprite);
 
       //Constraints connect 2 Bodies to another by a point
@@ -453,6 +452,12 @@ function main()
       textLives = this.add.text(30, 120, 'Lives: ' + lives).setFontSize(20);
       textLives.setTint(0xff000f, 0xfff000, 0x00000f, 0xf00000);
 
+      //textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
+      //        .setFontSize(64).setFontStyle('bold')
+      //        .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+      //        .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
+      //        .setBackgroundColor('#000000');
+
       this.input.setPollAlways();
 
     }
@@ -463,6 +468,15 @@ function main()
       {
         textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
       }
+      if(timer <= 0)
+      {
+        textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
+                .setFontSize(64).setFontStyle('bold')
+                .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+                .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
+                .setBackgroundColor('#000000');
+      }
+
       customPipeline.setFloat1('time', time);
       //time += 0.005;
 
