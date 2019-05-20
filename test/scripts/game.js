@@ -43,15 +43,11 @@ var config = {
         {
           var self = this;
           this.socket = io();
-          this.otherPlayers = this.physics.add.group();
           this.socket.on('currentPlayers', function (players)
           {
             Object.keys(players).forEach(function (id)
             {
-              if (players[id].playerId === self.socket.id)
-              {
-                addPlayer(self, players[id]);
-              }
+              addPlayer(self, players[id]);
             });
           });
           this.socket.on('newPlayer', function (playerInfo)
@@ -92,41 +88,37 @@ var config = {
 
         function update()
         {
-          this.socket.on('PlayerCount', function(playersConnected)
-          {
-            numberofPlayersConnected = playersConnected;
-          });
-          /*
-            if (this.ship)
+
+            if (pinkSprite)
             {
-              var pad1 = this.input.gamepad.getPad(0);
-              if (pad1.axes.length)
-              {
-                  var pinkAxisH = pad1.axes[0].getValue();
-                  var pinkAxisV = pad1.axes[1].getValue();
+              //var pad1 = this.input.gamepad.getPad(0);
+              //if (pad1.axes.length)
+              //{
+                  //var pinkAxisH = pad1.axes[0].getValue();
+                  //var pinkAxisV = pad1.axes[1].getValue();
 
-                  this.ship.x += 4 * pinkAxisH;
-                  this.ship.y += 4 * pinkAxisV;
+                //this.ship.x += 4 * pinkAxisH;
+                //this.ship.y += 4 * pinkAxisV;
 
-                  this.ship.flipX = (pinkAxisH < 0);
-              }
+                //this.ship.flipX = (pinkAxisH < 0);
+              //}
               if (this.cursors.left.isDown)
               {
-                this.ship.x --;
+                pinkSprite.x --;
               }
               else if (this.cursors.right.isDown)
               {
-                this.ship.x ++;
+                pinkSprite.x ++;
               }
 
               if (this.cursors.up.isDown)
               {
-                this.ship.y --;
+                pinkSprite.y --;
               }
               else if (this.cursors.down.isDown)
               {
-                this.ship.y ++;
-              }*/
+                pinkSprite.y ++;
+              }
               // emit player movement
               if(pinkSprite)
               {
@@ -214,41 +206,42 @@ var config = {
               }
 
             }
-            function addPlayer(self, playerInfo)
+          }
+          function addPlayer(self, playerInfo)
+          {
+            switch(playerInfo.playerNumber)
             {
-              switch(playerInfo.playerNumber)
-              {
-                case 0:
-                  pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
-                  break;
-                case 1:
-                  blueSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
-                  break;
-                case 2:
-                  greySprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2).setCollideWorldBounds(true);
-                  break;
-                case 3:
-                  greenSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2).setCollideWorldBounds(true);
-                  break;
-                case 4:
-                  yellowSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2).setCollideWorldBounds(true);
-                  break;
-                case 5:
-                  break;
-                case 6:
-                  break;
-                case 7:
-                  break;
-                default:
-                  break;
-              }
+              case 0:
+                pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
+                break;
+              case 1:
+                blueSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
+                break;
+              case 2:
+                greySprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2).setCollideWorldBounds(true);
+                break;
+              case 3:
+                greenSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2).setCollideWorldBounds(true);
+                break;
+              case 4:
+                yellowSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2).setCollideWorldBounds(true);
+                break;
+              case 5:
+                break;
+              case 6:
+                break;
+              case 7:
+                break;
+              default:
+                break;
             }
+          }
 
-            function addOtherPlayers(self, playerInfo)
-            {
-              var shapePink = self.cache.json.get('blueShape');
-              const otherPlayer = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
-              otherPlayer.playerId = playerInfo.playerId;
-              self.otherPlayers.add(otherPlayer);
-            }
-    }
+          function addOtherPlayers(self, playerInfo)
+          {
+            var shapePink = self.cache.json.get('blueShape');
+            const otherPlayer = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
+            otherPlayer.playerId = playerInfo.playerId;
+            self.otherPlayers.add(otherPlayer);
+          }        
+  }
