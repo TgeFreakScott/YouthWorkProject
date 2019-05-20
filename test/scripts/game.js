@@ -43,6 +43,8 @@ var config = {
         {
           var self = this;
           this.socket = io();
+          cursors = this.input.keyboard.createCursorKeys();
+          keys = this.input.keyboard.addKeys('W,A,S,D,I,J,K,L');
           this.socket.on('currentPlayers', function (players)
           {
             Object.keys(players).forEach(function (id)
@@ -102,109 +104,137 @@ var config = {
 
                 //this.ship.flipX = (pinkAxisH < 0);
               //}
-              if (this.cursors.left.isDown)
+              if (keys.A.isDown)
               {
                 pinkSprite.x --;
               }
-              else if (this.cursors.right.isDown)
+              else if (keys.D.isDown)
               {
                 pinkSprite.x ++;
               }
 
-              if (this.cursors.up.isDown)
+              if (keys.W.isDown)
               {
                 pinkSprite.y --;
               }
-              else if (this.cursors.down.isDown)
+              else if (keys.S.isDown)
               {
                 pinkSprite.y ++;
               }
-              // emit player movement
-              if(pinkSprite)
+              var pinkX = pinkSprite.x;
+              var pinkY = pinkSprite.y;
+              if (pinkSprite.oldPosition && (pinkX !== pinkSprite.oldPosition.x || pinkY !== pinkSprite.oldPosition.y))
               {
-                var pinkX = pinkSprite.x;
-                var pinkY = pinkSprite.y;
-                if (pinkSprite.oldPosition && (pinkX !== pinkSprite.oldPosition.x || pinkY !== pinkSprite.oldPosition.y))
-                {
-                  this.socket.emit('playerMovement', { x: pinkSprite.x, y: pinkSprite.y});
-                }
-
-                // save old position data
-                pinkSprite.oldPosition =
-                {
-                  x: pinkSprite.x,
-                  y: pinkSprite.y
-                };
+                this.socket.emit('playerMovement', { x: pinkSprite.x, y: pinkSprite.y});
               }
 
-              if(blueSprite)
+              // save old position data
+              pinkSprite.oldPosition =
               {
-                var blueX = blueSprite.x;
-                var blueY = blueSprite.y;
-                if (blueSprite.oldPosition && (blueX !== blueSprite.oldPosition.x || blueY !== blueSprite.oldPosition.y))
-                {
-                  this.socket.emit('playerMovement', { x: blueSprite.x, y: blueSprite.y});
-                }
+                x: pinkSprite.x,
+                y: pinkSprite.y
+              };
+            }
 
-                // save old position data
-                blueSprite.oldPosition =
-                {
-                  x: blueSprite.x,
-                  y: blueSprite.y
-                };
+            if(blueSprite)
+            {
+              if (keys.J.isDown)
+              {
+                blueSprite.x --;
+              }
+              else if (keys.L.isDown)
+              {
+                blueSprite.x ++;
+              }
+              if (keys.I.isDown)
+              {
+                blueSprite.y --;
+              }
+              else if (keys.K.isDown)
+              {
+                blueSprite.y ++;
+              }
+              var blueX = blueSprite.x;
+              var blueY = blueSprite.y;
+              if (blueSprite.oldPosition && (blueX !== blueSprite.oldPosition.x || blueY !== blueSprite.oldPosition.y))
+              {
+                this.socket.emit('playerMovement', { x: blueSprite.x, y: blueSprite.y});
               }
 
-              if(greySprite)
+              // save old position data
+              blueSprite.oldPosition =
               {
-                var greyX = greySprite.x;
-                var greyY = greySprite.y;
-                if (greySprite.oldPosition && (greyX !== greySprite.oldPosition.x || greyY !== greySprite.oldPosition.y))
-                {
-                  this.socket.emit('playerMovement', { x: greySprite.x, y: greySprite.y});
-                }
+                x: blueSprite.x,
+                y: blueSprite.y
+              };
+            }
 
-                // save old position data
-                greySprite.oldPosition =
-                {
-                  x: greySprite.x,
-                  y: greySprite.y
-                };
+            if(greySprite)
+            {
+              if (cursors.left.isDown)
+              {
+                greySprite.x --;
+              }
+              else if (cursors.right.isDown)
+              {
+                greySprite.x ++;
               }
 
-              if(greenSprite)
+              if (cursors.up.isDown)
               {
-                var greenX = greenSprite.x;
-                var greenY = greenSprite.y;
-                if (greenSprite.oldPosition && (greenX !== greenSprite.oldPosition.x || greenY !== greenSprite.oldPosition.y))
-                {
-                  this.socket.emit('playerMovement', { x: greenSprite.x, y: greenSprite.y});
-                }
-
-                // save old position data
-                greenSprite.oldPosition =
-                {
-                  x: greenSprite.x,
-                  y: greenSprite.y
-                };
+                greySprite.y --;
+              }
+              else if (cursors.down.isDown)
+              {
+                greySprite.y ++;
+              }
+              var greyX = greySprite.x;
+              var greyY = greySprite.y;
+              if (greySprite.oldPosition && (greyX !== greySprite.oldPosition.x || greyY !== greySprite.oldPosition.y))
+              {
+                this.socket.emit('playerMovement', { x: greySprite.x, y: greySprite.y});
               }
 
-              if(yellowSprite)
+              // save old position data
+              greySprite.oldPosition =
               {
-                var yellowX = yellowSprite.x;
-                var yellowY = yellowSprite.y;
-                if (yellowSprite.oldPosition && (yellowX !== yellowSprite.oldPosition.x || yellowY !== yellowSprite.oldPosition.y))
-                {
-                  this.socket.emit('playerMovement', { x: yellowSprite.x, y: yellowSprite.y});
-                }
+                x: greySprite.x,
+                y: greySprite.y
+              };
+            }
 
-                // save old position data
-                yellowSprite.oldPosition =
-                {
-                  x: yellowSprite.x,
-                  y: yellowSprite.y
-                };
+            if(greenSprite)
+            {
+              var greenX = greenSprite.x;
+              var greenY = greenSprite.y;
+              if (greenSprite.oldPosition && (greenX !== greenSprite.oldPosition.x || greenY !== greenSprite.oldPosition.y))
+              {
+                this.socket.emit('playerMovement', { x: greenSprite.x, y: greenSprite.y});
               }
 
+              // save old position data
+              greenSprite.oldPosition =
+              {
+                x: greenSprite.x,
+                y: greenSprite.y
+              };
+            }
+
+            if(yellowSprite)
+            {
+              var yellowX = yellowSprite.x;
+              var yellowY = yellowSprite.y;
+              if (yellowSprite.oldPosition && (yellowX !== yellowSprite.oldPosition.x || yellowY !== yellowSprite.oldPosition.y))
+              {
+                this.socket.emit('playerMovement', { x: yellowSprite.x, y: yellowSprite.y});
+              }
+
+              // save old position data
+              yellowSprite.oldPosition =
+              {
+                x: yellowSprite.x,
+                y: yellowSprite.y
+              };
             }
           }
           function addPlayer(self, playerInfo)
@@ -243,5 +273,5 @@ var config = {
             const otherPlayer = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
             otherPlayer.playerId = playerInfo.playerId;
             self.otherPlayers.add(otherPlayer);
-          }        
+          }
   }
