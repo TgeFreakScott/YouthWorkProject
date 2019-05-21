@@ -74,13 +74,26 @@ var config = {
 
           this.socket.on('playerMoved', function (playerInfo)
           {
-            self.otherPlayers.getChildren().forEach(function (otherPlayer)
+            if (playerInfo.playerId === pinkSprite.playerId)
             {
-              if (playerInfo.playerId === otherPlayer.playerId)
-              {
-                otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-              }
-            });
+              pinkSprite.setPosition(playerInfo.x, playerInfo.y);
+            }
+            if (playerInfo.playerId === blueSprite.playerId)
+            {
+              blueSprite.setPosition(playerInfo.x, playerInfo.y);
+            }
+            if (playerInfo.playerId === greySprite.playerId)
+            {
+              greySprite.setPosition(playerInfo.x, playerInfo.y);
+            }
+            if (playerInfo.playerId === greenSprite.playerId)
+            {
+              greenSprite.setPosition(playerInfo.x, playerInfo.y);
+            }
+            if (playerInfo.playerId === yellowSprite.playerId)
+            {
+              yellowSprite.setPosition(playerInfo.x, playerInfo.y);
+            }
           });
           this.cursors = this.input.keyboard.createCursorKeys();
           this.matter.world.setBounds();
@@ -90,20 +103,19 @@ var config = {
 
         function update()
         {
-
-            if (pinkSprite)
-            {
-              //var pad1 = this.input.gamepad.getPad(0);
-              //if (pad1.axes.length)
-              //{
-                  //var pinkAxisH = pad1.axes[0].getValue();
-                  //var pinkAxisV = pad1.axes[1].getValue();
+            //var pad1 = this.input.gamepad.getPad(0);
+            //if (pad1.axes.length)
+            //{
+                //var pinkAxisH = pad1.axes[0].getValue();
+                //var pinkAxisV = pad1.axes[1].getValue();
 
                 //this.ship.x += 4 * pinkAxisH;
                 //this.ship.y += 4 * pinkAxisV;
 
                 //this.ship.flipX = (pinkAxisH < 0);
-              //}
+            //}
+            if (pinkSprite)
+            {
               if (keys.A.isDown)
               {
                 pinkSprite.x --;
@@ -243,18 +255,23 @@ var config = {
             {
               case 0:
                 pinkSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2).setCollideWorldBounds(true);
+                pinkSprite.playerId = playerInfo.playerId;
                 break;
               case 1:
                 blueSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2).setCollideWorldBounds(true);
+                blueSprite.playerId = playerInfo.playerId;
                 break;
               case 2:
                 greySprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2).setCollideWorldBounds(true);
+                greySprite.playerId = playerInfo.playerId;
                 break;
               case 3:
                 greenSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2).setCollideWorldBounds(true);
+                greenSprite.playerId = playerInfo.playerId;
                 break;
               case 4:
                 yellowSprite = self.physics.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2).setCollideWorldBounds(true);
+                yellowSprite.playerId = playerInfo.playerId;
                 break;
               case 5:
                 break;
