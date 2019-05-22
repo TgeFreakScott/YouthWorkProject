@@ -94,8 +94,8 @@ GameOverScene.Boot.prototype = ({
                 .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
                 .setBackgroundColor('#000000');
 
-            this.input.once('pointerdown', function () {
-                  this.scene.start('gameOver');
+            this.input.once('pointerdown', function (){
+                game.scene.start('Boot', MyGame.Boot, true);
                   }, this);
     },
 
@@ -105,6 +105,7 @@ GameOverScene.Boot.prototype = ({
     }
 
 });
+var MyGame ={};
 
 function main()
 {
@@ -133,6 +134,7 @@ function main()
         pixelArt: true,
         input: {gamepad: true},
         scene: {
+          MyGame,
           GameOverScene,
           preload: preload,
           create: create,
@@ -146,6 +148,7 @@ function main()
             disableWebAudio: true
         }
     };
+    Phaser.Scene.call(this, { key: 'myGame' });
 
     var redSprite;
     var greySprite;
@@ -195,7 +198,7 @@ function main()
     var keys;
     var music;
     var textTimer;
-    var timer = 3;
+    var timer = 5;
     var nextTimer = 30;
     var textLives;
     var lives = 5;
@@ -206,7 +209,9 @@ function main()
 
     var game = new Phaser.Game(config);
 
+    //game.scene.add('Boot1', MyGame.Boot, false);
     game.scene.add('Boot', GameOverScene.Boot, false);
+
     //game.scene.add('gameOver', GameOverScene, true, { x: 400, y: 300 });
 
     function preload()
@@ -524,12 +529,12 @@ function main()
       if(timer < 0)
       {
         this.scene.pause();
-        
+
         game.scene.start('Boot', GameOverScene.Boot, true);
         //this.events.on('pause', function (){
           console.log(nextTimer);
             nextTimer--;
-      //  })
+        //})
 
         if(nextTimer <= 0)
         {
