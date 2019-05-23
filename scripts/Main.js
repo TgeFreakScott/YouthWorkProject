@@ -1,7 +1,6 @@
 var CustomPipeline2 = new Phaser.Class({
 
     Extends: Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline,
-
     initialize:
 
     function CustomPipeline2 (game)
@@ -64,6 +63,49 @@ var CustomPipeline2 = new Phaser.Class({
 
 });
 
+var GameOverScene ={};
+
+GameOverScene.Boot = function()
+{
+
+};
+
+GameOverScene.Boot.prototype = ({
+//var GameOverScene = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    initialize:
+
+    function GameOverScene ()
+    {
+        Phaser.Scene.call(this, { key: 'gameOver' });
+    },
+
+    preload: function ()
+    {
+
+    },
+
+    create: function ()
+    {
+            textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
+                .setFontSize(64).setFontStyle('bold')
+                .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+                .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
+                .setBackgroundColor('#000000');
+
+            this.input.once('pointerdown', function (){
+                game.scene.start('Boot', MyGame.Boot, true);
+                  }, this);
+    },
+
+    update: function (time, delta)
+    {
+          console.log('Hello');
+    }
+
+});
+var MyGame ={};
 
 function main()
 {
@@ -92,6 +134,8 @@ function main()
         pixelArt: true,
         input: {gamepad: true},
         scene: {
+          MyGame,
+          GameOverScene,
           preload: preload,
           create: create,
           update: update,
@@ -104,6 +148,7 @@ function main()
             disableWebAudio: true
         }
     };
+    Phaser.Scene.call(this, { key: 'myGame' });
 
     var redSprite;
     var greySprite;
@@ -153,7 +198,8 @@ function main()
     var keys;
     var music;
     var textTimer;
-    var timer = 3;
+    var timer = 5;
+    var nextTimer = 30;
     var textLives;
     var lives = 5;
     var textGameOver;
@@ -162,6 +208,11 @@ function main()
     var textBool = false;
 
     var game = new Phaser.Game(config);
+
+    //game.scene.add('Boot1', MyGame.Boot, false);
+    game.scene.add('Boot', GameOverScene.Boot, false);
+
+    //game.scene.add('gameOver', GameOverScene, true, { x: 400, y: 300 });
 
     function preload()
     {
@@ -464,18 +515,34 @@ function main()
 
     function update()
     {
+      if(nextTimer <= 0)
+      {
+        timer = 180;
+        nextTimer = 30;
+      }
+
       if(timer > 0)
       {
         textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
       }
-      if(timer <= 0)
+
+      if(timer < 0)
       {
-        textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
-                .setFontSize(64).setFontStyle('bold')
-                .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
-                .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
-                .setBackgroundColor('#000000');
+        this.scene.pause();
+
+        game.scene.start('Boot', GameOverScene.Boot, true);
+        //this.events.on('pause', function (){
+          console.log(nextTimer);
+            nextTimer--;
+        //})
+
+        if(nextTimer <= 0)
+        {
+          this.scene.resume();
+        }
       }
+
+
 
       customPipeline.setFloat1('time', time);
       //time += 0.005;
