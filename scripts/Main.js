@@ -277,11 +277,11 @@ function main()
     {
       this.matter.world.setBounds();
       var self = this;
-      this.socket = io();
+      //this.socket = io();
       this.otherPlayers = this.add.group();
       cursors = this.input.keyboard.createCursorKeys();
       keys = this.input.keyboard.addKeys('W,A,S,D,I,J,K,L');
-      this.socket.on('currentPlayers', function (players)
+      /*this.socket.on('currentPlayers', function (players)
       {
         Object.keys(players).forEach(function (id)
         {
@@ -318,7 +318,7 @@ function main()
             otherPlayer.setPosition(playerInfo.x, playerInfo.y);
           }
         });
-      });
+      });*/
 
       var Bodies = Phaser.Physics.Matter.Matter.Bodies;
 
@@ -795,6 +795,7 @@ function main()
 
             yellowSprite.flipX = (yellowAxisH < 0);
         }*/
+        /*
         if (this.player)
         {
           if (keys.J.isDown)
@@ -826,11 +827,11 @@ function main()
         this.player.oldPosition = {
           x: this.player.x,
           y: this.player.y
-        };
+        };*/
 
     }
 
-    function addPlayer(self, playerInfo)
+    /*function addPlayer(self, playerInfo)
     {
       self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'white').setScale(0.2);
       self.player.destroy();
@@ -885,5 +886,5 @@ function main()
           break;
       }
       self.otherPlayers.add(otherPlayer);
-    }
+    }*/
 }
