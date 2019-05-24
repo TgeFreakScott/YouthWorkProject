@@ -18,7 +18,6 @@ var config = {
               impact: { debug: true }},
             }
     };
-    var players = [];
     var greySprite;
     var blueSprite;
     var pinkSprite;
@@ -38,7 +37,7 @@ var config = {
           this.load.json('greenShape', 'Sprite/physics/greenShape.json');
           this.load.image('yellow', 'Sprite/yellowCapture.png', 'Sprite/physics/yellowShape.json');
           this.load.json('yellowShape', 'Sprite/physics/yellowShape.json');
-          this.load.image('white', 'Sprite/whiteCapture.png', 'Sprite/physics/pinkShape.json')
+          this.load.image('white', 'Sprite/whiteCapture.png', 'Sprite/physics/pinkShape.json');
         }
         function create()
         {
