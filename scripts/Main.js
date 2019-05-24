@@ -60,7 +60,6 @@ var CustomPipeline2 = new Phaser.Class({
           ].join('\n')
         });
     }
-
 });
 
 var GameOverScene ={};
@@ -239,6 +238,7 @@ function main()
       this.load.image('yellow', 'Sprite/yellowCapture.png','Sprite/physics/yellowShape.json');
       this.load.image('pink', 'Sprite/pinkCapture.png', 'Sprite/physics/pinkShape.json');
       this.load.image('blue', 'Sprite/blueCapture.png', 'Sprite/physics/blueShape.json' );
+      this.load.image('white', 'Sprite/base.png', 'Sprite/physics/pinkShape.json');
       this.load.image('clawBody', 'Sprite/clawBody.png', 'Sprite/physics/clawBodyShape.json');
 
       this.load.image('armLeftBody', 'Sprite/armLeft.png', 'Sprite/physics/armLeftShape.json');
@@ -276,8 +276,49 @@ function main()
     function create()
     {
       this.matter.world.setBounds();
+      var self = this;
+      this.socket = io();
+      this.otherPlayers = this.add.group();
       cursors = this.input.keyboard.createCursorKeys();
-      keys = this.input.keyboard.addKeys('W,A,S,D');
+      keys = this.input.keyboard.addKeys('W,A,S,D,I,J,K,L');
+      this.socket.on('currentPlayers', function (players)
+      {
+        Object.keys(players).forEach(function (id)
+        {
+          if (players[id].playerId === self.socket.id)
+          {
+            addPlayer(self, players[id]);
+          }
+          else
+          {
+            addOtherPlayers(self, players[id]);
+          }
+        });
+      });
+      this.socket.on('newPlayer', function (playerInfo)
+      {
+          addOtherPlayers(self, playerInfo);
+      });
+      this.socket.on('disconnect', function (playerId)
+      {
+        self.otherPlayers.getChildren().forEach(function (otherPlayer)
+        {
+          if (playerId === otherPlayer.playerId)
+          {
+            otherPlayer.destroy();
+          }
+        });
+      })
+      this.socket.on('playerMoved', function (playerInfo)
+      {
+        self.otherPlayers.getChildren().forEach(function (otherPlayer)
+        {
+          if (playerInfo.playerId === otherPlayer.playerId)
+          {
+            otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+          }
+        });
+      });
 
       var Bodies = Phaser.Physics.Matter.Matter.Bodies;
 
@@ -754,16 +795,95 @@ function main()
 
             yellowSprite.flipX = (yellowAxisH < 0);
         }*/
+        if (this.player)
+        {
+          if (keys.J.isDown)
+          {
+            this.player.x --;
+          }
+          else if (keys.L.isDown)
+          {
+            this.player.x ++;
+          }
+          if (keys.I.isDown)
+          {
+            this.player.y --;
+          }
+          else if (keys.K.isDown)
+          {
+            this.player.y ++;
+          }
+        }
+
+        var x = this.player.x;
+        var y = this.player.y;
+        if (this.player.oldPosition && (x !== this.player.oldPosition.x || y !== this.player.oldPosition.y))
+        {
+          this.socket.emit('playerMovement', { x: this.player.x, y: this.player.y});
+        }
+
+        // save old position data
+        this.player.oldPosition = {
+          x: this.player.x,
+          y: this.player.y
+        };
 
     }
 
-    /*function movePlayer(id,x,y)
+    function addPlayer(self, playerInfo)
     {
-      var player = Game.playerMap[id];
-      var distance = Phaser.Math.distance(player.x,player.y,x,y);
-      var duration = distance*10;
-      var tween = game.add.tween(player);
-      tween.to({x:x,y:y}, duration);
-      tween.start();
-    }*/
+      self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'white').setScale(0.2);
+      self.player.destroy();
+      switch(playerInfo.playerNumber)
+      {
+        case 0:
+          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2);
+          break;
+        case 1:
+          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2);
+          break;
+        case 2:
+          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2);
+          break;
+        case 3:
+          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2);
+          break;
+        case 4:
+          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2);
+          break;
+        default:
+          break;
+      }
+    }
+
+    function addOtherPlayers(self, playerInfo)
+    {
+      var otherPlayer;
+      switch(playerInfo.playerNumber)
+      {
+        case 0:
+          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'pink').setScale(0.2);
+          otherPlayer.playerId = playerInfo.playerId;
+          break;
+        case 1:
+          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'blue').setScale(0.2);
+          otherPlayer.playerId = playerInfo.playerId;
+          break;
+        case 2:
+          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'grey').setScale(0.2);
+          otherPlayer.playerId = playerInfo.playerId;
+          break;
+        case 3:
+          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'green').setScale(0.2);
+          otherPlayer.playerId = playerInfo.playerId;
+          break;
+        case 4:
+          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2);
+          otherPlayer.playerId = playerInfo.playerId;
+          break;
+        default:
+          break;
+      }
+      self.otherPlayers.add(otherPlayer);
+    }
 }
