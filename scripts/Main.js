@@ -202,7 +202,7 @@ function main()
     var keys;
     var music;
     var textTimer;
-    var timer = 5;
+    var timer = 180;
     var nextTimer = 30;
     var textLives;
     var lives = 5;
@@ -215,7 +215,6 @@ function main()
 
     //game.scene.add('Boot1', MyGame.Boot, false);
     game.scene.add('Boot', GameOverScene.Boot, false);
-
     //game.scene.add('gameOver', GameOverScene, true, { x: 400, y: 300 });
 
     function preload()
@@ -380,12 +379,14 @@ function main()
       sprite1 = this.matter.add.sprite(600, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
       .setScale(0.2).setMass(400).setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
       sprite1.setExistingBody(compoundBody2);
+
       sprite1.setPosition(600,300).setScale(0.2).setMass(400)
       .setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
 
       sprite2 = this.matter.add.sprite(300, 500, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
       .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
       sprite2.setExistingBody(compoundBody);
+
       sprite2.setPosition(300,500).setScale(0.2).setMass(400)
       .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
 
@@ -519,16 +520,7 @@ function main()
 
     function update()
     {
-      if(nextTimer <= 0)
-      {
-        timer = 180;
-        nextTimer = 30;
-      }
-
-      if(timer > 0)
-      {
-        textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
-      }
+      textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
 
       if(timer < 0)
       {
@@ -536,10 +528,14 @@ function main()
 
         game.scene.start('Boot', GameOverScene.Boot, true);
         //this.events.on('pause', function (){
+
+            if(timer > 0)
+            {
+              game.scene.start('Boot1', MyGame.Boot, true);
+              console.log('Poop')
+              this.scene.resume();
+            }
             timer = 4;
-            game.scene.start('Boot1', MyGame.Boot, true);
-            nextTimer--;
-            console.log(nextTimer);
         //})
           //this.scene.resume();
       }
