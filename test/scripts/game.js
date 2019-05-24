@@ -44,7 +44,7 @@ var config = {
         {
           var self = this;
           this.socket = io();
-          this.otherPlayers = this.physics.add.group();
+          this.otherPlayers = this.add.group();
           cursors = this.input.keyboard.createCursorKeys();
           keys = this.input.keyboard.addKeys('W,A,S,D');
           this.socket.on('currentPlayers', function (players)
@@ -54,7 +54,8 @@ var config = {
               if (players[id].playerId === self.socket.id)
               {
                 addPlayer(self, players[id]);
-              } else
+              }
+              else
               {
                 addOtherPlayers(self, players[id]);
               }
@@ -62,7 +63,7 @@ var config = {
           });
           this.socket.on('newPlayer', function (playerInfo)
           {
-            addOtherPlayers(self, playerInfo);
+              addOtherPlayers(self, playerInfo);
           });
           this.socket.on('disconnect', function (playerId)
           {
@@ -138,54 +139,57 @@ var config = {
 
           function addPlayer(self, playerInfo)
           {
-            self.player = self.physics.add.image(playerInfo.x, playerInfo.y, 'white').setScale(0.2);
-
-            if (playerInfo.playerNumber === 0)
+            self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'white').setScale(0.2);
+            self.player.destroy();
+            switch(playerInfo.playerNumber)
             {
-              self.player.setTint(0xff1493);
-            }
-            else if(playerInfo.playerNumber === 1)
-            {
-              self.player.setTint(0x3338ff);
-            }
-            else if(playerInfo.playerNumber === 2)
-            {
-              self.player.setTint(0x757575);
-            }
-            else if(playerInfo.playerNumber === 3)
-            {
-              self.player.setTint(0x00ae1a);
-            }
-            else if(playerInfo.playerNumber === 4)
-            {
-              self.player.setTint(0xdbff00);
+              case 0:
+                self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2);
+                break;
+              case 1:
+                self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2);
+                break;
+              case 2:
+                self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2);
+                break;
+              case 3:
+                self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2);
+                break;
+              case 4:
+                self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2);
+                break;
+              default:
+                break;
             }
           }
           function addOtherPlayers(self, playerInfo)
           {
-            const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'white').setScale(0.2);
-
-            if (playerInfo.playerNumber === 0)
+            var otherPlayer;
+            switch(playerInfo.playerNumber)
             {
-              otherPlayer.setTint(0xff1493);
+              case 0:
+                otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'pink').setScale(0.2);
+                otherPlayer.playerId = playerInfo.playerId;
+                break;
+              case 1:
+                otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'blue').setScale(0.2);
+                otherPlayer.playerId = playerInfo.playerId;
+                break;
+              case 2:
+                otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'grey').setScale(0.2);
+                otherPlayer.playerId = playerInfo.playerId;
+                break;
+              case 3:
+                otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'green').setScale(0.2);
+                otherPlayer.playerId = playerInfo.playerId;
+                break;
+              case 4:
+                otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2);
+                otherPlayer.playerId = playerInfo.playerId;
+                break;
+              default:
+                break;
             }
-            else if(playerInfo.playerNumber === 1)
-            {
-              otherPlayer.setTint(0x3338ff);
-            }
-            else if(playerInfo.playerNumber === 2)
-            {
-              otherPlayer.setTint(0x757575);
-            }
-            else if(playerInfo.playerNumber === 3)
-            {
-              otherPlayer.setTint(0x00ae1a);
-            }
-            else if(playerInfo.playerNumber === 4)
-            {
-              otherPlayer.setTint(0xdbff00);
-            }
-            otherPlayer.playerId = playerInfo.playerId;
             self.otherPlayers.add(otherPlayer);
           }
   }
