@@ -95,7 +95,9 @@ GameOverScene.Boot.prototype = ({
                 .setBackgroundColor('#000000');
 
             this.input.once('pointerdown', function (){
-                game.scene.start('Boot', MyGame.Boot, true);
+              //  this.scene.add('Boot1', MyGame.Boot, true);
+                this.scene.start('myGame');
+                console.log('OOF');
                   }, this);
     },
 
@@ -105,6 +107,7 @@ GameOverScene.Boot.prototype = ({
     }
 
 });
+
 var MyGame ={};
 
 function main()
@@ -148,6 +151,7 @@ function main()
             disableWebAudio: true
         }
     };
+
     Phaser.Scene.call(this, { key: 'myGame' });
 
     var redSprite;
@@ -532,14 +536,12 @@ function main()
 
         game.scene.start('Boot', GameOverScene.Boot, true);
         //this.events.on('pause', function (){
-          console.log(nextTimer);
+            timer = 4;
+            game.scene.start('Boot1', MyGame.Boot, true);
             nextTimer--;
+            console.log(nextTimer);
         //})
-
-        if(nextTimer <= 0)
-        {
-          this.scene.resume();
-        }
+          //this.scene.resume();
       }
 
 
