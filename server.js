@@ -3,50 +3,49 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 
-app.use('/css',express.static(__dirname + '/css'));
-app.use('/scripts',express.static(__dirname + '/scripts'));
-app.use('/Sprite',express.static(__dirname + '/Sprite'));
+var pinkData = {x: 0, y:0};
+var blueData = {x: 0, y:0};
+var greyData = {x: 0, y:0};
+var greenData = {x: 0, y:0};
+var yellowData = {x: 0, y:0};
 
-app.get('/',function(req,res){
-    res.sendFile(__dirname+'/Blank.html');
-});
-
-var players = {};
-var playersConnected = 0;
-
-io.on('connection', function (socket) {
-  console.log('a user connected');
-  // create a new player and add it to our players object
-  players[socket.id] =
-  {
-    rotation: 0,
-    x: Math.floor(Math.random() * 700) + 50,
-    y: Math.floor(Math.random() * 500) + 50,
-    playerNumber: playersConnected,
-    playerId: socket.id
-  };
-  playersConnected++;
-  // send the players object to the new player
-  socket.emit('currentPlayers', players);
-  // update all other players of the new player
-  socket.broadcast.emit('newPlayer', players[socket.id]);
-  // when a player disconnects, remove them from our players object
-  socket.on('disconnect', function ()
-  {
-    console.log('user disconnected');
-    // remove this player from our players object
-    delete players[socket.id];
-    // emit a message to all players to remove this player
-    io.emit('disconnect', socket.id);
-    playersConnected--;
-  });
+io.on('connection', function (socket)
+ {
   // when a player moves, update the player data
-  socket.on('playerMovement', function (movementData)
+  socket.on('pinkMovement', function (movementData)
   {
-    players[socket.id].x = movementData.x;
-    players[socket.id].y = movementData.y;
+    pinkData.x = movementData.x;
+    pinkData.y = movementData.y;
     // emit a message to all players about the player that moved
-    socket.broadcast.emit('playerMoved', players[socket.id]);
+    socket.broadcast.emit('pinkMoved', pinkData);
+  });
+  socket.on('blueMovement', function (movementData)
+  {
+    blueData.x = movementData.x;
+    blueData.y = movementData.y;
+    // emit a message to all players about the player that moved
+    socket.broadcast.emit('blueMoved', blueData);
+  });
+  socket.on('greyMovement', function (movementData)
+  {
+    greyData.x = movementData.x;
+    greyData.y = movementData.y;
+    // emit a message to all players about the player that moved
+    socket.broadcast.emit('greyMoved', greyData);
+  });
+  socket.on('greenMovement', function (movementData)
+  {
+    greenData.x = movementData.x;
+    greenData.y = movementData.y;
+    // emit a message to all players about the player that moved
+    socket.broadcast.emit('greenMoved', greenData);
+  });
+  socket.on('yellowMovement', function (movementData)
+  {
+    yellowData.x = movementData.x;
+    yellowData.y = movementData.y;
+    // emit a message to all players about the player that moved
+    socket.broadcast.emit('yellowMoved', yellowData);
   });
 });
 
