@@ -281,44 +281,6 @@ function main()
       this.otherPlayers = this.add.group();
       cursors = this.input.keyboard.createCursorKeys();
       keys = this.input.keyboard.addKeys('W,A,S,D,I,J,K,L');
-      /*this.socket.on('currentPlayers', function (players)
-      {
-        Object.keys(players).forEach(function (id)
-        {
-          if (players[id].playerId === self.socket.id)
-          {
-            addPlayer(self, players[id]);
-          }
-          else
-          {
-            addOtherPlayers(self, players[id]);
-          }
-        });
-      });
-      this.socket.on('newPlayer', function (playerInfo)
-      {
-          addOtherPlayers(self, playerInfo);
-      });
-      this.socket.on('disconnect', function (playerId)
-      {
-        self.otherPlayers.getChildren().forEach(function (otherPlayer)
-        {
-          if (playerId === otherPlayer.playerId)
-          {
-            otherPlayer.destroy();
-          }
-        });
-      })
-      this.socket.on('playerMoved', function (playerInfo)
-      {
-        self.otherPlayers.getChildren().forEach(function (otherPlayer)
-        {
-          if (playerInfo.playerId === otherPlayer.playerId)
-          {
-            otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-          }
-        });
-      });*/
 
       var Bodies = Phaser.Physics.Matter.Matter.Bodies;
 
@@ -554,6 +516,19 @@ function main()
       //        .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
       //        .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
       //        .setBackgroundColor('#000000');
+
+      var tween = this.tweens.add({
+          targets: pinkTest,
+          props: {
+              x: { value: '+=600', duration: 3000, yoyo: true, repeat: -1, ease: 'Power1', repeat: -1 },
+              y: { value: '-=64', duration: 600, yoyo: true, repeat: -1, ease: 'Power1' } },
+          delay: 1000
+      });
+
+      /*this.socket.on('greyMoved', function (greyData)
+      {
+        sprite2.setPosition(greyData.x, greyData.y);
+      });*/
 
       this.input.setPollAlways();
 
@@ -795,7 +770,6 @@ function main()
 
             yellowSprite.flipX = (yellowAxisH < 0);
         }*/
-        /*
         if (this.player)
         {
           if (keys.J.isDown)
@@ -816,75 +790,22 @@ function main()
           }
         }
 
-        var x = this.player.x;
-        var y = this.player.y;
-        if (this.player.oldPosition && (x !== this.player.oldPosition.x || y !== this.player.oldPosition.y))
+        /*if(sprite2)
         {
-          this.socket.emit('playerMovement', { x: this.player.x, y: this.player.y});
-        }
+          var greyX = sprite2.x;
+          var greyY = sprite2.y;
+          if (sprite2.oldPosition && (x !== sprite2.oldPosition.x || y !== sprite2.oldPosition.y))
+          {
+            this.socket.emit('greyMovement', { x: sprite2.x, y: sprite2.y});
+          }
 
-        // save old position data
-        this.player.oldPosition = {
-          x: this.player.x,
-          y: this.player.y
-        };*/
-
+          // save old position data
+          sprite2.oldPosition = {
+            x: sprite2.x,
+            y: sprite2.y
+          };
+        }*/
     }
 
-    /*function addPlayer(self, playerInfo)
-    {
-      self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'white').setScale(0.2);
-      self.player.destroy();
-      switch(playerInfo.playerNumber)
-      {
-        case 0:
-          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'pink').setScale(0.2);
-          break;
-        case 1:
-          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'blue').setScale(0.2);
-          break;
-        case 2:
-          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'grey').setScale(0.2);
-          break;
-        case 3:
-          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'green').setScale(0.2);
-          break;
-        case 4:
-          self.player = self.matter.add.image(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2);
-          break;
-        default:
-          break;
-      }
-    }
 
-    function addOtherPlayers(self, playerInfo)
-    {
-      var otherPlayer;
-      switch(playerInfo.playerNumber)
-      {
-        case 0:
-          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'pink').setScale(0.2);
-          otherPlayer.playerId = playerInfo.playerId;
-          break;
-        case 1:
-          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'blue').setScale(0.2);
-          otherPlayer.playerId = playerInfo.playerId;
-          break;
-        case 2:
-          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'grey').setScale(0.2);
-          otherPlayer.playerId = playerInfo.playerId;
-          break;
-        case 3:
-          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'green').setScale(0.2);
-          otherPlayer.playerId = playerInfo.playerId;
-          break;
-        case 4:
-          otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'yellow').setScale(0.2);
-          otherPlayer.playerId = playerInfo.playerId;
-          break;
-        default:
-          break;
-      }
-      self.otherPlayers.add(otherPlayer);
-    }*/
 }
