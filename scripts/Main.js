@@ -120,6 +120,8 @@ function main()
   var greyRight = true;
   var greyJump = false;
 
+  var computerID;
+
   function iconChange()
   {
     setTimeout(function(){ document.getElementById("icon").href = "Sprite/frame_0.png";}, 1000);
@@ -209,6 +211,7 @@ function main()
     var greyJumpTimer = true;
     var lastGreyJump = 0;
     var textBool = false;
+    var randomTimer = 2;
 
     var game = new Phaser.Game(config);
 
@@ -279,6 +282,10 @@ function main()
       var self = this;
       this.socket = io();
       this.otherPlayers = this.add.group();
+      this.socket.on('getSocketID', function (tempVar)
+      {
+        computerID = tempVar;
+      });
       cursors = this.input.keyboard.createCursorKeys();
       keys = this.input.keyboard.addKeys('W,A,S,D,I,J,K,L');
 
@@ -353,9 +360,9 @@ function main()
       floorSprite = this.matter.add.image(500,930,'floor',{ shape: 'square'}).setScale(1.1).setAlpha(1).setStatic(true);
 
       pinkTest = this.matter.add.image(250, 400, 'pink','pink',{shape: shapePink.pinkCapture })
-      .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);//.setExistingBody(compoundBody);
+      .setFixedRotation(true).setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);//.setExistingBody(compoundBody);
       blueTest = this.matter.add.image(450, 450, 'blue','blue', {shape: shapeBlue.blueCapture })
-      .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
+      .setFixedRotation(true).setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
 
       armLeftSprite = this.matter.add.image(300, 400,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
       .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(1000).setMass(2750);
@@ -519,6 +526,7 @@ function main()
       //    delay: 1000
       //});
 
+
       this.socket.on('redMoved', function (redData)
       {
         sprite1.setPosition(redData.x, redData.y);
@@ -531,6 +539,7 @@ function main()
       this.socket.on('greyArrowMoved', function (greyArrowData)
       {
         greyArrow.setPosition(greyArrowData.x, greyArrowData.y);
+        greyArrow.setAngle(greyArrowData.angle);
       });
 
       this.input.setPollAlways();
@@ -539,6 +548,16 @@ function main()
 
     function update()
     {
+      var player = 1;
+      console.log(randomTimer);
+
+      Math.trunc(randomTimer = randomTimer - 0.02);
+      if(randomTimer <= 0)
+      {
+          pinkTest.setVelocityX(Math.floor((Math.random() * 100) + -50));
+          randomTimer = 1.4;
+      }
+
       textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
 
       if(timer < 0)
@@ -651,86 +670,94 @@ function main()
         var pad2 = this.input.gamepad.getPad(1);
         //var pad3 = this.input.gamepad.getPad(2);
         //var pad4 = this.input.gamepad.getPad(3);
-
-        if (pad1.axes.length)
-        {
-            var redAxisH = pad1.axes[0].getValue();
-            var redAxisV = pad1.axes[1].getValue();
-
-            sprite1.x += 20 * redAxisH;
-            sprite1.y += 20 * redAxisV;
-
-            if(redAxisH > 0)
-            {
-              redArrow.rotation -= 0.01;
-              redLeft = true;
-              redRight = false;
-            }
-            if(redAxisH < 0)
-            {
-              redArrow.rotation += 0.01;
-              redLeft = false;
-              redRight = true;
-            }
-        }
-
-        if(pad1.buttons.length)
-        {
-            var redButton = pad1.buttons[1].value;
-
-            if (redButton === 1 && !redJump)
-            {
-                redJump = true;
-                sprite1.setVelocityY(-25);
-            }
-            if (redButton === 0)
-            {
-                redJump = false;
-            }
-
-        }
-
-        if(pad2.axes.length)
-        {
-            var greyAxisH = pad2.axes[0].getValue();
-
-            if(greyAxisH > 0) //right
-            {
-              greyArrow.angle += 15;
-              if(greyArrow.angle > 90)
+        //this.socket.emit('requestSocketID');
+        //this.socket.on('passSocketID', function(socketID)
+        //{
+            //if(computerID === socketID.firstConnection)
+          //  {
+              if (pad1.axes.length)
               {
-                greyArrow.angle = 90;
+                  var redAxisH = pad1.axes[0].getValue();
+                  var redAxisV = pad1.axes[1].getValue();
+
+                  sprite1.x += 20 * redAxisH;
+                  sprite1.y += 20 * redAxisV;
+
+                  if(redAxisH > 0)
+                  {
+                    redArrow.rotation -= 0.01;
+                    redLeft = true;
+                    redRight = false;
+                  }
+                  if(redAxisH < 0)
+                  {
+                    redArrow.rotation += 0.01;
+                    redLeft = false;
+                    redRight = true;
+                  }
               }
-              greyLeft = true;
-              greyRight = false;
-            }
-            if(greyAxisH < 0) //left
-            {
-              greyArrow.angle -= 15;
-              if(greyArrow.angle < -90)
+
+              if(pad1.buttons.length)
               {
-                greyArrow.angle = -90;
+                  var redButton = pad1.buttons[1].value;
+
+                  if (redButton === 1 && !redJump)
+                  {
+                      redJump = true;
+                      sprite1.setVelocityY(-25);
+                  }
+                  if (redButton === 0)
+                  {
+                      redJump = false;
+                  }
               }
-              greyLeft = false;
-              greyRight = true;
-            }
-        }
-        if(pad2.buttons.length)
-        {
-            var greyButton = pad2.buttons[1].value;
-            if (greyButton === 1 && greyJumpTimer && !greyJump)
-            {
-                sprite2.anims.play('greyJump');
-                lastGreyJump = this.time.now;
-                sprite2.setVelocityY(-25);
-                greyJump = true;
-            }
-            if (greyButton === 0 )
-            {
-                greyJump = false;
-                sprite2.anims.play('walk1', true);
-            }
-        }
+            //}
+            //else
+            //{
+              if(pad2.axes.length)
+              {
+                  var greyAxisH = pad2.axes[0].getValue();
+
+                  if(greyAxisH > 0) //right
+                  {
+                    greyArrow.angle += 15;
+                    if(greyArrow.angle > 90)
+                    {
+                      greyArrow.angle = 90;
+                    }
+                    greyLeft = true;
+                    greyRight = false;
+                  }
+                  if(greyAxisH < 0) //left
+                  {
+                    greyArrow.angle -= 15;
+                    if(greyArrow.angle < -90)
+                    {
+                      greyArrow.angle = -90;
+                    }
+                    greyLeft = false;
+                    greyRight = true;
+                  }
+              }
+              if(pad2.buttons.length)
+              {
+                  var greyButton = pad2.buttons[1].value;
+                  if (greyButton === 1 && greyJumpTimer && !greyJump)
+                  {
+                      sprite2.anims.play('greyJump');
+                      lastGreyJump = this.time.now;
+                      sprite2.setVelocityY(-25);
+                      greyJump = true;
+                  }
+                  if (greyButton === 0 )
+                  {
+                      greyJump = false;
+                      sprite2.anims.play('walk1', true);
+                  }
+              }
+            //}
+        //});
+
         if(!redLeft)
         {
           sprite1.flipX = true;
@@ -810,15 +837,17 @@ function main()
         {
           var greyArrowX = greyArrow.x;
           var greyArrowY = greyArrow.y;
-          if (greyArrow.oldPosition && (greyArrowX !== greyArrow.oldPosition.x || greyArrowY !== greyArrow.oldPosition.y))
+          var greyArrowAngle = greyArrow.angle;
+          if (greyArrow.oldPosition && (greyArrowX !== greyArrow.oldPosition.x || greyArrowY !== greyArrow.oldPosition.y || greyArrowAngle !== greyArrow.oldPosition.angle))
           {
-            this.socket.emit('greyArrowMovement', { x: greyArrow.x, y: greyArrow.y});
+            this.socket.emit('greyArrowMovement', { x: greyArrow.x, y: greyArrow.y, angle: greyArrow.angle});
           }
 
           // save old position data
           greyArrow.oldPosition = {
             x: greyArrow.x,
-            y: greyArrow.y
+            y: greyArrow.y,
+            angle: greyArrow.angle
           };
         }
     }
