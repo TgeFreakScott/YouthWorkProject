@@ -3,6 +3,14 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 
+app.use('/css',express.static(__dirname + '/css'));
+app.use('/scripts',express.static(__dirname + '/scripts'));
+app.use('/Sprite',express.static(__dirname + '/Sprite'));
+
+app.get('/',function(req,res){
+    res.sendFile(__dirname +'/Blank.html');
+});
+
 var pinkData = {x: 0, y:0};
 var blueData = {x: 0, y:0};
 var greyData = {x: 0, y:0};
