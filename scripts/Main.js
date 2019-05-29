@@ -228,7 +228,7 @@ function main()
       customPipeline.setFloat2('dir', 1.0, 1.0);
 
       //Loading in test music
-      this.load.audio('test', ['assets/audio/musicTest.mp3', 'assets/audio/musicTest.ogg']);
+      this.load.audio('test', ['audio/musicTest.mp3', 'audio/musicTest.ogg']);
 
       //loads image by ("Name your giving to sprite" , "the sprite location" , "JSON file location")
       //player Sprites
