@@ -4,6 +4,7 @@ var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 
 app.use('/css',express.static(__dirname + '/css'));
+app.use('/audio',express.static(__dirname + '/audio'));
 app.use('/scripts',express.static(__dirname + '/scripts'));
 app.use('/Sprite',express.static(__dirname + '/Sprite'));
 
