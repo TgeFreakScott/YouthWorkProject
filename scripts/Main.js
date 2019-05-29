@@ -519,10 +519,18 @@ function main()
       //    delay: 1000
       //});
 
+      this.socket.on('redMoved', function (redData)
+      {
+        sprite1.setPosition(redData.x, redData.y);
+      });
 
       this.socket.on('greyMoved', function (greyData)
       {
         sprite2.setPosition(greyData.x, greyData.y);
+      });
+      this.socket.on('greyArrowMoved', function (greyArrowData)
+      {
+        greyArrow.setPosition(greyArrowData.x, greyArrowData.y);
       });
 
       this.input.setPollAlways();
@@ -765,31 +773,29 @@ function main()
 
             yellowSprite.flipX = (yellowAxisH < 0);
         }*/
-        if (this.player)
+
+
+        if(sprite1)
         {
-          if (keys.J.isDown)
+          var redX = sprite1.x;
+          var redY = sprite1.y;
+          if (sprite1.oldPosition && (redX !== sprite1.oldPosition.x || redY !== sprite1.oldPosition.y))
           {
-            this.player.x --;
+            this.socket.emit('redMovement', { x: sprite1.x, y: sprite1.y});
           }
-          else if (keys.L.isDown)
-          {
-            this.player.x ++;
-          }
-          if (keys.I.isDown)
-          {
-            this.player.y --;
-          }
-          else if (keys.K.isDown)
-          {
-            this.player.y ++;
-          }
+
+          // save old position data
+          sprite1.oldPosition = {
+            x: sprite1.x,
+            y: sprite1.y
+          };
         }
 
         if(sprite2)
         {
           var greyX = sprite2.x;
           var greyY = sprite2.y;
-          if (sprite2.oldPosition && (x !== sprite2.oldPosition.x || y !== sprite2.oldPosition.y))
+          if (sprite2.oldPosition && (greyX !== sprite2.oldPosition.x || greyY !== sprite2.oldPosition.y))
           {
             this.socket.emit('greyMovement', { x: sprite2.x, y: sprite2.y});
           }
@@ -798,6 +804,21 @@ function main()
           sprite2.oldPosition = {
             x: sprite2.x,
             y: sprite2.y
+          };
+        }
+        if(greyArrow)
+        {
+          var greyArrowX = greyArrow.x;
+          var greyArrowY = greyArrow.y;
+          if (greyArrow.oldPosition && (greyArrowX !== greyArrow.oldPosition.x || greyArrowY !== greyArrow.oldPosition.y))
+          {
+            this.socket.emit('greyArrowMovement', { x: greyArrow.x, y: greyArrow.y});
+          }
+
+          // save old position data
+          greyArrow.oldPosition = {
+            x: greyArrow.x,
+            y: greyArrow.y
           };
         }
     }

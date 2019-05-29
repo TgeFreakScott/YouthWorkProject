@@ -15,8 +15,10 @@ app.get('/',function(req,res){
 var pinkData = {x: 0, y:0};
 var blueData = {x: 0, y:0};
 var greyData = {x: 0, y:0};
+var greyArrowData = {x: 0, y:0};
 var greenData = {x: 0, y:0};
 var yellowData = {x: 0, y:0};
+var redData = {x: 0, y:0};
 
 io.on('connection', function (socket)
  {
@@ -42,6 +44,13 @@ io.on('connection', function (socket)
     // emit a message to all players about the player that moved
     socket.broadcast.emit('greyMoved', greyData);
   });
+  socket.on('greyArrowMovement', function (movementData)
+  {
+    greyArrowData.x = movementData.x;
+    greyArrowData.y = movementData.y;
+    // emit a message to all players about the player that moved
+    socket.broadcast.emit('greyArrowMoved', greyArrowData);
+  });
   socket.on('greenMovement', function (movementData)
   {
     greenData.x = movementData.x;
@@ -55,6 +64,13 @@ io.on('connection', function (socket)
     yellowData.y = movementData.y;
     // emit a message to all players about the player that moved
     socket.broadcast.emit('yellowMoved', yellowData);
+  });
+  socket.on('redMovement', function (movementData)
+  {
+    redData.x = movementData.x;
+    redData.y = movementData.y;
+    // emit a message to all players about the player that moved
+    socket.broadcast.emit('redMoved', redData);
   });
 });
 
