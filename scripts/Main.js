@@ -102,7 +102,7 @@ GameOverScene.Boot.prototype = ({
 
     update: function (time, delta)
     {
-          console.log('Hello');
+          console.log('Game Over Update Screen');
     }
 
 });
@@ -211,7 +211,8 @@ function main()
     var greyJumpTimer = true;
     var lastGreyJump = 0;
     var textBool = false;
-    var randomTimer = 2;
+    var pinkTimer = 1.2;
+    var pinkJumpTimer = 4;
 
     var game = new Phaser.Game(config);
 
@@ -360,7 +361,12 @@ function main()
       floorSprite = this.matter.add.image(500,930,'floor',{ shape: 'square'}).setScale(1.1).setAlpha(1).setStatic(true);
 
       pinkTest = this.matter.add.image(250, 400, 'pink','pink',{shape: shapePink.pinkCapture })
-      .setFixedRotation(true).setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);//.setExistingBody(compoundBody);
+      .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400).setFixedRotation(true);
+
+      pinkTest.setExistingBody(compoundBody3);
+      pinkTest.setPosition(250, 400).setScale(0.2).setMass(400)
+      .setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
+
       blueTest = this.matter.add.image(450, 450, 'blue','blue', {shape: shapeBlue.blueCapture })
       .setFixedRotation(true).setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
 
@@ -549,13 +555,19 @@ function main()
     function update()
     {
       var player = 1;
-      console.log(randomTimer);
 
-      Math.trunc(randomTimer = randomTimer - 0.02);
-      if(randomTimer <= 0)
+      Math.trunc(pinkTimer = pinkTimer - 0.02);
+      Math.trunc(pinkJumpTimer = pinkJumpTimer - 0.02);
+
+      if(pinkJumpTimer <= 0)
+      {
+          pinkTest.setVelocityY(Math.floor((Math.random() * 35) + 30));
+          pinkJumpTimer = 4;
+      }
+      if(pinkTimer <= 0)
       {
           pinkTest.setVelocityX(Math.floor((Math.random() * 75) + -37));
-          randomTimer = 1.2;
+          pinkTimer = 1.2;
       }
 
       textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
