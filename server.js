@@ -26,16 +26,16 @@ io.on('connection', function (socket)
    var tempVar = 0;
    if(socketID.firstConnection === 0)
    {
-     tempVar = socketID.firstConnection;
+     tempVar = socket.id;
+     socketID.firstConnection = tempVar;
      socket.emit('getSocketID', tempVar);
    }
    else
    {
-     tempVar = socketID.firstConnection;
+     tempVar = socket.id;
+     socketID.secondConnection = tempVar;
      socket.emit('getSocketID', tempVar);
    }
-
-
 
    socket.on('requestSocketID', function()
    {

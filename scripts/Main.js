@@ -554,8 +554,8 @@ function main()
       Math.trunc(randomTimer = randomTimer - 0.02);
       if(randomTimer <= 0)
       {
-          pinkTest.setVelocityX(Math.floor((Math.random() * 100) + -50));
-          randomTimer = 1.4;
+          pinkTest.setVelocityX(Math.floor((Math.random() * 75) + -37));
+          randomTimer = 1.2;
       }
 
       textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
@@ -566,7 +566,6 @@ function main()
 
         game.scene.start('Boot', GameOverScene.Boot, true);
         //this.events.on('pause', function (){
-
             if(timer > 0)
             {
               game.scene.start('Boot1', MyGame.Boot, true);
@@ -670,93 +669,87 @@ function main()
         var pad2 = this.input.gamepad.getPad(1);
         //var pad3 = this.input.gamepad.getPad(2);
         //var pad4 = this.input.gamepad.getPad(3);
-        //this.socket.emit('requestSocketID');
-        //this.socket.on('passSocketID', function(socketID)
-        //{
-            //if(computerID === socketID.firstConnection)
-          //  {
-              if (pad1.axes.length)
+        this.socket.emit('requestSocketID');
+        this.socket.on('passSocketID', function(socketID)
+        {
+          if (pad1.axes.length && computerID === socketID.firstConnection)
+          {
+              var redAxisH = pad1.axes[0].getValue();
+              var redAxisV = pad1.axes[1].getValue();
+
+              sprite1.x += 20 * redAxisH;
+              sprite1.y += 20 * redAxisV;
+
+              if(redAxisH > 0)
               {
-                  var redAxisH = pad1.axes[0].getValue();
-                  var redAxisV = pad1.axes[1].getValue();
-
-                  sprite1.x += 20 * redAxisH;
-                  sprite1.y += 20 * redAxisV;
-
-                  if(redAxisH > 0)
-                  {
-                    redArrow.rotation -= 0.01;
-                    redLeft = true;
-                    redRight = false;
-                  }
-                  if(redAxisH < 0)
-                  {
-                    redArrow.rotation += 0.01;
-                    redLeft = false;
-                    redRight = true;
-                  }
+                redArrow.rotation -= 0.01;
+                redLeft = true;
+                redRight = false;
               }
-
-              if(pad1.buttons.length)
+              if(redAxisH < 0)
               {
-                  var redButton = pad1.buttons[1].value;
+                redArrow.rotation += 0.01;
+                redLeft = false;
+                redRight = true;
+              }
+          }
 
-                  if (redButton === 1 && !redJump)
-                  {
-                      redJump = true;
-                      sprite1.setVelocityY(-25);
-                  }
-                  if (redButton === 0)
-                  {
-                      redJump = false;
-                  }
-              }
-            //}
-            //else
-            //{
-              if(pad2.axes.length)
-              {
-                  var greyAxisH = pad2.axes[0].getValue();
+          if(pad1.buttons.length && computerID === socketID.firstConnection)
+          {
+              var redButton = pad1.buttons[1].value;
 
-                  if(greyAxisH > 0) //right
-                  {
-                    greyArrow.angle += 15;
-                    if(greyArrow.angle > 90)
-                    {
-                      greyArrow.angle = 90;
-                    }
-                    greyLeft = true;
-                    greyRight = false;
-                  }
-                  if(greyAxisH < 0) //left
-                  {
-                    greyArrow.angle -= 15;
-                    if(greyArrow.angle < -90)
-                    {
-                      greyArrow.angle = -90;
-                    }
-                    greyLeft = false;
-                    greyRight = true;
-                  }
-              }
-              if(pad2.buttons.length)
+              if (redButton === 1 && !redJump)
               {
-                  var greyButton = pad2.buttons[1].value;
-                  if (greyButton === 1 && greyJumpTimer && !greyJump)
-                  {
-                      sprite2.anims.play('greyJump');
-                      lastGreyJump = this.time.now;
-                      sprite2.setVelocityY(-25);
-                      greyJump = true;
-                  }
-                  if (greyButton === 0 )
-                  {
-                      greyJump = false;
-                      sprite2.anims.play('walk1', true);
-                  }
+                  redJump = true;
+                  sprite1.setVelocityY(-25);
               }
-            //}
-        //});
+              if (redButton === 0)
+              {
+                  redJump = false;
+              }
+          }
+          if(pad2.axes.length && computerID === socketID.secondConnection)
+          {
+              var greyAxisH = pad2.axes[0].getValue();
+
+              if(greyAxisH > 0) //right
+              {
+                greyArrow.angle += 15;
+                if(greyArrow.angle > 90)
+                {
+                  greyArrow.angle = 90;
+                }
+                greyLeft = true;
+                greyRight = false;
+              }
+              if(greyAxisH < 0) //left
+              {
+                greyArrow.angle -= 15;
+                if(greyArrow.angle < -90)
+                {
+                  greyArrow.angle = -90;
+                }
+                greyLeft = false;
+                greyRight = true;
+              }
+          }
+          if(pad2.buttons.length && computerID === socketID.secondConnection)
+          {
+              var greyButton = pad2.buttons[1].value;
+              if (greyButton === 1 && greyJumpTimer && !greyJump)
+              {
+                  sprite2.anims.play('greyJump');
+                  lastGreyJump = this.time.now;
+                  sprite2.setVelocityY(-25);
+                  greyJump = true;
+              }
+              if (greyButton === 0 )
+              {
+                  greyJump = false;
+                  sprite2.anims.play('walk1', true);
+              }
+          }
+      });
 
         if(!redLeft)
         {
