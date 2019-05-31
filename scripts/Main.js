@@ -61,6 +61,7 @@ var CustomPipeline2 = new Phaser.Class({
         });
     }
 });
+var MainMenu ={};
 
 var GameOverScene ={};
 
@@ -140,6 +141,7 @@ function main()
         scene: {
           MyGame,
           GameOverScene,
+          MainMenu,
           preload: preload,
           create: create,
           update: update,
