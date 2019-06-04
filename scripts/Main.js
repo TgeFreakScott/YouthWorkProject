@@ -278,7 +278,10 @@ function main()
       this.matter.world.setBounds();
       var self = this;
       this.socket = io();
-      this.otherPlayers = this.add.group();
+      this.socket.on('getSocketID', function (tempVar)
+      {
+        computerID = tempVar;
+      });
       cursors = this.input.keyboard.createCursorKeys();
       keys = this.input.keyboard.addKeys('W,A,S,D,I,J,K,L');
 
@@ -519,10 +522,18 @@ function main()
       //    delay: 1000
       //});
 
+      this.socket.on('redMoved', function (redData)
+      {
+        sprite1.setPosition(redData.x, redData.y);
+      });
 
       this.socket.on('greyMoved', function (greyData)
       {
         sprite2.setPosition(greyData.x, greyData.y);
+      });
+      this.socket.on('greyArrowMoved', function (greyArrowData)
+      {
+        greyArrow.setPosition(greyArrowData.x, greyArrowData.y);
       });
 
       this.input.setPollAlways();
@@ -643,86 +654,89 @@ function main()
         var pad2 = this.input.gamepad.getPad(1);
         //var pad3 = this.input.gamepad.getPad(2);
         //var pad4 = this.input.gamepad.getPad(3);
-
-        if (pad1.axes.length)
+        this.socket.emit('requestSocketID');
+        this.socket.on('passSocketID', function(socketID)
         {
-            var redAxisH = pad1.axes[0].getValue();
-            var redAxisV = pad1.axes[1].getValue();
+          if (pad1.axes.length && computerID === socketID.firstConnection)
+          {
+              var redAxisH = pad1.axes[0].getValue();
+              var redAxisV = pad1.axes[1].getValue();
 
-            sprite1.x += 20 * redAxisH;
-            sprite1.y += 20 * redAxisV;
+              sprite1.x += 20 * redAxisH;
+              sprite1.y += 20 * redAxisV;
 
-            if(redAxisH > 0)
-            {
-              redArrow.rotation -= 0.01;
-              redLeft = true;
-              redRight = false;
-            }
-            if(redAxisH < 0)
-            {
-              redArrow.rotation += 0.01;
-              redLeft = false;
-              redRight = true;
-            }
-        }
-
-        if(pad1.buttons.length)
-        {
-            var redButton = pad1.buttons[1].value;
-
-            if (redButton === 1 && !redJump)
-            {
-                redJump = true;
-                sprite1.setVelocityY(-25);
-            }
-            if (redButton === 0)
-            {
-                redJump = false;
-            }
-
-        }
-
-        if(pad2.axes.length)
-        {
-            var greyAxisH = pad2.axes[0].getValue();
-
-            if(greyAxisH > 0) //right
-            {
-              greyArrow.angle += 15;
-              if(greyArrow.angle > 90)
+              if(redAxisH > 0)
               {
-                greyArrow.angle = 90;
+                redArrow.rotation -= 0.01;
+                redLeft = true;
+                redRight = false;
               }
-              greyLeft = true;
-              greyRight = false;
-            }
-            if(greyAxisH < 0) //left
-            {
-              greyArrow.angle -= 15;
-              if(greyArrow.angle < -90)
+              if(redAxisH < 0)
               {
-                greyArrow.angle = -90;
+                redArrow.rotation += 0.01;
+                redLeft = false;
+                redRight = true;
               }
-              greyLeft = false;
-              greyRight = true;
-            }
-        }
-        if(pad2.buttons.length)
-        {
-            var greyButton = pad2.buttons[1].value;
-            if (greyButton === 1 && greyJumpTimer && !greyJump)
-            {
-                sprite2.anims.play('greyJump');
-                lastGreyJump = this.time.now;
-                sprite2.setVelocityY(-25);
-                greyJump = true;
-            }
-            if (greyButton === 0 )
-            {
-                greyJump = false;
-                sprite2.anims.play('walk1', true);
-            }
-        }
+          }
+
+          if(pad1.buttons.length && computerID === socketID.firstConnection)
+          {
+              var redButton = pad1.buttons[1].value;
+
+              if (redButton === 1 && !redJump)
+              {
+                  redJump = true;
+                  sprite1.setVelocityY(-25);
+              }
+              if (redButton === 0)
+              {
+                  redJump = false;
+              }
+          }
+          if(pad2.axes.length && computerID === socketID.secondConnection)
+          {
+              var greyAxisH = pad2.axes[0].getValue();
+
+              if(greyAxisH > 0) //right
+              {
+                greyArrow.angle += 15;
+                if(greyArrow.angle > 90)
+                {
+                  greyArrow.angle = 90;
+                }
+                greyLeft = true;
+                greyRight = false;
+              }
+              if(greyAxisH < 0) //left
+              {
+                greyArrow.angle -= 15;
+                if(greyArrow.angle < -90)
+                {
+                  greyArrow.angle = -90;
+                }
+                greyLeft = false;
+                greyRight = true;
+              }
+          }
+          if(pad2.buttons.length && computerID === socketID.secondConnection)
+          {
+              var greyButton = pad2.buttons[1].value;
+              if (greyButton === 1 && greyJumpTimer && !greyJump)
+              {
+                  sprite2.anims.play('greyJump');
+                  lastGreyJump = this.time.now;
+                  sprite2.setVelocityY(-25);
+                  greyJump = true;
+              }
+              if (greyButton === 0 )
+              {
+                  greyJump = false;
+                  sprite2.anims.play('walk1', true);
+              }
+          }
+      });
+
+
         if(!redLeft)
         {
           sprite1.flipX = true;
@@ -765,31 +779,29 @@ function main()
 
             yellowSprite.flipX = (yellowAxisH < 0);
         }*/
-        if (this.player)
+
+
+        if(sprite1)
         {
-          if (keys.J.isDown)
+          var redX = sprite1.x;
+          var redY = sprite1.y;
+          if (sprite1.oldPosition && (redX !== sprite1.oldPosition.x || redY !== sprite1.oldPosition.y))
           {
-            this.player.x --;
+            this.socket.emit('redMovement', { x: sprite1.x, y: sprite1.y});
           }
-          else if (keys.L.isDown)
-          {
-            this.player.x ++;
-          }
-          if (keys.I.isDown)
-          {
-            this.player.y --;
-          }
-          else if (keys.K.isDown)
-          {
-            this.player.y ++;
-          }
+
+          // save old position data
+          sprite1.oldPosition = {
+            x: sprite1.x,
+            y: sprite1.y
+          };
         }
 
         if(sprite2)
         {
           var greyX = sprite2.x;
           var greyY = sprite2.y;
-          if (sprite2.oldPosition && (x !== sprite2.oldPosition.x || y !== sprite2.oldPosition.y))
+          if (sprite2.oldPosition && (greyX !== sprite2.oldPosition.x || greyY !== sprite2.oldPosition.y))
           {
             this.socket.emit('greyMovement', { x: sprite2.x, y: sprite2.y});
           }
@@ -798,6 +810,21 @@ function main()
           sprite2.oldPosition = {
             x: sprite2.x,
             y: sprite2.y
+          };
+        }
+        if(greyArrow)
+        {
+          var greyArrowX = greyArrow.x;
+          var greyArrowY = greyArrow.y;
+          if (greyArrow.oldPosition && (greyArrowX !== greyArrow.oldPosition.x || greyArrowY !== greyArrow.oldPosition.y))
+          {
+            this.socket.emit('greyArrowMovement', { x: greyArrow.x, y: greyArrow.y});
+          }
+
+          // save old position data
+          greyArrow.oldPosition = {
+            x: greyArrow.x,
+            y: greyArrow.y
           };
         }
     }
