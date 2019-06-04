@@ -52,7 +52,7 @@ var CustomPipeline2 = new Phaser.Class({
               "sum += texture2D(u_texture, vec2(tc.x + 2.0*blur*hstep, tc.y + 2.0*blur*vstep)) * 0.1216216216;",
               "sum += texture2D(u_texture, vec2(tc.x + 3.0*blur*hstep, tc.y + 3.0*blur*vstep)) * 0.0540540541;",
               "sum += texture2D(u_texture, vec2(tc.x + 4.0*blur*hstep, tc.y + 4.0*blur*vstep)) * 0.0162162162;",
-
+//poop
               //discard alpha for our simple demo,return
               "gl_FragColor =  vec4(sum.rgb, 1.0);",
               "}"
@@ -570,6 +570,7 @@ function main()
           pinkJumpTimer = 4;
       }
       if(pinkTimer <= 0)
+
       {
           pinkTest.setVelocityX(Math.floor((Math.random() * 75) + -37));
           pinkTimer = 1.2;
