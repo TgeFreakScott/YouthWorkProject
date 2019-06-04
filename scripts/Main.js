@@ -61,6 +61,7 @@ var CustomPipeline2 = new Phaser.Class({
         });
     }
 });
+var MainMenu ={};
 
 var GameOverScene ={};
 
@@ -102,7 +103,7 @@ GameOverScene.Boot.prototype = ({
 
     update: function (time, delta)
     {
-          console.log('Hello');
+          console.log('Game Over Update Screen');
     }
 
 });
@@ -119,6 +120,8 @@ function main()
   var greyLeft = false;
   var greyRight = true;
   var greyJump = false;
+
+  var computerID;
 
   function iconChange()
   {
@@ -138,6 +141,7 @@ function main()
         scene: {
           MyGame,
           GameOverScene,
+          MainMenu,
           preload: preload,
           create: create,
           update: update,
@@ -209,6 +213,8 @@ function main()
     var greyJumpTimer = true;
     var lastGreyJump = 0;
     var textBool = false;
+    var pinkTimer = 1.2;
+    var pinkJumpTimer = 4;
 
     var game = new Phaser.Game(config);
 
@@ -356,9 +362,14 @@ function main()
       floorSprite = this.matter.add.image(500,930,'floor',{ shape: 'square'}).setScale(1.1).setAlpha(1).setStatic(true);
 
       pinkTest = this.matter.add.image(250, 400, 'pink','pink',{shape: shapePink.pinkCapture })
-      .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);//.setExistingBody(compoundBody);
+      .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400).setFixedRotation(true);
+
+      pinkTest.setExistingBody(compoundBody3);
+      pinkTest.setPosition(250, 400).setScale(0.2).setMass(400)
+      .setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
+
       blueTest = this.matter.add.image(450, 450, 'blue','blue', {shape: shapeBlue.blueCapture })
-      .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
+      .setFixedRotation(true).setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
 
       armLeftSprite = this.matter.add.image(300, 400,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
       .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(1000).setMass(2750);
@@ -527,6 +538,11 @@ function main()
         sprite1.setPosition(redData.x, redData.y);
       });
 
+      this.socket.on('redMoved', function (redData)
+      {
+        sprite1.setPosition(redData.x, redData.y);
+      });
+
       this.socket.on('greyMoved', function (greyData)
       {
         sprite2.setPosition(greyData.x, greyData.y);
@@ -534,6 +550,7 @@ function main()
       this.socket.on('greyArrowMoved', function (greyArrowData)
       {
         greyArrow.setPosition(greyArrowData.x, greyArrowData.y);
+        greyArrow.setAngle(greyArrowData.angle);
       });
 
       this.input.setPollAlways();
@@ -542,6 +559,22 @@ function main()
 
     function update()
     {
+      var player = 1;
+
+      Math.trunc(pinkTimer = pinkTimer - 0.02);
+      Math.trunc(pinkJumpTimer = pinkJumpTimer - 0.02);
+
+      if(pinkJumpTimer <= 0)
+      {
+          pinkTest.setVelocityY(Math.floor((Math.random() * 35) + 30));
+          pinkJumpTimer = 4;
+      }
+      if(pinkTimer <= 0)
+      {
+          pinkTest.setVelocityX(Math.floor((Math.random() * 75) + -37));
+          pinkTimer = 1.2;
+      }
+
       textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
 
       if(timer < 0)
@@ -550,7 +583,6 @@ function main()
 
         game.scene.start('Boot', GameOverScene.Boot, true);
         //this.events.on('pause', function (){
-
             if(timer > 0)
             {
               game.scene.start('Boot1', MyGame.Boot, true);
@@ -816,15 +848,17 @@ function main()
         {
           var greyArrowX = greyArrow.x;
           var greyArrowY = greyArrow.y;
-          if (greyArrow.oldPosition && (greyArrowX !== greyArrow.oldPosition.x || greyArrowY !== greyArrow.oldPosition.y))
+          var greyArrowAngle = greyArrow.angle;
+          if (greyArrow.oldPosition && (greyArrowX !== greyArrow.oldPosition.x || greyArrowY !== greyArrow.oldPosition.y || greyArrowAngle !== greyArrow.oldPosition.angle))
           {
-            this.socket.emit('greyArrowMovement', { x: greyArrow.x, y: greyArrow.y});
+            this.socket.emit('greyArrowMovement', { x: greyArrow.x, y: greyArrow.y, angle: greyArrow.angle});
           }
 
           // save old position data
           greyArrow.oldPosition = {
             x: greyArrow.x,
-            y: greyArrow.y
+            y: greyArrow.y,
+            angle: greyArrow.angle
           };
         }
     }
