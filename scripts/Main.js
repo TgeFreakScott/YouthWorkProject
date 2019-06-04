@@ -52,8 +52,7 @@ var CustomPipeline2 = new Phaser.Class({
               "sum += texture2D(u_texture, vec2(tc.x + 2.0*blur*hstep, tc.y + 2.0*blur*vstep)) * 0.1216216216;",
               "sum += texture2D(u_texture, vec2(tc.x + 3.0*blur*hstep, tc.y + 3.0*blur*vstep)) * 0.0540540541;",
               "sum += texture2D(u_texture, vec2(tc.x + 4.0*blur*hstep, tc.y + 4.0*blur*vstep)) * 0.0162162162;",
-//poop
-              //discard alpha for our simple demo,return
+
               "gl_FragColor =  vec4(sum.rgb, 1.0);",
               "}"
 
@@ -150,9 +149,7 @@ function main()
                   matter: { debug: true, gravity: { y: 9.78 } },
                   impact: { debug: true }},
                 },
-        audio: {
-            disableWebAudio: true
-        }
+          audio: { disableWebAudio: true }
     };
 
     Phaser.Scene.call(this, { key: 'myGame' });
@@ -218,7 +215,6 @@ function main()
 
     var game = new Phaser.Game(config);
 
-    //game.scene.add('Boot1', MyGame.Boot, false);
     game.scene.add('Boot', GameOverScene.Boot, false);
     //game.scene.add('gameOver', GameOverScene, true, { x: 400, y: 300 });
 
@@ -264,8 +260,17 @@ function main()
       //Loading in animated Sprites
       this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('greyMove' ,'Sprite/greyPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('pinkMove' ,'Sprite/pinkPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('yellowMove' ,'Sprite/yellowPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('blueMove' ,'Sprite/bluePlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('greenMove' ,'Sprite/greenPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
 
       this.load.spritesheet('greyJump' ,'Sprite/greyJump.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('redJump' ,'Sprite/redJump.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('pinkJump' ,'Sprite/pinkJump.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('yellowJump' ,'Sprite/yellowJump.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('blueJump' ,'Sprite/blueJump.png' ,{ frameWidth: 331, frameHeight: 294 });
+      this.load.spritesheet('greenJump' ,'Sprite/greenJump.png' ,{ frameWidth: 331, frameHeight: 294 });
 
       //Loading in JSON file and name
       this.load.json('clawShape', 'Sprite/physics/clawBodyShape.json');
@@ -328,6 +333,16 @@ function main()
       var circleE3 = Bodies.circle(0, -10, 14);
       var circleE4 = Bodies.circle(0, 10, 14);
 
+      var rectCaptureBoxA1 = Bodies.rectangle(0, 0, 50, 14);
+      var rectCaptureBoxB1 = Bodies.rectangle(0, 0, 50, 14);
+
+      var rectCaptureBoxA2 = Bodies.rectangle(0, 0, 50, 14);
+      var rectCaptureBoxB2 = Bodies.rectangle(0, 0, 50, 14);
+
+      var compoundCaptureBox1 = Phaser.Physics.Matter.Matter.Body.create(
+        {parts: [ rectCaptureBoxA1, rectCaptureBoxB1 ]});
+      var compoundCaptureBox2 = Phaser.Physics.Matter.Matter.Body.create(
+        {parts: [ rectCaptureBoxA2, rectCaptureBoxB2 ]});
 
       var compoundBody = Phaser.Physics.Matter.Matter.Body.create(
         {parts: [ rectA1, rectA2, circleA1, circleA2, circleA3, circleA4 ]});
@@ -339,9 +354,6 @@ function main()
         {parts: [ rectD1, rectD2, circleD1, circleD2, circleD3, circleD4 ]});
       var compoundBody5 = Phaser.Physics.Matter.Matter.Body.create(
         {parts: [ rectE1, rectE2, circleE1, circleE2, circleE3, circleE4 ]});
-
-      //var block = this.matter.add.image(150, 0, 'block');
-      //block.setExistingBody(compoundBody);
 
       //music create
       music = this.sound.add('test');
@@ -410,7 +422,7 @@ function main()
       leftBucket = this.matter.add.image(-15,570, 'bucket','bucket', {shape: shapeBucket.glassPanel})
       .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
-      rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket', {shape: shapeBucket.glassPanel})
+       rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket',) // {shape:shapeBucket.glassPanel})
       .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
       greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
