@@ -172,15 +172,7 @@ var MainMenu = new Phaser.Class({
 
 });
 
-var GameOverScene ={};
-
-GameOverScene.Boot = function()
-{
-
-};
-
-GameOverScene.Boot.prototype = ({
-//var GameOverScene = new Phaser.Class({
+var GameOverScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
     initialize:
@@ -190,13 +182,10 @@ GameOverScene.Boot.prototype = ({
         Phaser.Scene.call(this, { key: 'gameOver' });
     },
 
-    preload: function ()
-    {
-
-    },
-
     create: function ()
     {
+      console.log('%c GameOver ', 'background: green; color: white; display: block;');
+
             textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
                 .setFontSize(64).setFontStyle('bold')
                 .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
@@ -205,7 +194,7 @@ GameOverScene.Boot.prototype = ({
 
             this.input.once('pointerdown', function (){
               //  this.scene.add('Boot1', MyGame.Boot, true);
-                this.scene.start('myGame');
+                this.scene.start('game');
                 console.log('pointer press');
                   }, this);
     },
@@ -283,7 +272,7 @@ var cursors;
 var keys;
 var music;
 var textTimer;
-var timer = 180;
+var timer = 4;
 var nextTimer = 30;
 var textLives;
 var lives = 5;
@@ -305,16 +294,12 @@ var Game = new Phaser.Class({
         Phaser.Scene.call(this, { key: 'game' });
         window.GAME = this;
         this.controls;
-
-
     },
 
     create: function ()
     {
         console.log('%c Game ', 'background: green; color: white; display: block;');
-        //this.matter.world.setBounds(0, 0, 800, 600, 32, true, true, false, true);
 
-        //this.input.once('pointerup', function (){this.scene.start('gameover');}, this);
         this.matter.world.setBounds();
         var self = this;
         this.socket = io();
@@ -627,19 +612,8 @@ var Game = new Phaser.Class({
 
         if(timer < 0)
         {
-          this.scene.pause();
-
-          game.scene.start('Boot', GameOverScene.Boot, true);
-          //this.events.on('pause', function (){
-              if(timer > 0)
-              {
-                game.scene.start('Boot1', MyGame.Boot, true);
-  /*LOOK HERE!!!!! ---->*/ console.log('Poop');
-                this.scene.resume();
-              }
-              timer = 4;
-          //})
-            //this.scene.resume();
+            this.scene.start('gameOver')
+            timer = 4;
         }
 
         customPipeline.setFloat1('time', pipeTime);
