@@ -160,13 +160,6 @@ var PlayerEnter = new Phaser.Class({
     {
         console.log('%c PlayerEnter ', 'background: green; color: white; display: block;');
 
-        //var bg = this.add.image(0, 0, 'buttonBG');
-        //var text = this.add.image(0, 0, 'buttonText');
-        //var container = this.add.container(400, 300, [ bg, text ]);
-
-        //bg.setInteractive();
-        //bg.once('pointerup', function(){ this.scene.start('game'); }, this);
-
     }
 
 });
@@ -193,6 +186,36 @@ var MainMenu = new Phaser.Class({
         //bg.setInteractive();
         //bg.once('pointerup', function(){ this.scene.start('game'); }, this);
 
+    }
+
+});
+
+var YouthElement = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    initialize:
+
+    function YouthElement ()
+    {
+        Phaser.Scene.call(this, { key: 'youthelement' });
+        window.MENU = this;
+    },
+
+    create: function ()
+    {
+        console.log('%c YouthElement ', 'background: green; color: white; display: block;');
+        testText = this.add.text( 300, 10, 'Youth Element', { font: '20px Arial'})
+          .setFontSize(64).setFontStyle('bold')
+          .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+          .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
+          .setBackgroundColor('#000000');
+
+
+    },
+
+    update: function (time, delta)
+    {
+          console.log('Youth Element Screen');
     }
 
 });
@@ -918,7 +941,7 @@ var config = {
         pixelArt: true,
         input: {gamepad: true},
         audio: { disableWebAudio: true },
-        scene: [ Preloader,PlayerEnter, MainMenu, Game, GameOverScene ],
+        scene: [ Preloader,PlayerEnter, MainMenu,YouthElement, Game, GameOverScene ],
         physics:{
           default: 'matter',
                   arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
