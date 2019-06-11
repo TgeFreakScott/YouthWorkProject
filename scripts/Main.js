@@ -145,6 +145,31 @@ var Preloader = new Phaser.Class({
 
 });
 
+var PlayerEnter = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    initialize:
+
+    function PlayerEnter ()
+    {
+        Phaser.Scene.call(this, { key: 'playerenter' });
+        window.MENU = this;
+    },
+
+    create: function ()
+    {
+        console.log('%c PlayerEnter ', 'background: green; color: white; display: block;');
+
+        //var bg = this.add.image(0, 0, 'buttonBG');
+        //var text = this.add.image(0, 0, 'buttonText');
+        //var container = this.add.container(400, 300, [ bg, text ]);
+
+        //bg.setInteractive();
+        //bg.once('pointerup', function(){ this.scene.start('game'); }, this);
+
+    }
+
+});
 
 var MainMenu = new Phaser.Class({
 
@@ -893,7 +918,7 @@ var config = {
         pixelArt: true,
         input: {gamepad: true},
         audio: { disableWebAudio: true },
-        scene: [ Preloader, MainMenu, Game, GameOverScene ],
+        scene: [ Preloader,PlayerEnter, MainMenu, Game, GameOverScene ],
         physics:{
           default: 'matter',
                   arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
