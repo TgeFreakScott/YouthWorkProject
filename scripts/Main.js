@@ -941,7 +941,7 @@ var config = {
         pixelArt: true,
         input: {gamepad: true},
         audio: { disableWebAudio: true },
-        scene: [ Preloader,PlayerEnter, MainMenu,YouthElement, Game, GameOverScene ],
+        scene: [ Preloader, MainMenu, PlayerEnter, Game, YouthElement, GameOverScene ],
         physics:{
           default: 'matter',
                   arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
