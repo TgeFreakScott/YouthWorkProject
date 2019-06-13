@@ -22,6 +22,12 @@ var yellowArrowData = {x: 0, y:0, angle: 0};
 var greenData = {x: 0, y:0};
 var greenArrowData = {x: 0, y:0, angle: 0};
 var redData = {x: 0, y:0};
+var clawAnchorData = {x: 0, y:0};
+var clawBodyData = {x: 0, y:0};
+var clawArmLeftData = {x: 0, y:0};
+var clawArmRightData = {x: 0, y:0};
+var clawGrabberLeftData = {x: 0, y:0};
+var clawGrabberRightData = {x: 0, y:0};
 var socketID = {firstConnection: 0, secondConnection:0};
 
 io.on('connection', function (socket)
@@ -119,6 +125,48 @@ io.on('connection', function (socket)
      redData.y = movementData.y;
      // emit a message to all players about the player that moved
      socket.broadcast.emit('redMoved', redData);
+   });
+   socket.on('clawAnchorMovement', function (movementData)
+   {
+     clawAnchorData.x = movementData.x;
+     clawAnchorData.y = movementData.y;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('clawAnchorMoved', clawAnchorData);
+   });
+   socket.on('clawBodyMovement', function (movementData)
+   {
+     clawBodyData.x = movementData.x;
+     clawBodyData.y = movementData.y;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('clawBodyMoved', clawBodyData);
+   });
+   socket.on('clawArmLeftMovement', function (movementData)
+   {
+     clawArmLeftData.x = movementData.x;
+     clawArmLeftData.y = movementData.y;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('clawArmLeftMoved', clawArmLeftData);
+   });
+   socket.on('clawArmRightMovement', function (movementData)
+   {
+     clawArmRightData.x = movementData.x;
+     clawArmRightData.y = movementData.y;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('clawArmRightMoved', clawArmRightData);
+   });
+   socket.on('clawGrabberLeftMovement', function (movementData)
+   {
+     clawGrabberLeftData.x = movementData.x;
+     clawGrabberLeftData.y = movementData.y;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('clawGrabberLeftMoved', clawGrabberLeftData);
+   });
+   socket.on('clawGrabberRightMovement', function (movementData)
+   {
+     clawGrabberRightData.x = movementData.x;
+     clawGrabberRightData.y = movementData.y;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });
  });
 

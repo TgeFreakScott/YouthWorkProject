@@ -110,8 +110,13 @@ var Preloader = new Phaser.Class({
       this.load.image('greyArrow', 'Sprite/greyArrow.png');
       this.load.image('blueArrow', 'Sprite/blueArrow.png');
       this.load.image('yellowArrow', 'Sprite/yellowArrow.png');
-
       this.load.image('greenArrow', 'Sprite/greenArrow.png');
+      this.load.image('pinkArrow', 'Sprite/yellowArrow.png');
+      this.load.image('redArrow', 'Sprite/greenArrow.png');
+
+      this.load.image('yes', 'Sprite/yes.png');
+      this.load.image('no', 'Sprite/no.png');
+      this.load.image('maybe', 'Sprite/maybe.png');
 
       //Loading in animated Sprites
       this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
@@ -213,6 +218,8 @@ var YouthElement = new Phaser.Class({
           .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
           .setBackgroundColor('#000000');
 
+        var shapeTest = this.cache.json.get('pinkShape');
+        playerTest = this.matter.add.sprite(250, 400, 'pinkMove','pinkMove',{shape: shapeTest.pinkCapture })
 
     },
 
@@ -356,6 +363,9 @@ var lastGreenJump = 0;
 var textBool = false;
 var pinkTimer = 1.2;
 var pinkJumpTimer = 4;
+
+var speed = Phaser.Math.GetSpeed(400, 1);
+var fps = 60/1000;
 
 
 var Game = new Phaser.Class({
@@ -795,6 +805,30 @@ var Game = new Phaser.Class({
           greenArrow.setPosition(greenArrowData.x, greenArrowData.y);
           greenArrow.setAngle(greenArrowData.angle);
         });
+        this.socket.on('clawAnchorMoved', function (clawAnchorData)
+        {
+          pipeBodySprite.setPosition(clawAnchorData.x, clawAnchorData.y);
+        });
+        this.socket.on('clawBodyMoved', function (clawBodyData)
+        {
+          clawBodySprite.setPosition(clawBodyData.x, clawBodyData.y);
+        });
+        this.socket.on('clawArmLeftMoved', function (clawArmLeftData)
+        {
+          armConnectLeftSprite.setPosition(clawArmLeftData.x, clawArmLeftData.y);
+        });
+        this.socket.on('clawArmRightMoved', function (clawArmRightData)
+        {
+          armConnectRightSprite.setPosition(clawArmRightData.x, clawArmRightData.y);
+        });
+        this.socket.on('clawGrabberLeftMoved', function (clawGrabberLeftData)
+        {
+          armLeftSprite.setPosition(clawGrabberLeftData.x, clawGrabberLeftData.y);
+        });
+        this.socket.on('clawGrabberRightMoved', function (clawGrabberRightData)
+        {
+          armRightSprite.setPosition(clawGrabberRightData.x, clawGrabberRightData.y);
+        });
 
         this.input.setPollAlways();
     },
@@ -831,11 +865,11 @@ var Game = new Phaser.Class({
         customPipeline.setFloat1('time', pipeTime);
         //time += 0.005;
 
-          greyArrow.thrustLeft(0.5);
-          blueArrow.thrustLeft(0.5);
-          yellowArrow.thrustLeft(0.5);
-          greenArrow.thrustLeft(0.5);
-          pipeBodySprite.thrustLeft(3);
+          greyArrow.thrustLeft(0.5); //* delta);
+          blueArrow.thrustLeft(0.5);//* delta);
+          yellowArrow.thrustLeft(0.5);//* delta);
+          greenArrow.thrustLeft(0.5);//* delta);
+          pipeBodySprite.thrustLeft(3);//* delta);
           //redArrow.thrustLeft(0.01);
           //Client.sendPosition(greyPlayer.x, greyPlayer.y);
 
@@ -1057,24 +1091,27 @@ var Game = new Phaser.Class({
 
             if (pad1.axes.length && computerID === socketID.secondConnection)
             {
+
                 clawHorizontalAxes = pad1.axes[0].getValue();
                 if(clawHorizontalAxes > 0) //right
                 {
                   if(pipeBodySprite.x < 950)
                   {
-                    pipeBodySprite.x = pipeBodySprite.x + 5;
+                    pipeBodySprite.x = pipeBodySprite.x + (speed *(fps));
                   }
                 }
                 if(clawHorizontalAxes < 0) //left
                 {
-                  pipeBodySprite.thrustBack(80);
+                  //pipeBodySprite.thrustBack(1 * delta);
                   if(pipeBodySprite.x > 50)
                   {
-                    pipeBodySprite.x = pipeBodySprite.x - 5;
+                    pipeBodySprite.x = pipeBodySprite.x - (speed * (fps));
                   }
                 }
 
+
             }
+              console.log(speed)
 
             if (pad2.axes.length && computerID === socketID.secondConnection)
             {
@@ -1083,14 +1120,14 @@ var Game = new Phaser.Class({
               {
                 if(clawToPipeBody.length < 215)
                 {
-                    clawToPipeBody.length = clawToPipeBody.length + 5;
+                    clawToPipeBody.length = clawToPipeBody.length + (5 );
                 }
               }
               if(clawverticalAxes < 0) //up
               {
                 if(clawToPipeBody.length > 8)
                 {
-                  clawToPipeBody.length = clawToPipeBody.length - 5 ;
+                  clawToPipeBody.length = clawToPipeBody.length - (5 ) ;
                 }
               }
 
@@ -1103,32 +1140,32 @@ var Game = new Phaser.Class({
               {
                 if(rightArmToLeftArm.length < 200)
                 {
-                  rightArmToLeftArm.length = rightArmToLeftArm.length + 7;
+                  rightArmToLeftArm.length = rightArmToLeftArm.length + (7);
                 }
                 if(leftConnectToRightConnect.length < 175)
                 {
-                  leftConnectToRightConnect.length = leftConnectToRightConnect.length+2;
+                  leftConnectToRightConnect.length = leftConnectToRightConnect.length+ (2);
                 }
                 if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
                 {
-                  leftConnectToClawTop.length = leftConnectToClawTop.length-2;
-                  rightConnectToClawTop.length = rightConnectToClawTop.length-2;
+                  leftConnectToClawTop.length = leftConnectToClawTop.length - (2 );
+                  rightConnectToClawTop.length = rightConnectToClawTop.length - (2 );
                 }
               }
               if(clawGripHorizontalAxes < 0) //left
               {
                 if(rightArmToLeftArm.length > 1)
                 {
-                  rightArmToLeftArm.length = rightArmToLeftArm.length-5;
+                  rightArmToLeftArm.length = rightArmToLeftArm.length - (5 );
                 }
                 if(leftConnectToRightConnect.length > 125)
                 {
-                  leftConnectToRightConnect.length = leftConnectToRightConnect.length-2;
+                  leftConnectToRightConnect.length = leftConnectToRightConnect.length - (2 );
                 }
                 if(leftConnectToClawTop.length < 220 && rightConnectToClawTop.length < 220)
                 {
-                  leftConnectToClawTop.length = leftConnectToClawTop.length+2;
-                  rightConnectToClawTop.length = rightConnectToClawTop.length+2;
+                  leftConnectToClawTop.length = leftConnectToClawTop.length + (2 );
+                  rightConnectToClawTop.length = rightConnectToClawTop.length + (2 );
                 }
               }
             }
@@ -1163,7 +1200,7 @@ var Game = new Phaser.Class({
                 if (redButton === 1 && !redJump)
                 {
                     redJump = true;
-                    sprite1.setVelocityY(-25);
+                    redTest.setVelocityY(-25);
                 }
                 if (redButton === 0)
                 {
@@ -1321,6 +1358,7 @@ var Game = new Phaser.Class({
               y: yellowPlayer.y
             };
           }
+
           if(yellowArrow)
           {
             var yellowArrowX = yellowArrow.x;
@@ -1338,6 +1376,7 @@ var Game = new Phaser.Class({
               angle: yellowArrow.angle
             };
           }
+
           if(greenPlayer)
           {
             var greenX = greenPlayer.x;
@@ -1353,6 +1392,7 @@ var Game = new Phaser.Class({
               y: greenPlayer.y
             };
           }
+
           if(greenArrow)
           {
             var greenArrowX = greenArrow.x;
@@ -1368,6 +1408,102 @@ var Game = new Phaser.Class({
               x: greenArrow.x,
               y: greenArrow.y,
               angle: greenArrow.angle
+            };
+          }
+
+          if(pipeBodySprite)
+          {
+            var pipeBodyX = pipeBodySprite.x;
+            var pipeBodyY = pipeBodySprite.y;
+            if (pipeBodySprite.oldPosition && (pipeBodyX !== pipeBodySprite.oldPosition.x || pipeBodyY !== pipeBodySprite.oldPosition.y))
+            {
+              this.socket.emit('clawAnchorMovement', { x: pipeBodySprite.x, y: pipeBodySprite.y});
+            }
+
+            // save old position data
+            pipeBodySprite.oldPosition = {
+              x: pipeBodySprite.x,
+              y: pipeBodySprite.y
+            };
+          }
+
+          if(clawBodySprite)
+          {
+            var clawBodyX = clawBodySprite.x;
+            var clawBodyY = clawBodySprite.y;
+            if (clawBodySprite.oldPosition && (clawBodyX !== clawBodySprite.oldPosition.x || clawBodyY !== clawBodySprite.oldPosition.y))
+            {
+              this.socket.emit('clawBodyMovement', { x: clawBodySprite.x, y: clawBodySprite.y});
+            }
+
+            // save old position data
+            clawBodySprite.oldPosition = {
+              x: clawBodySprite.x,
+              y: clawBodySprite.y
+            };
+          }
+
+          if(armConnectLeftSprite)
+          {
+            var armConnectLeftX = armConnectLeftSprite.x;
+            var armConnectLeftY = armConnectLeftSprite.y;
+            if (armConnectLeftSprite.oldPosition && (armConnectLeftX !== armConnectLeftSprite.oldPosition.x || armConnectLeftY !== armConnectLeftSprite.oldPosition.y))
+            {
+              this.socket.emit('clawArmLeftMovement', { x: armConnectLeftSprite.x, y: armConnectLeftSprite.y});
+            }
+
+            // save old position data
+            armConnectLeftSprite.oldPosition = {
+              x: armConnectLeftSprite.x,
+              y: armConnectLeftSprite.y
+            };
+          }
+
+          if(armConnectRightSprite)
+          {
+            var armConnectRightX = armConnectRightSprite.x;
+            var armConnectRightY = armConnectRightSprite.y;
+            if (armConnectRightSprite.oldPosition && (armConnectRightX !== armConnectRightSprite.oldPosition.x || armConnectRightY !== armConnectRightSprite.oldPosition.y))
+            {
+              this.socket.emit('clawArmRightMovement', { x: armConnectRightSprite.x, y: armConnectRightSprite.y});
+            }
+
+            // save old position data
+            armConnectRightSprite.oldPosition = {
+              x: armConnectRightSprite.x,
+              y: armConnectRightSprite.y
+            };
+          }
+
+          if(armLeftSprite)
+          {
+            var armLeftX = armLeftSprite.x;
+            var armLeftY = armLeftSprite.y;
+            if (armLeftSprite.oldPosition && (pipeBodyX !== armLeftSprite.oldPosition.x || pipeBodyY !== armLeftSprite.oldPosition.y))
+            {
+              this.socket.emit('clawGrabberLeftMovement', { x: armLeftSprite.x, y: armLeftSprite.y});
+            }
+
+            // save old position data
+            armLeftSprite.oldPosition = {
+              x: armLeftSprite.x,
+              y: armLeftSprite.y
+            };
+          }
+
+          if(armRightSprite)
+          {
+            var armRightX = armRightSprite.x;
+            var armRightY = armRightSprite.y;
+            if (armRightSprite.oldPosition && (armRightX !== armRightSprite.oldPosition.x || armRightY !== armRightSprite.oldPosition.y))
+            {
+              this.socket.emit('clawGrabberRightMovement', { x: armRightSprite.x, y: armRightSprite.y});
+            }
+
+            // save old position data
+            armRightSprite.oldPosition = {
+              x: armRightSprite.x,
+              y: armRightSprite.y
             };
           }
     }
