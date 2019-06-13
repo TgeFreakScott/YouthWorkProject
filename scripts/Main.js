@@ -825,7 +825,7 @@ var Game = new Phaser.Class({
         if(timer < 0)
         {
             this.scene.start('gameOver')
-            timer = 4;
+            timer = 60;
         }
 
         customPipeline.setFloat1('time', pipeTime);
