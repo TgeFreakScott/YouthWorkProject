@@ -108,7 +108,10 @@ var Preloader = new Phaser.Class({
       this.load.image('pipeBody','Sprite/clawBarBody.png');
 
       this.load.image('greyArrow', 'Sprite/greyArrow.png');
-      this.load.image('redArrow', 'Sprite/redArrow.png');
+      this.load.image('blueArrow', 'Sprite/blueArrow.png');
+      this.load.image('yellowArrow', 'Sprite/yellowArrow.png');
+
+      this.load.image('greenArrow', 'Sprite/greenArrow.png');
 
       //Loading in animated Sprites
       this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
@@ -263,13 +266,22 @@ function iconChange()
 }
 
 //mass is in grams
-var redLeft = false;
-var redRight = true;
-var redJump = false;
 
 var greyLeft = false;
 var greyRight = true;
 var greyJump = false;
+
+var blueLeft = false;
+var blueRight = true;
+var blueJump = false;
+
+var yellowLeft = false;
+var yellowRight = true;
+var yellowJump = false;
+
+var greenLeft = false;
+var greenRight = true;
+var greenJump = false;
 
 var computerID;
 var redSprite;
@@ -293,12 +305,17 @@ var rightBucket;
 var backgroundSprite;
 var floorSprite;
 
-var sprite1;
-var sprite2;
-var pinkTest;
-var blueTest;
+var redTest;
+var pinkPlayer;
+var greyPlayer;
+var bluePlayer;
+var yellowPlayer;
+var greenPlayer;
 
 var greyArrowToGreyPlayer;
+var blueArrowToBluePlayer;
+var yellowArrowToYellowPlayer;
+var greenArrowToGreenPlayer;
 
 //Constraint Variables
 var clawToPipeBody;
@@ -313,6 +330,9 @@ var leftConnectToRightConnect;
 
 var redArrow;
 var greyArrow;
+var blueArrow;
+var yellowArrow;
+var greenArrow;
 var rotationValue = 0.1;
 var pipeTime = 0;
 
@@ -320,13 +340,19 @@ var cursors;
 var keys;
 var music;
 var textTimer;
-var timer = 4;
+var timer = 60;
 var nextTimer = 30;
 var textLives;
 var lives = 5;
 var textGameOver;
 var greyJumpTimer = true;
 var lastGreyJump = 0;
+var blueJumpTimer = true;
+var lastBlueJump = 0;
+var yellowJumpTimer = true;
+var lastYellowJump = 0;
+var greenJumpTimer = true;
+var lastGreenJump = 0;
 var textBool = false;
 var pinkTimer = 1.2;
 var pinkJumpTimer = 4;
@@ -395,6 +421,13 @@ var Game = new Phaser.Class({
         var circleE3 = Bodies.circle(0, -10, 14);
         var circleE4 = Bodies.circle(0, 10, 14);
 
+        var rectF1 = Bodies.rectangle(0, 0, 50, 14);
+        var rectF2 = Bodies.rectangle(0, 0, 14, 50);
+        var circleF1 = Bodies.circle(-10, 0, 14);
+        var circleF2 = Bodies.circle(10, 0, 14);
+        var circleF3 = Bodies.circle(0, -10, 14);
+        var circleF4 = Bodies.circle(0, 10, 14);
+
         var rectCaptureBoxA1 = Bodies.rectangle(160, 90, 330, 14);
         var rectCaptureBoxB1 = Bodies.rectangle( 0, 0, 14, 190);
 
@@ -416,6 +449,8 @@ var Game = new Phaser.Class({
           {parts: [ rectD1, rectD2, circleD1, circleD2, circleD3, circleD4 ]});
         var compoundBody5 = Phaser.Physics.Matter.Matter.Body.create(
           {parts: [ rectE1, rectE2, circleE1, circleE2, circleE3, circleE4 ]});
+        var compoundBody6 = Phaser.Physics.Matter.Matter.Body.create(
+          {parts: [ rectF1, rectF2, circleF1, circleF2, circleF3, circleF4 ]});
 
         //music create
         music = this.sound.add('test');
@@ -427,6 +462,9 @@ var Game = new Phaser.Class({
         var shapePink = this.cache.json.get('pinkShape');
         var shapeGrey = this.cache.json.get('greyShape');
         var shapeRed = this.cache.json.get('redShape');
+        var shapeGreen = this.cache.json.get('greenShape');
+        var shapeYellow = this.cache.json.get('yellowShape');
+
         var shapeArmLeft = this.cache.json.get('armLeftShape');
         var shapeArmRight = this.cache.json.get('armRightShape');
         var shapeArmConnect = this.cache.json.get('armConnectShape');
@@ -435,15 +473,11 @@ var Game = new Phaser.Class({
         backgroundSprite = this.add.image(500,300,'background').setScale(1.15).setAlpha(0.4);
         floorSprite = this.matter.add.image(500,930,'floor',{ shape: 'square'}).setScale(1.1).setAlpha(1).setStatic(true);
 
-        pinkTest = this.matter.add.image(250, 400, 'pink','pink',{shape: shapePink.pinkCapture })
+        pinkPlayer = this.matter.add.sprite(250, 400, 'pinkMove','pinkMove',{shape: shapePink.pinkCapture })
         .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400).setFixedRotation(true);
-
-        pinkTest.setExistingBody(compoundBody3);
-        pinkTest.setPosition(250, 400).setScale(0.2).setMass(400)
+        pinkPlayer.setExistingBody(compoundBody3);
+        pinkPlayer.setPosition(250, 400).setScale(0.2).setMass(400)
         .setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
-
-        blueTest = this.matter.add.image(450, 450, 'blue','blue', {shape: shapeBlue.blueCapture })
-        .setFixedRotation(true).setScale(0.2).setBounce(0.6).setDensity(100).setMass(400);
 
         armLeftSprite = this.matter.add.image(300, 400,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
         .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(1000).setMass(2750);
@@ -467,18 +501,34 @@ var Game = new Phaser.Class({
         .setFixedRotation().setScale(0.7).setMass(22000).setIgnoreGravity(true).setStatic({x:false, y:true});
 
         //Setting JSON collider for Sprite
-        sprite1 = this.matter.add.sprite(600, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
+        redTest = this.matter.add.sprite(600, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
         .setScale(0.2).setMass(400).setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
-        sprite1.setExistingBody(compoundBody2);
-
-        sprite1.setPosition(600,300).setScale(0.2).setMass(400)
+        redTest.setExistingBody(compoundBody2);
+        redTest.setPosition(600,300).setScale(0.2).setMass(400)
         .setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
 
-        sprite2 = this.matter.add.sprite(300, 500, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
+        greyPlayer = this.matter.add.sprite(300, 500, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
-        sprite2.setExistingBody(compoundBody);
+        greyPlayer.setExistingBody(compoundBody);
+        greyPlayer.setPosition(300,500).setScale(0.2).setMass(400)
+        .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
 
-        sprite2.setPosition(300,500).setScale(0.2).setMass(400)
+        bluePlayer = this.matter.add.sprite(300, 500, 'blueMove','blueMove',{shape: shapeGrey.greyCapture})
+        .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+        bluePlayer.setExistingBody(compoundBody4);
+        bluePlayer.setPosition(400,400).setScale(0.2).setMass(400)
+        .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+
+        yellowPlayer = this.matter.add.sprite(300, 500, 'yellowMove','yellowMove',{shape: shapeGrey.greyCapture})
+        .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+        yellowPlayer.setExistingBody(compoundBody5);
+        yellowPlayer.setPosition(200,400).setScale(0.2).setMass(400)
+        .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+
+        greenPlayer = this.matter.add.sprite(300, 500, 'greenMove','greenMove',{shape: shapeGrey.greyCapture})
+        .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+        greenPlayer.setExistingBody(compoundBody6);
+        greenPlayer.setPosition(800,400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
 
         leftBucket = this.matter.add.image(-15,570, 'bucket','bucket', {shape: shapeBucket.glassPanel})
@@ -497,8 +547,18 @@ var Game = new Phaser.Class({
         redArrow = this.matter.add.image(50, 300, 'redArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
             .setFixedRotation(true).setSensor(true).setInteractive();
+        blueArrow = this.matter.add.image(50, 300, 'blueArrow', null,)
+            .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
+              .setFixedRotation(true).setSensor(true).setInteractive();
+        yellowArrow = this.matter.add.image(50, 300, 'yellowArrow', null,)
+            .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
+            .setFixedRotation(true).setSensor(true).setInteractive();
+        greenArrow = this.matter.add.image(50, 300, 'greenArrow', null,)
+            .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
+            .setFixedRotation(true).setSensor(true).setInteractive();
 
         //Creates Animation for Sprite
+        //Walking
         var redAnimation = this.anims.create({
             key: 'walk',
             frames: this.anims.generateFrameNumbers('redMove'),
@@ -511,19 +571,78 @@ var Game = new Phaser.Class({
               frameRate: 6, repeat: -1
         });
 
+        var blueAnimation = this.anims.create({
+            key: 'walk2',
+            frames: this.anims.generateFrameNumbers('blueMove'),
+            frameRate: 6, repeat: -1,
+        });
+
+        var yellowAnimation = this.anims.create({
+              key: 'walk3',
+              frames: this.anims.generateFrameNumbers('yellowMove'),
+              frameRate: 6, repeat: -1
+        });
+
+        var greenAnimation = this.anims.create({
+            key: 'walk4',
+            frames: this.anims.generateFrameNumbers('greenMove'),
+            frameRate: 6, repeat: -1,
+        });
+
+        var pinkAnimation = this.anims.create({
+            key: 'walk5',
+            frames: this.anims.generateFrameNumbers('pinkMove'),
+            frameRate: 6, repeat: -1,
+        });
+
+        //Jumping
         var greyJumpAnimation = this.anims.create({
               key: 'greyJump',
               frames: this.anims.generateFrameNumbers('greyJump'),
               frameRate: 8, repeat: -1
         });
 
-          sprite1.play('walk');
-          sprite2.play('walk1');
+        var blueJumpAnimation = this.anims.create({
+              key: 'blueJump',
+              frames: this.anims.generateFrameNumbers('blueJump'),
+              frameRate: 8, repeat: -1
+        });
+
+        var yellowJumpAnimation = this.anims.create({
+              key: 'yellowJump',
+              frames: this.anims.generateFrameNumbers('yellowJump'),
+              frameRate: 8, repeat: -1
+        });
+
+        var greenJumpAnimation = this.anims.create({
+              key: 'greenJump',
+              frames: this.anims.generateFrameNumbers('greenJump'),
+              frameRate: 8, repeat: -1
+        });
+
+        var redJumpAnimation = this.anims.create({
+              key: 'redJump',
+              frames: this.anims.generateFrameNumbers('redJump'),
+              frameRate: 8, repeat: -1
+        });
+
+        var pinkJumpAnimation = this.anims.create({
+              key: 'pinkJump',
+              frames: this.anims.generateFrameNumbers('pinkJump'),
+              frameRate: 8, repeat: -1
+        });
+
+          redTest.play('walk');
+          greyPlayer.play('walk1');
+          bluePlayer.play('walk2');
+          yellowPlayer.play('walk3');
+          greenPlayer.play('walk4');
+          pinkPlayer.play('walk5');
 
           this.cameras.main.setRenderToTexture(customPipeline);
 
           var extracam = this.cameras.add();
-          this.cameras.main.ignore(pinkTest);
+          this.cameras.main.ignore(pinkPlayer);
           extracam.ignore(backgroundSprite);
 
         //Constraints connect 2 Bodies to another by a point
@@ -565,10 +684,31 @@ var Game = new Phaser.Class({
 
         greyArrowToGreyPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: greyArrow.body, bodyB: sprite2.body,
+          bodyA: greyArrow.body, bodyB: greyPlayer.body,
           pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
         });
         this.matter.world.add(greyArrowToGreyPlayer);
+
+        blueArrowToBluePlayer = Phaser.Physics.Matter.Matter.Constraint.create(
+        {
+          bodyA: blueArrow.body, bodyB: bluePlayer.body,
+          pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
+        });
+        this.matter.world.add(blueArrowToBluePlayer);
+
+        yellowArrowToYellowPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
+        {
+          bodyA: yellowArrow.body, bodyB: yellowPlayer.body,
+          pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
+        });
+        this.matter.world.add(yellowArrowToYellowPlayer);
+
+        greenArrowToGreenPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
+        {
+          bodyA: greenArrow.body, bodyB: greenPlayer.body,
+          pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
+        });
+        this.matter.world.add(greenArrowToGreenPlayer);
 
         rightArmToLeftArm = Phaser.Physics.Matter.Matter.Constraint.create(
         {
@@ -604,7 +744,7 @@ var Game = new Phaser.Class({
         textLives.setTint(0xff000f, 0xfff000, 0x00000f, 0xf00000);
 
         //var tween = this.tweens.add({
-        //    targets: pinkTest,
+        //    targets: pinkPlayer,
         //    props: {
         //        x: { value: '+=600', duration: 3000, yoyo: true, repeat: -1, ease: 'Power1', repeat: -1 },
         //        y: { value: '-=64', duration: 600, yoyo: true, repeat: -1, ease: 'Power1' } },
@@ -613,22 +753,47 @@ var Game = new Phaser.Class({
 
         this.socket.on('redMoved', function (redData)
         {
-          sprite1.setPosition(redData.x, redData.y);
-        });
-
-        this.socket.on('redMoved', function (redData)
-        {
-          sprite1.setPosition(redData.x, redData.y);
+          redTest.setPosition(redData.x, redData.y);
         });
 
         this.socket.on('greyMoved', function (greyData)
         {
-          sprite2.setPosition(greyData.x, greyData.y);
+          greyPlayer.setPosition(greyData.x, greyData.y);
         });
         this.socket.on('greyArrowMoved', function (greyArrowData)
         {
           greyArrow.setPosition(greyArrowData.x, greyArrowData.y);
           greyArrow.setAngle(greyArrowData.angle);
+        });
+
+        this.socket.on('blueMoved', function (blueData)
+        {
+          bluePlayer.setPosition(blueData.x, blueData.y);
+        });
+        this.socket.on('blueArrowMoved', function (blueArrowData)
+        {
+          blueArrow.setPosition(blueArrowData.x, blueArrowData.y);
+          blueArrow.setAngle(blueArrowData.angle);
+        });
+
+        this.socket.on('yellowMoved', function (yellowData)
+        {
+          yellowPlayer.setPosition(yellowData.x, yellowData.y);
+        });
+        this.socket.on('yellowArrowMoved', function (yellowArrowData)
+        {
+          yellowArrow.setPosition(yellowArrowData.x, yellowArrowData.y);
+          yellowArrow.setAngle(yellowArrowData.angle);
+        });
+
+        this.socket.on('greenMoved', function (greenData)
+        {
+          greenPlayer.setPosition(greenData.x, greenData.y);
+        });
+        this.socket.on('greenArrowMoved', function (greenArrowData)
+        {
+          greenArrow.setPosition(greenArrowData.x, greenArrowData.y);
+          greenArrow.setAngle(greenArrowData.angle);
         });
 
         this.input.setPollAlways();
@@ -646,13 +811,12 @@ var Game = new Phaser.Class({
 
         if(pinkJumpTimer <= 0)
         {
-            pinkTest.setVelocityY(Math.floor((Math.random() * 35) + 30));
+            //pinkPlayer.setVelocityY(Math.floor((Math.random() * 35) + 30));
             pinkJumpTimer = 4;
         }
         if(pinkTimer <= 0)
-
         {
-            pinkTest.setVelocityX(Math.floor((Math.random() * 75) + -37));
+          //  pinkPlayer.setVelocityX(Math.floor((Math.random() * 75) + -37));
             pinkTimer = 1.2;
         }
 
@@ -668,15 +832,36 @@ var Game = new Phaser.Class({
         //time += 0.005;
 
           greyArrow.thrustLeft(0.5);
+          blueArrow.thrustLeft(0.5);
+          yellowArrow.thrustLeft(0.5);
+          greenArrow.thrustLeft(0.5);
           pipeBodySprite.thrustLeft(3);
           //redArrow.thrustLeft(0.01);
-          //Client.sendPosition(sprite2.x, sprite2.y);
+          //Client.sendPosition(greyPlayer.x, greyPlayer.y);
 
           greyJumpTimer = (this.time.now - lastGreyJump) > 550;
+          blueJumpTimer = (this.time.now - lastBlueJump) > 550;
+          yellowJumpTimer = (this.time.now - lastYellowJump) > 550;
+          greenJumpTimer = (this.time.now - lastGreenJump) > 550;
 
-          if(greyArrow.y > sprite2.y)
+          if(greyArrow.y > greyPlayer.y)
           {
-            greyArrow.y = sprite2.y;
+            greyArrow.y = greyPlayer.y;
+          }
+
+          if(blueArrow.y > bluePlayer.y)
+          {
+            blueArrow.y = bluePlayer.y;
+          }
+
+          if(yellowArrow.y > yellowPlayer.y)
+          {
+            yellowArrow.y = yellowPlayer.y;
+          }
+
+          if(greenArrow.y > greenPlayer.y)
+          {
+            greenArrow.y = greenPlayer.y;
           }
 
           if (this.input.gamepad.total === 0)
@@ -684,86 +869,278 @@ var Game = new Phaser.Class({
               return;
           }
 
-          // Keyboard for Claw Machine
-          if (cursors.left.isDown)
-          {
-              if(rightArmToLeftArm.length > 1)
-              {
-                rightArmToLeftArm.length = rightArmToLeftArm.length-5;
-              }
-              if(leftConnectToRightConnect.length > 125)
-              {
-                leftConnectToRightConnect.length = leftConnectToRightConnect.length-2;
-              }
-              if(leftConnectToClawTop.length < 220 && rightConnectToClawTop.length < 220)
-              {
-                leftConnectToClawTop.length = leftConnectToClawTop.length+2;
-                rightConnectToClawTop.length = rightConnectToClawTop.length+2;
-              }
-          }
-          if (cursors.right.isDown)
-          {
-              if(rightArmToLeftArm.length < 200)
-              {
-                rightArmToLeftArm.length = rightArmToLeftArm.length + 7;
-              }
-              if(leftConnectToRightConnect.length < 175)
-              {
-                leftConnectToRightConnect.length = leftConnectToRightConnect.length+2;
-              }
-              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
-              {
-                leftConnectToClawTop.length = leftConnectToClawTop.length-2;
-                rightConnectToClawTop.length = rightConnectToClawTop.length-2;
-              }
-          }
-
-          if (keys.A.isDown)
-          {
-              pipeBodySprite.thrustBack(80);
-              if(pipeBodySprite.x > 50)
-              {
-                pipeBodySprite.x = pipeBodySprite.x - 5;
-              }
-          }
-          if (cursors.up.isDown)
-          {
-            if(clawToPipeBody.length > 8)
-            {
-              clawToPipeBody.length = clawToPipeBody.length - 5 ;
-            }
-          }
-          if (keys.D.isDown)
-          {
-            if(pipeBodySprite.x < 950)
-            {
-              pipeBodySprite.x = pipeBodySprite.x + 5;
-            }
-          }
-          if (cursors.down.isDown)
-          {
-              //pipeBodySprite.thrustRight(80);
-            if(clawToPipeBody.length < 215)
-            {
-                clawToPipeBody.length = clawToPipeBody.length + 5;
-            }
-          }
-
-
           var pad1 = this.input.gamepad.getPad(0);
           var pad2 = this.input.gamepad.getPad(1);
-          //var pad3 = this.input.gamepad.getPad(2);
-          //var pad4 = this.input.gamepad.getPad(3);
+          var pad3 = this.input.gamepad.getPad(2);
+          var pad4 = this.input.gamepad.getPad(3);
           this.socket.emit('requestSocketID');
           this.socket.on('passSocketID', function(socketID)
           {
+            //Computer 1
+            //Player 1
             if (pad1.axes.length && computerID === socketID.firstConnection)
+            {
+              var greyAxisH = pad1.axes[0].getValue();
+
+              if(greyAxisH > 0) //right
+              {
+                greyArrow.angle += 15;
+                if(greyArrow.angle > 90)
+                {
+                  greyArrow.angle = 90;
+                }
+                greyLeft = true;
+                greyRight = false;
+              }
+              if(greyAxisH < 0) //left
+              {
+                greyArrow.angle -= 15;
+                if(greyArrow.angle < -90)
+                {
+                  greyArrow.angle = -90;
+                }
+                greyLeft = false;
+                greyRight = true;
+              }
+            }
+
+            if(pad1.buttons.length && computerID === socketID.firstConnection)
+            {
+              var greyButton = pad1.buttons[1].value;
+              if (greyButton === 1 && greyJumpTimer && !greyJump)
+              {
+                  greyPlayer.anims.play('greyJump');
+                  lastGreyJump = self.time.now;
+                  greyPlayer.setVelocityY(-27);
+                  greyJump = true;
+              }
+              if (greyButton === 0 )
+              {
+                  greyJump = false;
+                  greyPlayer.anims.play('walk1', true);
+              }
+            }
+
+            //Player 2
+            if (pad2.axes.length && computerID === socketID.firstConnection)
+            {
+              var blueAxisH = pad2.axes[0].getValue();
+
+              if(blueAxisH > 0) //right
+              {
+                blueArrow.angle += 15;
+                if(blueArrow.angle > 90)
+                {
+                  blueArrow.angle = 90;
+                }
+                blueLeft = true;
+                blueRight = false;
+              }
+              if(blueAxisH < 0) //left
+              {
+                blueArrow.angle -= 15;
+                if(blueArrow.angle < -90)
+                {
+                  blueArrow.angle = -90;
+                }
+                blueLeft = false;
+                blueRight = true;
+              }
+            }
+
+            if(pad2.buttons.length && computerID === socketID.firstConnection)
+            {
+              var blueButton = pad2.buttons[1].value;
+              if (blueButton === 1 && blueJumpTimer && !blueJump)
+              {
+                  bluePlayer.anims.play('blueJump');
+                  lastBlueJump = self.time.now;
+                  bluePlayer.setVelocityY(-27);
+                  blueJump = true;
+              }
+              if (blueButton === 0 )
+              {
+                  blueJump = false;
+                  bluePlayer.anims.play('walk2', true);
+              }
+            }
+
+            //Player 3
+            if (pad3.axes.length && computerID === socketID.firstConnection)
+            {
+              var yellowAxisH = pad3.axes[0].getValue();
+
+              if(yellowAxisH > 0) //right
+              {
+                yellowArrow.angle += 15;
+                if(yellowArrow.angle > 90)
+                {
+                  yellowArrow.angle = 90;
+                }
+                yellowLeft = true;
+                yellowRight = false;
+              }
+              if(yellowAxisH < 0) //left
+              {
+                yellowArrow.angle -= 15;
+                if(yellowArrow.angle < -90)
+                {
+                  yellowArrow.angle = -90;
+                }
+                yellowLeft = false;
+                yellowRight = true;
+              }
+            }
+
+            if(pad3.buttons.length && computerID === socketID.firstConnection)
+            {
+              var yellowButton = pad3.buttons[1].value;
+              if (yellowButton === 1 && yellowJumpTimer && !yellowJump)
+              {
+                  yellowPlayer.anims.play('yellowJump');
+                  lastYellowJump = self.time.now;
+                  yellowPlayer.setVelocityY(-27);
+                  yellowJump = true;
+              }
+              if (yellowButton === 0 )
+              {
+                  yellowJump = false;
+                  yellowPlayer.anims.play('walk3', true);
+              }
+            }
+
+            //Player 4
+            if (pad4.axes.length && computerID === socketID.firstConnection)
+            {
+              var greenAxisH = pad4.axes[0].getValue();
+
+              if(greenAxisH > 0) //right
+              {
+                greenArrow.angle += 15;
+                if(greenArrow.angle > 90)
+                {
+                  greenArrow.angle = 90;
+                }
+                greenLeft = true;
+                greenRight = false;
+              }
+              if(greenAxisH < 0) //left
+              {
+                greenArrow.angle -= 15;
+                if(greenArrow.angle < -90)
+                {
+                  greenArrow.angle = -90;
+                }
+                greenLeft = false;
+                greenRight = true;
+              }
+            }
+
+            if(pad4.buttons.length && computerID === socketID.firstConnection)
+            {
+              var greenButton = pad4.buttons[1].value;
+              if (greenButton === 1 && greenJumpTimer && !greenJump)
+              {
+                  greenPlayer.anims.play('blueJump');
+                  lastGreenJump = self.time.now;
+                  greenPlayer.setVelocityY(-27);
+                  greenJump = true;
+              }
+              if (greenButton === 0 )
+              {
+                  greenJump = false;
+                  greenPlayer.anims.play('walk4', true);
+              }
+            }
+
+            //Second Computer
+
+            if (pad1.axes.length && computerID === socketID.secondConnection)
+            {
+                clawHorizontalAxes = pad1.axes[0].getValue();
+                if(clawHorizontalAxes > 0) //right
+                {
+                  if(pipeBodySprite.x < 950)
+                  {
+                    pipeBodySprite.x = pipeBodySprite.x + 5;
+                  }
+                }
+                if(clawHorizontalAxes < 0) //left
+                {
+                  pipeBodySprite.thrustBack(80);
+                  if(pipeBodySprite.x > 50)
+                  {
+                    pipeBodySprite.x = pipeBodySprite.x - 5;
+                  }
+                }
+
+            }
+
+            if (pad2.axes.length && computerID === socketID.secondConnection)
+            {
+              clawverticalAxes = pad2.axes[1].getValue();
+              if(clawverticalAxes > 0) //down
+              {
+                if(clawToPipeBody.length < 215)
+                {
+                    clawToPipeBody.length = clawToPipeBody.length + 5;
+                }
+              }
+              if(clawverticalAxes < 0) //up
+              {
+                if(clawToPipeBody.length > 8)
+                {
+                  clawToPipeBody.length = clawToPipeBody.length - 5 ;
+                }
+              }
+
+            }
+
+            if (pad3.axes.length && computerID === socketID.secondConnection)
+            {
+              clawGripHorizontalAxes = pad3.axes[0].getValue();
+              if(clawGripHorizontalAxes > 0) //right
+              {
+                if(rightArmToLeftArm.length < 200)
+                {
+                  rightArmToLeftArm.length = rightArmToLeftArm.length + 7;
+                }
+                if(leftConnectToRightConnect.length < 175)
+                {
+                  leftConnectToRightConnect.length = leftConnectToRightConnect.length+2;
+                }
+                if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+                {
+                  leftConnectToClawTop.length = leftConnectToClawTop.length-2;
+                  rightConnectToClawTop.length = rightConnectToClawTop.length-2;
+                }
+              }
+              if(clawGripHorizontalAxes < 0) //left
+              {
+                if(rightArmToLeftArm.length > 1)
+                {
+                  rightArmToLeftArm.length = rightArmToLeftArm.length-5;
+                }
+                if(leftConnectToRightConnect.length > 125)
+                {
+                  leftConnectToRightConnect.length = leftConnectToRightConnect.length-2;
+                }
+                if(leftConnectToClawTop.length < 220 && rightConnectToClawTop.length < 220)
+                {
+                  leftConnectToClawTop.length = leftConnectToClawTop.length+2;
+                  rightConnectToClawTop.length = rightConnectToClawTop.length+2;
+                }
+              }
+            }
+
+            //Test Player
+            if (pad4.axes.length && computerID === socketID.secondConnection)
             {
                 var redAxisH = pad1.axes[0].getValue();
                 var redAxisV = pad1.axes[1].getValue();
 
-                sprite1.x += 20 * redAxisH;
-                sprite1.y += 20 * redAxisV;
+                redTest.x += 20 * redAxisH;
+                redTest.y += 20 * redAxisV;
 
                 if(redAxisH > 0)
                 {
@@ -779,9 +1156,9 @@ var Game = new Phaser.Class({
                 }
             }
 
-            if(pad1.buttons.length && computerID === socketID.firstConnection)
+            if(pad4.buttons.length && computerID === socketID.secondConnection)
             {
-                var redButton = pad1.buttons[1].value;
+                var redButton = pad4.buttons[1].value;
 
                 if (redButton === 1 && !redJump)
                 {
@@ -793,123 +1170,89 @@ var Game = new Phaser.Class({
                     redJump = false;
                 }
             }
-            if(pad2.axes.length && computerID === socketID.secondConnection)
-            {
-                var greyAxisH = pad2.axes[0].getValue();
-
-                if(greyAxisH > 0) //right
-                {
-                  greyArrow.angle += 15;
-                  if(greyArrow.angle > 90)
-                  {
-                    greyArrow.angle = 90;
-                  }
-                  greyLeft = true;
-                  greyRight = false;
-                }
-                if(greyAxisH < 0) //left
-                {
-                  greyArrow.angle -= 15;
-                  if(greyArrow.angle < -90)
-                  {
-                    greyArrow.angle = -90;
-                  }
-                  greyLeft = false;
-                  greyRight = true;
-                }
-            }
-            if(pad2.buttons.length && computerID === socketID.secondConnection)
-            {
-                var greyButton = pad2.buttons[1].value;
-                if (greyButton === 1 && greyJumpTimer && !greyJump)
-                {
-                    sprite2.anims.play('greyJump');
-                    lastGreyJump = self.time.now;
-                    sprite2.setVelocityY(-27);
-                    greyJump = true;
-                }
-                if (greyButton === 0 )
-                {
-                    greyJump = false;
-                    sprite2.anims.play('walk1', true);
-                }
-            }
         });
 
 
-          if(!redLeft)
+          /*if(!redLeft)
           {
-            sprite1.flipX = true;
+            redTest.flipX = true;
           }
 
           if(!redRight)
           {
-            sprite1.flipX = false;
-          }
+            redTest.flipX = false;
+          }*/
 
           if(!greyLeft)
           {
-            sprite2.flipX = true;
+            greyPlayer.flipX = true;
           }
 
           if(!greyRight)
           {
-            sprite2.flipX = false;
+            greyPlayer.flipX = false;
           }
 
-          /*if (pad3.axes.length)
+          if(!blueLeft)
           {
-              var pinkAxisH = pad3.axes[0].getValue();
-              var pinkAxisV = pad3.axes[1].getValue();
-
-              pinkSprite.x += 4 * pinkAxisH;
-              pinkSprite.y += 4 * pinkAxisV;
-
-              pinkSprite.flipX = (pinkAxisH < 0);
-
+            bluePlayer.flipX = true;
           }
 
-          if(pad4.axes.length)
+          if(!blueRight)
           {
-              var yellowAxisH = pad4.axes[0].getValue();
-              var yellowAxisV = pad4.axes[1].getValue();
+            bluePlayer.flipX = false;
+          }
 
-              yellowSprite.x += 4 * yellowAxisH;
-              yellowSprite.y += 4 * yellowAxisV;
-
-              yellowSprite.flipX = (yellowAxisH < 0);
-          }*/
-
-
-          if(sprite1)
+          if(!yellowLeft)
           {
-            var redX = sprite1.x;
-            var redY = sprite1.y;
-            if (sprite1.oldPosition && (redX !== sprite1.oldPosition.x || redY !== sprite1.oldPosition.y))
+            yellowPlayer.flipX = true;
+          }
+
+          if(!yellowRight)
+          {
+            yellowPlayer.flipX = false;
+          }
+
+          if(!greenLeft)
+          {
+            greenPlayer.flipX = true;
+          }
+
+          if(!greenRight)
+          {
+            greenPlayer.flipX = false;
+          }
+
+
+          if(redTest)
+          {
+            var redX = redTest.x;
+            var redY = redTest.y;
+            if (redTest.oldPosition && (redX !== redTest.oldPosition.x || redY !== redTest.oldPosition.y))
             {
-              this.socket.emit('redMovement', { x: sprite1.x, y: sprite1.y});
+              this.socket.emit('redMovement', { x: redTest.x, y: redTest.y});
             }
 
             // save old position data
-            sprite1.oldPosition = {
-              x: sprite1.x,
-              y: sprite1.y
+            redTest.oldPosition = {
+              x: redTest.x,
+              y: redTest.y
             };
           }
 
-          if(sprite2)
+          if(greyPlayer)
           {
-            var greyX = sprite2.x;
-            var greyY = sprite2.y;
-            if (sprite2.oldPosition && (greyX !== sprite2.oldPosition.x || greyY !== sprite2.oldPosition.y))
+            var greyX = greyPlayer.x;
+            var greyY = greyPlayer.y;
+            if (greyPlayer.oldPosition && (greyX !== greyPlayer.oldPosition.x || greyY !== greyPlayer.oldPosition.y))
             {
-              this.socket.emit('greyMovement', { x: sprite2.x, y: sprite2.y});
+              this.socket.emit('greyMovement', { x: greyPlayer.x, y: greyPlayer.y});
             }
 
             // save old position data
-            sprite2.oldPosition = {
-              x: sprite2.x,
-              y: sprite2.y
+            greyPlayer.oldPosition = {
+              x: greyPlayer.x,
+              y: greyPlayer.y
             };
           }
           if(greyArrow)
@@ -927,6 +1270,104 @@ var Game = new Phaser.Class({
               x: greyArrow.x,
               y: greyArrow.y,
               angle: greyArrow.angle
+            };
+          }
+
+          if(bluePlayer)
+          {
+            var blueX = bluePlayer.x;
+            var blueY = bluePlayer.y;
+            if (bluePlayer.oldPosition && (blueX !== bluePlayer.oldPosition.x || blueY !== bluePlayer.oldPosition.y))
+            {
+              this.socket.emit('blueMovement', { x: bluePlayer.x, y: bluePlayer.y});
+            }
+
+            // save old position data
+            bluePlayer.oldPosition = {
+              x: bluePlayer.x,
+              y: bluePlayer.y
+            };
+          }
+          if(blueArrow)
+          {
+            var blueArrowX = blueArrow.x;
+            var blueArrowY = blueArrow.y;
+            var blueArrowAngle = blueArrow.angle;
+            if (blueArrow.oldPosition && (blueArrowX !== blueArrow.oldPosition.x || blueArrowY !== blueArrow.oldPosition.y || blueArrowAngle !== blueArrow.oldPosition.angle))
+            {
+              this.socket.emit('blueArrowMovement', { x: blueArrow.x, y: blueArrow.y, angle: blueArrow.angle});
+            }
+
+            // save old position data
+            blueArrow.oldPosition = {
+              x: blueArrow.x,
+              y: blueArrow.y,
+              angle: blueArrow.angle
+            };
+          }
+
+          if(yellowPlayer)
+          {
+            var yellowX = yellowPlayer.x;
+            var yellowY = yellowPlayer.y;
+            if (yellowPlayer.oldPosition && (yellowX !== yellowPlayer.oldPosition.x || yellowY !== yellowPlayer.oldPosition.y))
+            {
+              this.socket.emit('yellowMovement', { x: yellowPlayer.x, y: yellowPlayer.y});
+            }
+
+            // save old position data
+            yellowPlayer.oldPosition = {
+              x: yellowPlayer.x,
+              y: yellowPlayer.y
+            };
+          }
+          if(yellowArrow)
+          {
+            var yellowArrowX = yellowArrow.x;
+            var yellowArrowY = yellowArrow.y;
+            var yellowArrowAngle = yellowArrow.angle;
+            if (yellowArrow.oldPosition && (yellowArrowX !== yellowArrow.oldPosition.x || yellowArrowY !== yellowArrow.oldPosition.y || yellowArrowAngle !== yellowArrow.oldPosition.angle))
+            {
+              this.socket.emit('yellowArrowMovement', { x: yellowArrow.x, y: yellowArrow.y, angle: yellowArrow.angle});
+            }
+
+            // save old position data
+            yellowArrow.oldPosition = {
+              x: yellowArrow.x,
+              y: yellowArrow.y,
+              angle: yellowArrow.angle
+            };
+          }
+          if(greenPlayer)
+          {
+            var greenX = greenPlayer.x;
+            var greenY = greenPlayer.y;
+            if (greenPlayer.oldPosition && (greenX !== greenPlayer.oldPosition.x || greenY !== greenPlayer.oldPosition.y))
+            {
+              this.socket.emit('greenMovement', { x: greenPlayer.x, y: greenPlayer.y});
+            }
+
+            // save old position data
+            greenPlayer.oldPosition = {
+              x: greenPlayer.x,
+              y: greenPlayer.y
+            };
+          }
+          if(greenArrow)
+          {
+            var greenArrowX = greenArrow.x;
+            var greenArrowY = greenArrow.y;
+            var greenArrowAngle = greenArrow.angle;
+            if (greenArrow.oldPosition && (greenArrowX !== greenArrow.oldPosition.x || greenArrowY !== greenArrow.oldPosition.y || greenArrowAngle !== greenArrow.oldPosition.angle))
+            {
+              this.socket.emit('greenArrowMovement', { x: greenArrow.x, y: greenArrow.y, angle: greenArrow.angle});
+            }
+
+            // save old position data
+            greenArrow.oldPosition = {
+              x: greenArrow.x,
+              y: greenArrow.y,
+              angle: greenArrow.angle
             };
           }
     }

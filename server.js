@@ -13,11 +13,14 @@ app.get('/',function(req,res){
 });
 
 var pinkData = {x: 0, y:0};
-var blueData = {x: 0, y:0};
 var greyData = {x: 0, y:0};
 var greyArrowData = {x: 0, y:0, angle: 0};
-var greenData = {x: 0, y:0};
+var blueData = {x: 0, y:0};
+var blueArrowData = {x: 0, y:0, angle: 0};
 var yellowData = {x: 0, y:0};
+var yellowArrowData = {x: 0, y:0, angle: 0};
+var greenData = {x: 0, y:0};
+var greenArrowData = {x: 0, y:0, angle: 0};
 var redData = {x: 0, y:0};
 var socketID = {firstConnection: 0, secondConnection:0};
 
@@ -49,13 +52,7 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('pinkMoved', pinkData);
    });
-   socket.on('blueMovement', function (movementData)
-   {
-     blueData.x = movementData.x;
-     blueData.y = movementData.y;
-     // emit a message to all players about the player that moved
-     socket.broadcast.emit('blueMoved', blueData);
-   });
+
    socket.on('greyMovement', function (movementData)
    {
      greyData.x = movementData.x;
@@ -71,12 +68,20 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('greyArrowMoved', greyArrowData);
    });
-   socket.on('greenMovement', function (movementData)
+   socket.on('blueMovement', function (movementData)
    {
-     greenData.x = movementData.x;
-     greenData.y = movementData.y;
+     blueData.x = movementData.x;
+     blueData.y = movementData.y;
      // emit a message to all players about the player that moved
-     socket.broadcast.emit('greenMoved', greenData);
+     socket.broadcast.emit('blueMoved', blueData);
+   });
+   socket.on('blueArrowMovement', function (movementData)
+   {
+     blueArrowData.x = movementData.x;
+     blueArrowData.y = movementData.y;
+     blueArrowData.angle = movementData.angle;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('blueArrowMoved', blueArrowData);
    });
    socket.on('yellowMovement', function (movementData)
    {
@@ -84,6 +89,29 @@ io.on('connection', function (socket)
      yellowData.y = movementData.y;
      // emit a message to all players about the player that moved
      socket.broadcast.emit('yellowMoved', yellowData);
+   });
+   socket.on('yellowArrowMovement', function (movementData)
+   {
+     yellowArrowData.x = movementData.x;
+     yellowArrowData.y = movementData.y;
+     yellowArrowData.angle = movementData.angle;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('yellowArrowMoved', yellowArrowData);
+   });
+   socket.on('greenMovement', function (movementData)
+   {
+     greenData.x = movementData.x;
+     greenData.y = movementData.y;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('greenMoved', greenData);
+   });
+   socket.on('greenArrowMovement', function (movementData)
+   {
+     greenArrowData.x = movementData.x;
+     greenArrowData.y = movementData.y;
+     greenArrowData.angle = movementData.angle;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('greenArrowMoved', greenArrowData);
    });
    socket.on('redMovement', function (movementData)
    {
