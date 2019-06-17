@@ -168,6 +168,20 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });
+   // when a player disconnects, remove them from our players object
+  socket.on('disconnect', function ()
+  {
+    console.log('user disconnected');
+    if(socketID.firstConnection === socket.id)
+    {
+      socketID.firstConnection = 0;
+    }
+    else if(socketID.secondConnection === socket.id)
+    {
+      socketID.secondConnection = 0;
+    }
+    //io.emit('disconnect');
+  });
  });
 
 server.listen(8081,function(){
