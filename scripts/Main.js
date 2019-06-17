@@ -179,9 +179,9 @@ var PlayerEnter = new Phaser.Class({
       var armConnectLeftSprite;
       var armConnectRightSprite;
       console.log('%c PlayerEnter ', 'background: green; color: white; display: block;');
-    }
+    },
 
-    update: function()
+    update: function(time, delta)
     {
       console.log('%c Updating Player Enter ', 'background: green; color: white; display: block;');
     }

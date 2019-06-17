@@ -32,6 +32,7 @@ var socketID = {firstConnection: 0, secondConnection:0};
 
 io.on('connection', function (socket)
  {
+   console.log("A user connected");
    var tempVar = 0;
    if(socketID.firstConnection === 0)
    {
