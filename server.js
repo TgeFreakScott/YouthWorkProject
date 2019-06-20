@@ -170,7 +170,6 @@ io.on('connection', function (socket)
      socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });
    // when a player disconnects, remove them from our players object
-<<<<<<< HEAD
    socket.on('disconnect', function ()
    {
      if(socketID.firstConnection === socket.id)
@@ -184,7 +183,6 @@ io.on('connection', function (socket)
        socketID.secondConnection = 0;
      }
    });
-=======
   socket.on('disconnect', function ()
   {
     console.log('user disconnected');
@@ -198,7 +196,6 @@ io.on('connection', function (socket)
     }
     //io.emit('disconnect');
   });
->>>>>>> 47b46dde945127b8085335f910f42640516b0a69
  });
 
 server.listen(8081,function(){
