@@ -32,6 +32,7 @@ var socketID = {firstConnection: 0, secondConnection:0};
 
 io.on('connection', function (socket)
  {
+   console.log("A user connected");
    var tempVar = 0;
    if(socketID.firstConnection === 0)
    {
@@ -169,6 +170,7 @@ io.on('connection', function (socket)
      socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });
    // when a player disconnects, remove them from our players object
+<<<<<<< HEAD
    socket.on('disconnect', function ()
    {
      if(socketID.firstConnection === socket.id)
@@ -182,6 +184,21 @@ io.on('connection', function (socket)
        socketID.secondConnection = 0;
      }
    });
+=======
+  socket.on('disconnect', function ()
+  {
+    console.log('user disconnected');
+    if(socketID.firstConnection === socket.id)
+    {
+      socketID.firstConnection = 0;
+    }
+    else if(socketID.secondConnection === socket.id)
+    {
+      socketID.secondConnection = 0;
+    }
+    //io.emit('disconnect');
+  });
+>>>>>>> 47b46dde945127b8085335f910f42640516b0a69
  });
 
 server.listen(8081,function(){

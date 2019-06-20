@@ -166,8 +166,24 @@ var PlayerEnter = new Phaser.Class({
 
     create: function ()
     {
-        console.log('%c PlayerEnter ', 'background: green; color: white; display: block;');
+      var redSprite;
+      var greySprite;
+      var blueSprite;
+      var pinkSprite;
+      var greenSprite;
+      var yellowSprite;
+      var pipeBodySprite;
+      var clawBodySprite;
+      var armLeftSprite;
+      var armRightSprite;
+      var armConnectLeftSprite;
+      var armConnectRightSprite;
+      console.log('%c PlayerEnter ', 'background: green; color: white; display: block;');
+    },
 
+    update: function(time, delta)
+    {
+      console.log('%c Updating Player Enter ', 'background: green; color: white; display: block;');
     }
 
 });
@@ -242,6 +258,8 @@ var GameOverScene = new Phaser.Class({
 
     create: function ()
     {
+
+
       console.log('%c GameOver ', 'background: green; color: white; display: block;');
 
             textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
@@ -833,6 +851,10 @@ var Game = new Phaser.Class({
         {
           armRightSprite.setPosition(clawGrabberRightData.x, clawGrabberRightData.y);
         });
+        /*this.socket.on('disconnect', function (socketID)
+        {
+
+        });*/
 
         this.input.setPollAlways();
     },
