@@ -148,10 +148,19 @@ var Preloader = new Phaser.Class({
     create: function ()
     {
         console.log('%c Preloader ', 'background: green; color: white; display: block;');
-        this.scene.start('game');
+        this.scene.start('playerenter');
     }
 
 });
+
+var playerOneEnter = false;
+var playerTwoEnter = false;
+var playerThreeEnter = false;
+var playerFourEnter = false;
+var playerFiveEnter = false;
+var playerSixEnter = false;
+var playerSevenEnter = false;
+var playerEightEnter = false;
 
 var PlayerEnter = new Phaser.Class({
 
@@ -162,30 +171,171 @@ var PlayerEnter = new Phaser.Class({
     {
         Phaser.Scene.call(this, { key: 'playerenter' });
         window.MENU = this;
+        this.controls;
     },
 
     create: function ()
     {
-      var redSprite;
-      var greySprite;
-      var blueSprite;
-      var pinkSprite;
-      var greenSprite;
-      var yellowSprite;
-      var pipeBodySprite;
-      var clawBodySprite;
-      var armLeftSprite;
-      var armRightSprite;
-      var armConnectLeftSprite;
-      var armConnectRightSprite;
+      var self = this;
+      this.socket = io();
+      this.socket.on('getSocketID', function (tempVar)
+      {
+        computerID = tempVar;
+      });
+      this.socket.on('playerOneConnected', function(playerOneEntered)
+      {
+        playerOneEnter = playerOneEntered;
+      });
+      this.socket.on('playerTwoConnected', function(playerTwoEntered)
+      {
+        playerTwoEnter = playerTwoEntered;
+      });
+      this.socket.on('playerThreeConnected', function(playerThreeEntered)
+      {
+        playerThreeEnter = playerThreeEntered;
+      });
+      this.socket.on('playerFourConnected', function(playerFourEntered)
+      {
+        playerFourEnter = playerFourEntered;
+      });
+      this.socket.on('playerFiveConnected', function(playerFiveEntered)
+      {
+        playerFiveEnter = playerFiveEntered;
+      });
+      this.socket.on('playerSixConnected', function(playerSixEntered)
+      {
+        playerSixEnter = playerSixEntered;
+      });
+      this.socket.on('playerSevenConnected', function(playerSevenEntered)
+      {
+        playerSevenEnter = playerSevenEntered;
+      });
+      this.socket.on('playerEightConnected', function(playerEightEntered)
+      {
+        playerEightEnter = playerEightEntered;
+      });
       console.log('%c PlayerEnter ', 'background: green; color: white; display: block;');
+
     },
 
     update: function(time, delta)
     {
+      var self = this;
+      if (this.input.gamepad.total === 0)
+      {
+          return;
+      }
+      var pad1 = this.input.gamepad.getPad(0);
+      var pad2 = this.input.gamepad.getPad(1);
+      var pad3 = this.input.gamepad.getPad(2);
+      var pad4 = this.input.gamepad.getPad(3);
       console.log('%c Updating Player Enter ', 'background: green; color: white; display: block;');
-    }
+      this.socket.emit('requestSocketID');
+      this.socket.on('passSocketID', function(socketID)
+      {
+        //First Computer
+        if(pad1.buttons.length && computerID === socketID.firstConnection)
+        {
+          var a1 = pad1.buttons[1].value;
+          if (a1 === 1 && !playerOneEnter)
+          {
+              console.log("Player 1 entered");
+              playerOneEnter = true;
+          }
+        }
 
+        if(pad2.buttons.length && computerID === socketID.firstConnection)
+        {
+          var a2 = pad2.buttons[1].value;
+          if (a2 === 1 && !playerTwoEnter)
+          {
+              console.log("Player 2 entered");
+              playerTwoEnter = true;
+          }
+        }
+
+        if(pad3.buttons.length && computerID === socketID.firstConnection)
+        {
+          var a3 = pad3.buttons[1].value;
+          if (a3 === 1 && !playerThreeEnter)
+          {
+              console.log("Player 3 entered");
+              playerThreeEnter = true;
+          }
+        }
+
+        if(pad4.buttons.length && computerID === socketID.firstConnection)
+        {
+          var a4 = pad4.buttons[1].value;
+          if (a4 === 1 && !playerFourEnter)
+          {
+              console.log("Player 4 entered");
+              playerFourEnter = true;
+          }
+        }
+
+        //Second Computer
+        if (pad1.buttons.length && computerID === socketID.secondConnection)
+        {
+          var a5 = pad1.buttons[1].value;
+          if (a5 === 1 && !playerFiveEnter)
+          {
+              console.log("Player 5 entered");
+              playerFiveEnter = true;
+          }
+        }
+
+        if (pad2.buttons.length && computerID === socketID.secondConnection)
+        {
+          var a6 = pad2.buttons[1].value;
+          if (a6 === 1 && !playerSixEnter)
+          {
+              console.log("Player 6 entered");
+              playerSixEnter = true;
+          }
+        }
+
+        if (pad3.buttons.length && computerID === socketID.secondConnection)
+        {
+          var a7 = pad3.buttons[1].value;
+          if (a7 === 1 && !playerSevenEnter)
+          {
+              console.log("Player 7 entered");
+              playerSevenEnter = true;
+          }
+        }
+
+        if(pad4.buttons.length && computerID === socketID.secondConnection)
+        {
+          var a8 = pad4.buttons[1].value;
+          if (a8 === 1 && !playerEightEnter)
+          {
+              console.log("Player 8 entered");
+              playerEightEnter = true;
+          }
+        }
+    });
+
+    this.socket.emit('playerOneConnect', playerOneEnter);
+
+    this.socket.emit('playerTwoConnect', playerTwoEnter);
+
+    this.socket.emit('playerThreeConnect', playerThreeEnter);
+
+    this.socket.emit('playerFourConnect', playerFourEnter);
+
+    this.socket.emit('playerFiveConnect', playerFiveEnter);
+
+    this.socket.emit('playerSixConnect', playerSixEnter);
+
+    this.socket.emit('playerSevenConnect', playerSevenEnter);
+
+    this.socket.emit('playerEightConnect', playerEightEnter);
+    if(playerOneEnter && playerTwoEnter && playerThreeEnter && playerFourEnter && playerFiveEnter && playerSixEnter && playerSevenEnter && playerEightEnter)
+    {
+      console.log("Move to game screen");
+    }
+  }
 });
 
 var MainMenu = new Phaser.Class({
