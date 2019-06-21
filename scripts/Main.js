@@ -609,8 +609,8 @@ var Game = new Phaser.Class({
         var rectCaptureBoxA1 = Bodies.rectangle(160, 90, 330, 14);
         var rectCaptureBoxB1 = Bodies.rectangle( 0, 0, 14, 190);
 
-        var rectCaptureBoxA2 = Bodies.rectangle(0, 0, 50, 14);
-        var rectCaptureBoxB2 = Bodies.rectangle(0, 0, 50, 14);
+        var rectCaptureBoxA2 = Bodies.rectangle( 0, 0, 14, 190);
+        var rectCaptureBoxB2 = Bodies.rectangle(-160, 90, 330, 14);
 
         var compoundCaptureBox1 = Phaser.Physics.Matter.Matter.Body.create(
           {parts: [ rectCaptureBoxA1, rectCaptureBoxB1 ]});
@@ -710,6 +710,10 @@ var Game = new Phaser.Class({
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
 
         leftBucket = this.matter.add.image(-15,570, 'bucket','bucket', {shape: shapeBucket.glassPanel})
+        .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
+
+        leftBucket.setExistingBody(compoundCaptureBox2);
+        leftBucket.setPosition(70,600)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
          rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket',) // {shape:shapeBucket.glassPanel})
@@ -1263,6 +1267,8 @@ var Game = new Phaser.Class({
 
             if (pad1.axes.length && computerID === socketID.secondConnection)
             {
+              //var speed = (600 / 2) / 1000;
+              // image.x += speed * dt;
 
                 clawHorizontalAxes = pad1.axes[0].getValue();
                 if(clawHorizontalAxes > 0) //right

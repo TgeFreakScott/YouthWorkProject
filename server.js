@@ -177,6 +177,7 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });
+   
    socket.on('playerOneConnect', function (connectionData)
    {
       playerOneEntered = connectionData;
@@ -225,7 +226,6 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('playerEightConnected', playerEightEntered);
    });
-  // when a player disconnects, remove them from our players object
   socket.on('disconnect', function ()
   {
     if(socketID.firstConnection === socket.id)
