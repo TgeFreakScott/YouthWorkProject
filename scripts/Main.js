@@ -148,7 +148,7 @@ var Preloader = new Phaser.Class({
     create: function ()
     {
         console.log('%c Preloader ', 'background: green; color: white; display: block;');
-        this.scene.start('game');
+        this.scene.start('playerenter');
     }
 
 });
@@ -240,9 +240,8 @@ var PlayerEnter = new Phaser.Class({
           if (a1 === 1 && !playerOneEnter)
           {
               console.log("Player 1 entered");
-
-
-               playerOneEnter = true;
+              playerOneEnter = true;
+              self.socket.emit('playerOneConnect', playerOneEnter);
           }
         }
 
@@ -253,6 +252,7 @@ var PlayerEnter = new Phaser.Class({
           {
               console.log("Player 2 entered");
               playerTwoEnter = true;
+              self.socket.emit('playerTwoConnect', playerTwoEnter);
           }
         }
 
@@ -263,6 +263,7 @@ var PlayerEnter = new Phaser.Class({
           {
               console.log("Player 3 entered");
               playerThreeEnter = true;
+              self.socket.emit('playerThreeConnect', playerThreeEnter);
           }
         }
 
@@ -273,6 +274,7 @@ var PlayerEnter = new Phaser.Class({
           {
               console.log("Player 4 entered");
               playerFourEnter = true;
+              self.socket.emit('playerFourConnect', playerFourEnter);
           }
         }
 
@@ -284,6 +286,7 @@ var PlayerEnter = new Phaser.Class({
           {
               console.log("Player 5 entered");
               playerFiveEnter = true;
+              self.socket.emit('playerFiveConnect', playerFiveEnter);
           }
         }
 
@@ -294,6 +297,7 @@ var PlayerEnter = new Phaser.Class({
           {
               console.log("Player 6 entered");
               playerSixEnter = true;
+              self.socket.emit('playerSixConnect', playerSixEnter);
           }
         }
 
@@ -304,6 +308,7 @@ var PlayerEnter = new Phaser.Class({
           {
               console.log("Player 7 entered");
               playerSevenEnter = true;
+              self.socket.emit('playerSevenConnect', playerSevenEnter);
           }
         }
 
@@ -314,28 +319,15 @@ var PlayerEnter = new Phaser.Class({
           {
               console.log("Player 8 entered");
               playerEightEnter = true;
+              self.socket.emit('playerEightConnect', playerEightEnter);
           }
         }
     });
 
-    this.socket.emit('playerOneConnect', playerOneEnter);
-
-    this.socket.emit('playerTwoConnect', playerTwoEnter);
-
-    this.socket.emit('playerThreeConnect', playerThreeEnter);
-
-    this.socket.emit('playerFourConnect', playerFourEnter);
-
-    this.socket.emit('playerFiveConnect', playerFiveEnter);
-
-    this.socket.emit('playerSixConnect', playerSixEnter);
-
-    this.socket.emit('playerSevenConnect', playerSevenEnter);
-
-    this.socket.emit('playerEightConnect', playerEightEnter);
     if(playerOneEnter && playerTwoEnter && playerThreeEnter && playerFourEnter && playerFiveEnter && playerSixEnter && playerSevenEnter && playerEightEnter)
     {
       console.log("Move to game screen");
+      this.scene.start('game', { port: this.socket, id: computerID });
     }
   }
 });
@@ -550,17 +542,20 @@ var Game = new Phaser.Class({
         this.controls;
     },
 
+    init: function (data)
+    {
+        console.log('init', data);
+
+        this.socket = data.port;
+        computerID = data.id;
+    },
+
     create: function ()
     {
         console.log('%c Game ', 'background: green; color: white; display: block;');
 
         this.matter.world.setBounds();
         var self = this;
-        this.socket = io();
-        this.socket.on('getSocketID', function (tempVar)
-        {
-          computerID = tempVar;
-        });
         cursors = this.input.keyboard.createCursorKeys();
         keys = this.input.keyboard.addKeys('W,A,S,D,I,J,K,L');
 

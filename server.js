@@ -28,6 +28,14 @@ var clawArmLeftData = {x: 0, y:0};
 var clawArmRightData = {x: 0, y:0};
 var clawGrabberLeftData = {x: 0, y:0};
 var clawGrabberRightData = {x: 0, y:0};
+var playerOneEntered = false;
+var playerTwoEntered = false;
+var playerThreeEntered = false;
+var playerFourEntered = false;
+var playerFiveEntered = false;
+var playerSixEntered = false;
+var playerSevenEntered = false;
+var playerEightEntered = false;
 var socketID = {firstConnection: 0, secondConnection:0};
 
 io.on('connection', function (socket)
@@ -169,32 +177,67 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });
-   // when a player disconnects, remove them from our players object
-   socket.on('disconnect', function ()
+   
+   socket.on('playerOneConnect', function (connectionData)
    {
-     if(socketID.firstConnection === socket.id)
-     {
-       console.log('user 1 disconnected');
-       socketID.firstConnection = 0;
-     }
-     else if(socketID.secondConnection === socket.id)
-     {
-       console.log('user 2 disconnected');
-       socketID.secondConnection = 0;
-     }
+      playerOneEntered = connectionData;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('playerOneConnected', playerOneEntered);
+   });
+   socket.on('playerTwoConnect', function (connectionData)
+   {
+      playerTwoEntered = connectionData;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('playerTwoConnected', playerTwoEntered);
+   });
+   socket.on('playerThreeConnect', function (connectionData)
+   {
+      playerThreeEntered = connectionData;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('playerThreeConnected', playerThreeEntered);
+   });
+   socket.on('playerFourConnect', function (connectionData)
+   {
+      playerFourEntered = connectionData;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('playerFourConnected', playerFourEntered);
+   });
+   socket.on('playerFiveConnect', function (connectionData)
+   {
+      playerFiveEntered = connectionData;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('playerFiveConnected', playerFiveEntered);
+   });
+   socket.on('playerSixConnect', function (connectionData)
+   {
+      playerSixEntered = connectionData;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('playerSixConnected', playerSixEntered);
+   });
+   socket.on('playerSevenConnect', function (connectionData)
+   {
+      playerSevenEntered = connectionData;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('playerSevenConnected', playerSevenEntered);
+   });
+   socket.on('playerEightConnect', function (connectionData)
+   {
+      playerEightEntered = connectionData;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('playerEightConnected', playerEightEntered);
    });
   socket.on('disconnect', function ()
   {
-    console.log('user disconnected');
     if(socketID.firstConnection === socket.id)
     {
+      console.log('user 1 disconnected');
       socketID.firstConnection = 0;
     }
     else if(socketID.secondConnection === socket.id)
     {
+      console.log('user 2 disconnected');
       socketID.secondConnection = 0;
     }
-    //io.emit('disconnect');
   });
  });
 
