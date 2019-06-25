@@ -177,7 +177,7 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });
-   
+
    socket.on('playerOneConnect', function (connectionData)
    {
       playerOneEntered = connectionData;

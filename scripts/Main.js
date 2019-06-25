@@ -148,7 +148,7 @@ var Preloader = new Phaser.Class({
     create: function ()
     {
         console.log('%c Preloader ', 'background: green; color: white; display: block;');
-        this.scene.start('playerenter');
+        this.scene.start('game');
     }
 
 });
@@ -386,6 +386,7 @@ var YouthElement = new Phaser.Class({
     update: function (time, delta)
     {
           console.log('Youth Element Screen');
+
     }
 
 });
@@ -544,10 +545,9 @@ var Game = new Phaser.Class({
 
     init: function (data)
     {
-        console.log('init', data);
-
-        this.socket = data.port;
-        computerID = data.id;
+        //console.log('init', data);
+        //this.socket = data.port;
+        //computerID = data.id;
     },
 
     create: function ()
@@ -556,6 +556,13 @@ var Game = new Phaser.Class({
 
         this.matter.world.setBounds();
         var self = this;
+
+        this.socket = io();
+        this.socket.on('getSocketID', function (tempVar)
+        {
+          computerID = tempVar;
+        });
+
         cursors = this.input.keyboard.createCursorKeys();
         keys = this.input.keyboard.addKeys('W,A,S,D,I,J,K,L');
 
@@ -609,7 +616,7 @@ var Game = new Phaser.Class({
 
         var rectCaptureBoxA2 = Bodies.rectangle( 0, 0, 14, 190);
         var rectCaptureBoxB2 = Bodies.rectangle(-160, 90, 330, 14);
-        var circCaptureBoxC2 = Bodies.circle(0, 0, 30, { isSensor: true, label: 'top' });
+        var circCaptureBoxC2 = Bodies.circle(-90, 0, 80, { isSensor: true, label: 'top' });
 
         var compoundCaptureBox1 = Phaser.Physics.Matter.Matter.Body.create(
           {parts: [ rectCaptureBoxA1, rectCaptureBoxB1, circCaptureBoxC1 ]});
@@ -712,14 +719,14 @@ var Game = new Phaser.Class({
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         leftBucket.setExistingBody(compoundCaptureBox2);
-        leftBucket.setPosition(70,600)
+        leftBucket.setPosition(70,550)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
          rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket',) // {shape:shapeBucket.glassPanel})
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         rightBucket.setExistingBody(compoundCaptureBox1);
-        rightBucket.setPosition(940,600)
+        rightBucket.setPosition(940,550)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
@@ -1004,6 +1011,8 @@ var Game = new Phaser.Class({
         {
 
         });*/
+
+
 
         this.input.setPollAlways();
     },
