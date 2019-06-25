@@ -240,7 +240,9 @@ var PlayerEnter = new Phaser.Class({
           if (a1 === 1 && !playerOneEnter)
           {
               console.log("Player 1 entered");
-              playerOneEnter = true;
+
+
+               playerOneEnter = true;
           }
         }
 
@@ -608,14 +610,16 @@ var Game = new Phaser.Class({
 
         var rectCaptureBoxA1 = Bodies.rectangle(160, 90, 330, 14);
         var rectCaptureBoxB1 = Bodies.rectangle( 0, 0, 14, 190);
+        var circCaptureBoxC1 = Bodies.circle(90, 0, 80, { isSensor: true, label: 'top' });
 
         var rectCaptureBoxA2 = Bodies.rectangle( 0, 0, 14, 190);
         var rectCaptureBoxB2 = Bodies.rectangle(-160, 90, 330, 14);
+        var circCaptureBoxC2 = Bodies.circle(0, 0, 30, { isSensor: true, label: 'top' });
 
         var compoundCaptureBox1 = Phaser.Physics.Matter.Matter.Body.create(
-          {parts: [ rectCaptureBoxA1, rectCaptureBoxB1 ]});
+          {parts: [ rectCaptureBoxA1, rectCaptureBoxB1, circCaptureBoxC1 ]});
         var compoundCaptureBox2 = Phaser.Physics.Matter.Matter.Body.create(
-          {parts: [ rectCaptureBoxA2, rectCaptureBoxB2 ]});
+          {parts: [ rectCaptureBoxA2, rectCaptureBoxB2, circCaptureBoxC2 ]});
 
         var compoundBody = Phaser.Physics.Matter.Matter.Body.create(
           {parts: [ rectA1, rectA2, circleA1, circleA2, circleA3, circleA4 ]});
@@ -1251,7 +1255,7 @@ var Game = new Phaser.Class({
               var greenButton = pad4.buttons[1].value;
               if (greenButton === 1 && greenJumpTimer && !greenJump)
               {
-                  greenPlayer.anims.play('blueJump');
+                  greenPlayer.anims.play('greenJump');
                   lastGreenJump = self.time.now;
                   greenPlayer.setVelocityY(-27);
                   greenJump = true;
