@@ -12,7 +12,7 @@ app.get('/',function(req,res){
     res.sendFile(__dirname +'/Blank.html');
 });
 
-var pinkData = {x: 0, y:0};
+
 var greyData = {x: 0, y:0};
 var greyArrowData = {x: 0, y:0, angle: 0};
 var blueData = {x: 0, y:0};
@@ -21,6 +21,8 @@ var yellowData = {x: 0, y:0};
 var yellowArrowData = {x: 0, y:0, angle: 0};
 var greenData = {x: 0, y:0};
 var greenArrowData = {x: 0, y:0, angle: 0};
+var pinkData = {x: 0, y:0};
+var pinkArrowData = {x: 0, y:0, angle: 0};
 var redData = {x: 0, y:0};
 var clawAnchorData = {x: 0, y:0};
 var clawBodyData = {x: 0, y:0};
@@ -128,6 +130,21 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('greenArrowMoved', greenArrowData);
    });
+   socket.on('pinkMovement', function (movementData)
+   {
+     pinkData.x = movementData.x;
+     pinkData.y = movementData.y;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('pinkMoved', pinkData);
+   });
+   socket.on('pinkArrowMovement', function (movementData)
+   {
+     pinkArrowData.x = movementData.x;
+     pinkArrowData.y = movementData.y;
+     pinkArrowData.angle = movementData.angle;
+     // emit a message to all players about the player that moved
+     socket.broadcast.emit('pinkArrowMoved', pinkArrowData);
+   });
    socket.on('redMovement', function (movementData)
    {
      redData.x = movementData.x;
@@ -177,7 +194,7 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });
-   
+
    socket.on('playerOneConnect', function (connectionData)
    {
       playerOneEntered = connectionData;

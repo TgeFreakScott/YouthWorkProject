@@ -352,7 +352,7 @@ var MainMenu = new Phaser.Class({
         //var container = this.add.container(400, 300, [ bg, text ]);
 
         //bg.setInteractive();
-        //bg.once('pointerup', function(){ this.scene.start('game'); }, this);
+        //bg.once('pointerup', function(){ this.scen e.start('game'); }, this);
 
     }
 
@@ -502,6 +502,7 @@ var greyArrow;
 var blueArrow;
 var yellowArrow;
 var greenArrow;
+var pinkArrow;
 var rotationValue = 0.1;
 var pipeTime = 0;
 
@@ -648,12 +649,6 @@ var Game = new Phaser.Class({
         backgroundSprite = this.add.image(500,300,'background').setScale(1.15).setAlpha(0.4);
         floorSprite = this.matter.add.image(500,930,'floor',{ shape: 'square'}).setScale(1.1).setAlpha(1).setStatic(true);
 
-        pinkPlayer = this.matter.add.sprite(250, 400, 'pinkMove','pinkMove',{shape: shapePink.pinkCapture })
-        .setScale(0.2).setBounce(0.6).setDensity(100).setMass(400).setFixedRotation(true);
-        pinkPlayer.setExistingBody(compoundBody3);
-        pinkPlayer.setPosition(250, 400).setScale(0.2).setMass(400)
-        .setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
-
         armLeftSprite = this.matter.add.image(300, 400,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
         .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(1000).setMass(2750);
 
@@ -706,6 +701,12 @@ var Game = new Phaser.Class({
         greenPlayer.setPosition(800,400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
 
+        pinkPlayer = this.matter.add.sprite(250, 400, 'pinkMove','pinkMove',{shape: shapePink.pinkCapture })
+        .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+        pinkPlayer.setExistingBody(compoundBody3);
+        pinkPlayer.setPosition(250, 400).setScale(0.2).setMass(400)
+        .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+
         leftBucket = this.matter.add.image(-15,570, 'bucket','bucket', {shape: shapeBucket.glassPanel})
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
@@ -733,6 +734,10 @@ var Game = new Phaser.Class({
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
             .setFixedRotation(true).setSensor(true).setInteractive();
         greenArrow = this.matter.add.image(50, 300, 'greenArrow', null,)
+            .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
+            .setFixedRotation(true).setSensor(true).setInteractive();
+
+        pinkArrow = this.matter.add.image(50, 300, 'pinkArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
             .setFixedRotation(true).setSensor(true).setInteractive();
 
@@ -889,6 +894,13 @@ var Game = new Phaser.Class({
         });
         this.matter.world.add(greenArrowToGreenPlayer);
 
+        pinkArrowToPinkPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
+        {
+          bodyA: pinkArrow.body, bodyB: pinkPlayer.body,
+          pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
+        });
+        this.matter.world.add(pinkArrowToPinkPlayer);
+
         rightArmToLeftArm = Phaser.Physics.Matter.Matter.Constraint.create(
         {
           bodyA: armRightSprite.body, bodyB: armLeftSprite.body,
@@ -974,6 +986,17 @@ var Game = new Phaser.Class({
           greenArrow.setPosition(greenArrowData.x, greenArrowData.y);
           greenArrow.setAngle(greenArrowData.angle);
         });
+
+        this.socket.on('pinkMoved', function (pinkData)
+        {
+          pinkPlayer.setPosition(pinkData.x, pinkData.y);
+        });
+        this.socket.on('pinkArrowMoved', function (pinkArrowData)
+        {
+          pinkArrow.setPosition(pinkArrowData.x, pinkArrowData.y);
+          pinkArrow.setAngle(pinkArrowData.angle);
+        });
+
         this.socket.on('clawAnchorMoved', function (clawAnchorData)
         {
           pipeBodySprite.setPosition(clawAnchorData.x, clawAnchorData.y);
@@ -1261,13 +1284,49 @@ var Game = new Phaser.Class({
             }
 
             //Second Computer
-
             if (pad1.axes.length && computerID === socketID.secondConnection)
+            {
+                var pinkAxisH = pad1.axes[0].getValue();
+                var pinkAxisV = pad1.axes[1].getValue();
+
+                pinkPlayer.x += 20 * pinkAxisH;
+                pinkPlayer.y += 20 * pinkAxisV;
+
+                if(pinkAxisH > 0)
+                {
+                  pinkArrow.rotation -= 0.01;
+                  pinkLeft = true;
+                  pinkRight = false;
+                }
+                if(pinkAxisH < 0)
+                {
+                  pinkArrow.rotation += 0.01;
+                  pinkLeft = false;
+                  pinkRight = true;
+                }
+            }
+
+            if(pad1.buttons.length && computerID === socketID.secondConnection)
+            {
+                var pinkButton = pad1.buttons[1].value;
+
+                if (pinkButton === 1 && !pinkJump)
+                {
+                    pinkJump = true;
+                    pinkPlayer.setVelocityY(-25);
+                }
+                if (pinkButton === 0)
+                {
+                    pinkJump = false;
+                }
+            }
+
+            if (pad2.axes.length && computerID === socketID.secondConnection)
             {
               //var speed = (600 / 2) / 1000;
               // image.x += speed * dt;
 
-                clawHorizontalAxes = pad1.axes[0].getValue();
+                clawHorizontalAxes = pad2.axes[0].getValue();
                 if(clawHorizontalAxes > 0) //right
                 {
                   if(pipeBodySprite.x < 950)
@@ -1288,9 +1347,9 @@ var Game = new Phaser.Class({
             }
               console.log(speed)
 
-            if (pad2.axes.length && computerID === socketID.secondConnection)
+            if (pad3.axes.length && computerID === socketID.secondConnection)
             {
-              clawverticalAxes = pad2.axes[1].getValue();
+              clawverticalAxes = pad3.axes[1].getValue();
               if(clawverticalAxes > 0) //down
               {
                 if(clawToPipeBody.length < 215)
@@ -1308,9 +1367,9 @@ var Game = new Phaser.Class({
 
             }
 
-            if (pad3.axes.length && computerID === socketID.secondConnection)
+            if (pad4.axes.length && computerID === socketID.secondConnection)
             {
-              clawGripHorizontalAxes = pad3.axes[0].getValue();
+              clawGripHorizontalAxes = pad4.axes[0].getValue();
               if(clawGripHorizontalAxes > 0) //right
               {
                 if(rightArmToLeftArm.length < 200)
@@ -1346,42 +1405,7 @@ var Game = new Phaser.Class({
             }
 
             //Test Player
-            if (pad4.axes.length && computerID === socketID.secondConnection)
-            {
-                var redAxisH = pad1.axes[0].getValue();
-                var redAxisV = pad1.axes[1].getValue();
 
-                redTest.x += 20 * redAxisH;
-                redTest.y += 20 * redAxisV;
-
-                if(redAxisH > 0)
-                {
-                  redArrow.rotation -= 0.01;
-                  redLeft = true;
-                  redRight = false;
-                }
-                if(redAxisH < 0)
-                {
-                  redArrow.rotation += 0.01;
-                  redLeft = false;
-                  redRight = true;
-                }
-            }
-
-            if(pad4.buttons.length && computerID === socketID.secondConnection)
-            {
-                var redButton = pad4.buttons[1].value;
-
-                if (redButton === 1 && !redJump)
-                {
-                    redJump = true;
-                    redTest.setVelocityY(-25);
-                }
-                if (redButton === 0)
-                {
-                    redJump = false;
-                }
-            }
         });
 
 
@@ -1433,6 +1457,16 @@ var Game = new Phaser.Class({
           if(!greenRight)
           {
             greenPlayer.flipX = false;
+          }
+
+          if(!pinkLeft)
+          {
+            pinkPlayer.flipX = true;
+          }
+
+          if(!pinkRight)
+          {
+            pinkPlayer.flipX = false;
           }
 
 
@@ -1583,6 +1617,40 @@ var Game = new Phaser.Class({
               x: greenArrow.x,
               y: greenArrow.y,
               angle: greenArrow.angle
+            };
+          }
+
+          if(pinkPlayer)
+          {
+            var pinkX = pinkPlayer.x;
+            var pinkY = pinkPlayer.y;
+            if (pinkPlayer.oldPosition && (pinkX !== pinkPlayer.oldPosition.x || pinkY !== pinkPlayer.oldPosition.y))
+            {
+              this.socket.emit('pinkMovement', { x: pinkPlayer.x, y: pinkPlayer.y});
+            }
+
+            // save old position data
+            pinkPlayer.oldPosition = {
+              x: pinkPlayer.x,
+              y: pinkPlayer.y
+            };
+          }
+
+          if(pinkArrow)
+          {
+            var pinkArrowX = pinkArrow.x;
+            var pinkArrowY = pinkArrow.y;
+            var pinkArrowAngle = pinkArrow.angle;
+            if (pinkArrow.oldPosition && (pinkArrowX !== pinkArrow.oldPosition.x || pinkArrowY !== pinkArrow.oldPosition.y || pinkArrowAngle !== pinkArrow.oldPosition.angle))
+            {
+              this.socket.emit('pinkArrowMovement', { x: pinkArrow.x, y: pinkArrow.y, angle: pinkArrow.angle});
+            }
+
+            // save old position data
+            pinkArrow.oldPosition = {
+              x: pinkArrow.x,
+              y: pinkArrow.y,
+              angle: pinkArrow.angle
             };
           }
 
