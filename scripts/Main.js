@@ -111,12 +111,15 @@ var Preloader = new Phaser.Class({
       this.load.image('blueArrow', 'Sprite/blueArrow.png');
       this.load.image('yellowArrow', 'Sprite/yellowArrow.png');
       this.load.image('greenArrow', 'Sprite/greenArrow.png');
-      this.load.image('pinkArrow', 'Sprite/yellowArrow.png');
+      this.load.image('pinkArrow', 'Sprite/pinkArrow.png');
       this.load.image('redArrow', 'Sprite/greenArrow.png');
 
       this.load.image('yes', 'Sprite/yes.png');
       this.load.image('no', 'Sprite/no.png');
       this.load.image('maybe', 'Sprite/maybe.png');
+      this.load.image('connectScreen', 'Sprite/PlayerEnter.png');
+      this.load.spritesheet('enter', 'Sprite/tick.png',{ frameWidth: 455, frameHeight: 480 });
+      this.load.spritesheet('notEnter', 'Sprite/x.png',{ frameWidth: 455, frameHeight: 455 });
 
       //Loading in animated Sprites
       this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
@@ -148,7 +151,7 @@ var Preloader = new Phaser.Class({
     create: function ()
     {
         console.log('%c Preloader ', 'background: green; color: white; display: block;');
-        this.scene.start('game');
+        this.scene.start('playerenter');
     }
 
 });
@@ -161,6 +164,17 @@ var playerFiveEnter = false;
 var playerSixEnter = false;
 var playerSevenEnter = false;
 var playerEightEnter = false;
+var playerConnectBG;
+var playerOneIcon;
+var playerTwoIcon;
+var playerThreeIcon;
+var playerFourIcon;
+var playerFiveIcon;
+var playerSixIcon;
+var playerSevenIcon;
+var playerEightIcon;
+var firstSocket = 0;
+var secondSocket = 0;
 
 var PlayerEnter = new Phaser.Class({
 
@@ -182,6 +196,33 @@ var PlayerEnter = new Phaser.Class({
       {
         computerID = tempVar;
       });
+      playerConnectBG = this.add.image(500,300,'connectScreen').setScale(1).setAlpha(1);
+      playerOneIcon = this.add.sprite(100,210,'notEnter').setScale(0.1).setAlpha(1);
+      playerTwoIcon = this.add.sprite(275,210,'notEnter').setScale(0.1).setAlpha(1);
+      playerThreeIcon = this.add.sprite(425,210,'notEnter').setScale(0.1).setAlpha(1);
+      playerFourIcon = this.add.sprite(575,210,'notEnter').setScale(0.1).setAlpha(1);
+      playerFiveIcon = this.add.sprite(725,210,'notEnter').setScale(0.1).setAlpha(1);
+      playerSixIcon = this.add.sprite(875,250,'notEnter').setScale(0.1).setAlpha(1);
+      playerSevenIcon = this.add.sprite(875,306,'notEnter').setScale(0.1).setAlpha(1);
+      playerEightIcon = this.add.sprite(875,360,'notEnter').setScale(0.1).setAlpha(1);
+      var changeToX = this.anims.create({
+          key: 'notEntered',
+          frames: this.anims.generateFrameNumbers('notEnter'),
+          frameRate: 8, repeat: 0,
+      });
+      var changeToTick = this.anims.create({
+            key: 'entered',
+            frames: this.anims.generateFrameNumbers('enter'),
+            frameRate: 8, repeat: 0
+      });
+      playerOneIcon.play('notEntered');
+      playerTwoIcon.play('notEntered');
+      playerThreeIcon.play('notEntered');
+      playerFourIcon.play('notEntered');
+      playerFiveIcon.play('notEntered');
+      playerSixIcon.play('notEntered');
+      playerSevenIcon.play('notEntered');
+      playerEightIcon.play('notEntered');
       this.socket.on('playerOneConnected', function(playerOneEntered)
       {
         playerOneEnter = playerOneEntered;
@@ -233,101 +274,136 @@ var PlayerEnter = new Phaser.Class({
       this.socket.emit('requestSocketID');
       this.socket.on('passSocketID', function(socketID)
       {
-        //First Computer
-        if(pad1.buttons.length && computerID === socketID.firstConnection)
-        {
-          var a1 = pad1.buttons[1].value;
-          if (a1 === 1 && !playerOneEnter)
+        //if(firstSocket !==0 && secondSocket !== 0)
+        //{
+          //First Computer
+          if(pad1.buttons.length && computerID === socketID.firstConnection)
           {
-              console.log("Player 1 entered");
-              playerOneEnter = true;
-              self.socket.emit('playerOneConnect', playerOneEnter);
+            var a1 = pad1.buttons[1].value;
+            if (a1 === 1 && !playerOneEnter)
+            {
+                console.log("Player 1 entered");
+                playerOneEnter = true;
+                self.socket.emit('playerOneConnect', playerOneEnter);
+            }
           }
-        }
 
-        if(pad2.buttons.length && computerID === socketID.firstConnection)
-        {
-          var a2 = pad2.buttons[1].value;
-          if (a2 === 1 && !playerTwoEnter)
+          if(pad2.buttons.length && computerID === socketID.firstConnection)
           {
-              console.log("Player 2 entered");
-              playerTwoEnter = true;
-              self.socket.emit('playerTwoConnect', playerTwoEnter);
+            var a2 = pad2.buttons[1].value;
+            if (a2 === 1 && !playerTwoEnter)
+            {
+                console.log("Player 2 entered");
+                playerTwoEnter = true;
+                self.socket.emit('playerTwoConnect', playerTwoEnter);
+            }
           }
-        }
 
-        if(pad3.buttons.length && computerID === socketID.firstConnection)
-        {
-          var a3 = pad3.buttons[1].value;
-          if (a3 === 1 && !playerThreeEnter)
+          if(pad3.buttons.length && computerID === socketID.firstConnection)
           {
-              console.log("Player 3 entered");
-              playerThreeEnter = true;
-              self.socket.emit('playerThreeConnect', playerThreeEnter);
+            var a3 = pad3.buttons[1].value;
+            if (a3 === 1 && !playerThreeEnter)
+            {
+                console.log("Player 3 entered");
+                playerThreeEnter = true;
+                self.socket.emit('playerThreeConnect', playerThreeEnter);
+            }
           }
-        }
 
-        if(pad4.buttons.length && computerID === socketID.firstConnection)
-        {
-          var a4 = pad4.buttons[1].value;
-          if (a4 === 1 && !playerFourEnter)
+          if(pad4.buttons.length && computerID === socketID.firstConnection)
           {
-              console.log("Player 4 entered");
-              playerFourEnter = true;
-              self.socket.emit('playerFourConnect', playerFourEnter);
+            var a4 = pad4.buttons[1].value;
+            if (a4 === 1 && !playerFourEnter)
+            {
+                console.log("Player 4 entered");
+                playerFourEnter = true;
+                self.socket.emit('playerFourConnect', playerFourEnter);
+            }
           }
-        }
 
-        //Second Computer
-        if (pad1.buttons.length && computerID === socketID.secondConnection)
-        {
-          var a5 = pad1.buttons[1].value;
-          if (a5 === 1 && !playerFiveEnter)
+          //Second Computer
+          if (pad1.buttons.length && computerID === socketID.secondConnection)
           {
-              console.log("Player 5 entered");
-              playerFiveEnter = true;
-              self.socket.emit('playerFiveConnect', playerFiveEnter);
+            var a5 = pad1.buttons[1].value;
+            if (a5 === 1 && !playerFiveEnter)
+            {
+                console.log("Player 5 entered");
+                playerFiveEnter = true;
+                self.socket.emit('playerFiveConnect', playerFiveEnter);
+            }
           }
-        }
 
-        if (pad2.buttons.length && computerID === socketID.secondConnection)
-        {
-          var a6 = pad2.buttons[1].value;
-          if (a6 === 1 && !playerSixEnter)
+          if (pad2.buttons.length && computerID === socketID.secondConnection)
           {
-              console.log("Player 6 entered");
-              playerSixEnter = true;
-              self.socket.emit('playerSixConnect', playerSixEnter);
+            var a6 = pad2.buttons[1].value;
+            if (a6 === 1 && !playerSixEnter)
+            {
+                console.log("Player 6 entered");
+                playerSixEnter = true;
+                self.socket.emit('playerSixConnect', playerSixEnter);
+            }
           }
-        }
 
-        if (pad3.buttons.length && computerID === socketID.secondConnection)
-        {
-          var a7 = pad3.buttons[1].value;
-          if (a7 === 1 && !playerSevenEnter)
+          if (pad3.buttons.length && computerID === socketID.secondConnection)
           {
-              console.log("Player 7 entered");
-              playerSevenEnter = true;
-              self.socket.emit('playerSevenConnect', playerSevenEnter);
+            var a7 = pad3.buttons[1].value;
+            if (a7 === 1 && !playerSevenEnter)
+            {
+                console.log("Player 7 entered");
+                playerSevenEnter = true;
+                self.socket.emit('playerSevenConnect', playerSevenEnter);
+            }
           }
-        }
 
-        if(pad4.buttons.length && computerID === socketID.secondConnection)
-        {
-          var a8 = pad4.buttons[1].value;
-          if (a8 === 1 && !playerEightEnter)
+          if(pad4.buttons.length && computerID === socketID.secondConnection)
           {
-              console.log("Player 8 entered");
-              playerEightEnter = true;
-              self.socket.emit('playerEightConnect', playerEightEnter);
+            var a8 = pad4.buttons[1].value;
+            if (a8 === 1 && !playerEightEnter)
+            {
+                console.log("Player 8 entered");
+                playerEightEnter = true;
+                self.socket.emit('playerEightConnect', playerEightEnter);
+            }
           }
-        }
-    });
+        //}
+      });
+    if(playerOneEnter)
+    {
+      playerOneIcon.play('entered');
+    }
+    if(playerTwoEnter)
+    {
+      playerTwoIcon.play('entered');
+    }
+    if(playerThreeEnter)
+    {
+      playerThreeIcon.play('entered');
+    }
+    if(playerFourEnter)
+    {
+      playerFourIcon.play('entered');
+    }
+    if(playerFiveEnter)
+    {
+      playerFiveIcon.play('entered');
+    }
+    if(playerSixEnter)
+    {
+      playerSixIcon.play('entered');
+    }
+    if(playerSevenEnter)
+    {
+    playerSevenIcon.play('entered');
+    }
+    if(playerEightEnter)
+    {
+      playerEightIcon.play('entered');
+    }
 
     if(playerOneEnter && playerTwoEnter && playerThreeEnter && playerFourEnter && playerFiveEnter && playerSixEnter && playerSevenEnter && playerEightEnter)
     {
       console.log("Move to game screen");
-      this.scene.start('game', { port: this.socket, id: computerID });
+      this.scene.start('game', { port: this.socket, socket: computerID});
     }
   }
 });
@@ -453,6 +529,10 @@ var greenLeft = false;
 var greenRight = true;
 var greenJump = false;
 
+var pinkLeft = false;
+var pinkRight = true;
+var pinkJump = false;
+
 var computerID;
 var redSprite;
 var greySprite;
@@ -524,9 +604,10 @@ var yellowJumpTimer = true;
 var lastYellowJump = 0;
 var greenJumpTimer = true;
 var lastGreenJump = 0;
+var pinkJumpTimer = true;
+var lastPinkJump = 0;
 var textBool = false;
 var pinkTimer = 1.2;
-var pinkJumpTimer = 4;
 
 var speed = Phaser.Math.GetSpeed(400, 1);
 var fps = 60/1000;
@@ -546,9 +627,9 @@ var Game = new Phaser.Class({
 
     init: function (data)
     {
-        //console.log('init', data);
-        //this.socket = data.port;
-        //computerID = data.id;
+        console.log('init', data);
+        this.socket = data.port;
+        computerID = data.socket;
     },
 
     create: function ()
@@ -557,12 +638,6 @@ var Game = new Phaser.Class({
 
         this.matter.world.setBounds();
         var self = this;
-
-        this.socket = io();
-        this.socket.on('getSocketID', function (tempVar)
-        {
-          computerID = tempVar;
-        });
 
         cursors = this.input.keyboard.createCursorKeys();
         keys = this.input.keyboard.addKeys('W,A,S,D,I,J,K,L');
@@ -1050,16 +1125,6 @@ var Game = new Phaser.Class({
         Math.trunc(pinkTimer = pinkTimer - 0.02);
         Math.trunc(pinkJumpTimer = pinkJumpTimer - 0.02);
 
-        if(pinkJumpTimer <= 0)
-        {
-            //pinkPlayer.setVelocityY(Math.floor((Math.random() * 35) + 30));
-            pinkJumpTimer = 4;
-        }
-        if(pinkTimer <= 0)
-        {
-          //  pinkPlayer.setVelocityX(Math.floor((Math.random() * 75) + -37));
-            pinkTimer = 1.2;
-        }
 
         textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
 
@@ -1076,6 +1141,7 @@ var Game = new Phaser.Class({
           blueArrow.thrustLeft(0.5);//* delta);
           yellowArrow.thrustLeft(0.5);//* delta);
           greenArrow.thrustLeft(0.5);//* delta);
+          pinkArrow.thrustLeft(0.5);//* delta);
           pipeBodySprite.thrustLeft(3);//* delta);
           //redArrow.thrustLeft(0.01);
           //Client.sendPosition(greyPlayer.x, greyPlayer.y);
@@ -1084,6 +1150,7 @@ var Game = new Phaser.Class({
           blueJumpTimer = (this.time.now - lastBlueJump) > 550;
           yellowJumpTimer = (this.time.now - lastYellowJump) > 550;
           greenJumpTimer = (this.time.now - lastGreenJump) > 550;
+          pinkJumpTimer = (this.time.now - lastPinkJump) > 550;
 
           if(greyArrow.y > greyPlayer.y)
           {
@@ -1103,6 +1170,11 @@ var Game = new Phaser.Class({
           if(greenArrow.y > greenPlayer.y)
           {
             greenArrow.y = greenPlayer.y;
+          }
+
+          if(pinkArrow.y > pinkPlayer.y)
+          {
+            pinkArrow.y = pinkPlayer.y;
           }
 
           if (this.input.gamepad.total === 0)
@@ -1125,7 +1197,7 @@ var Game = new Phaser.Class({
 
               if(greyAxisH > 0) //right
               {
-                greyArrow.angle += 15;
+                greyArrow.angle += 15 * delta;
                 if(greyArrow.angle > 90)
                 {
                   greyArrow.angle = 90;
@@ -1135,7 +1207,7 @@ var Game = new Phaser.Class({
               }
               if(greyAxisH < 0) //left
               {
-                greyArrow.angle -= 15;
+                greyArrow.angle -= 15 * delta;
                 if(greyArrow.angle < -90)
                 {
                   greyArrow.angle = -90;
@@ -1169,7 +1241,7 @@ var Game = new Phaser.Class({
 
               if(blueAxisH > 0) //right
               {
-                blueArrow.angle += 15;
+                blueArrow.angle += 15 * delta;
                 if(blueArrow.angle > 90)
                 {
                   blueArrow.angle = 90;
@@ -1179,7 +1251,7 @@ var Game = new Phaser.Class({
               }
               if(blueAxisH < 0) //left
               {
-                blueArrow.angle -= 15;
+                blueArrow.angle -= 15 * delta;
                 if(blueArrow.angle < -90)
                 {
                   blueArrow.angle = -90;
@@ -1213,7 +1285,7 @@ var Game = new Phaser.Class({
 
               if(yellowAxisH > 0) //right
               {
-                yellowArrow.angle += 15;
+                yellowArrow.angle += 15 * delta;
                 if(yellowArrow.angle > 90)
                 {
                   yellowArrow.angle = 90;
@@ -1223,7 +1295,7 @@ var Game = new Phaser.Class({
               }
               if(yellowAxisH < 0) //left
               {
-                yellowArrow.angle -= 15;
+                yellowArrow.angle -= 15 * delta;
                 if(yellowArrow.angle < -90)
                 {
                   yellowArrow.angle = -90;
@@ -1257,7 +1329,7 @@ var Game = new Phaser.Class({
 
               if(greenAxisH > 0) //right
               {
-                greenArrow.angle += 15;
+                greenArrow.angle += 15 * delta;
                 if(greenArrow.angle > 90)
                 {
                   greenArrow.angle = 90;
@@ -1267,7 +1339,7 @@ var Game = new Phaser.Class({
               }
               if(greenAxisH < 0) //left
               {
-                greenArrow.angle -= 15;
+                greenArrow.angle -= 15 * delta;
                 if(greenArrow.angle < -90)
                 {
                   greenArrow.angle = -90;
@@ -1305,13 +1377,13 @@ var Game = new Phaser.Class({
 
                 if(pinkAxisH > 0)
                 {
-                  pinkArrow.rotation -= 0.01;
+                  pinkArrow.angle -= 15 * delta;
                   pinkLeft = true;
                   pinkRight = false;
                 }
                 if(pinkAxisH < 0)
                 {
-                  pinkArrow.rotation += 0.01;
+                  pinkArrow.angle += 15 * delta;
                   pinkLeft = false;
                   pinkRight = true;
                 }
@@ -1342,7 +1414,7 @@ var Game = new Phaser.Class({
                 {
                   if(pipeBodySprite.x < 950)
                   {
-                    pipeBodySprite.x = pipeBodySprite.x + (speed *(fps));
+                    pipeBodySprite.x += pipeBodySprite.x * delta;
                   }
                 }
                 if(clawHorizontalAxes < 0) //left
@@ -1350,7 +1422,7 @@ var Game = new Phaser.Class({
                   //pipeBodySprite.thrustBack(1 * delta);
                   if(pipeBodySprite.x > 50)
                   {
-                    pipeBodySprite.x = pipeBodySprite.x - (speed * (fps));
+                    pipeBodySprite.x -= pipeBodySprite.x * delta;
                   }
                 }
 
