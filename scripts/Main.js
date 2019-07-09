@@ -107,6 +107,11 @@ var Preloader = new Phaser.Class({
       this.load.image('pipe','Sprite/clawBar.png');
       this.load.image('pipeBody','Sprite/clawBarBody.png');
 
+      //yes/no/maybe sprites
+      this.load.image('yes', 'Sprite/yes.png');
+      this.load.image('no', 'Sprite/no.png');
+      this.load.image('maybe', 'Sprite/maybe.png');
+
       this.load.image('greyArrow', 'Sprite/greyArrow.png');
       this.load.image('blueArrow', 'Sprite/blueArrow.png');
       this.load.image('yellowArrow', 'Sprite/yellowArrow.png');
@@ -434,39 +439,6 @@ var MainMenu = new Phaser.Class({
 
 });
 
-var YouthElement = new Phaser.Class({
-
-    Extends: Phaser.Scene,
-    initialize:
-
-    function YouthElement ()
-    {
-        Phaser.Scene.call(this, { key: 'youthelement' });
-        window.MENU = this;
-    },
-
-    create: function ()
-    {
-        console.log('%c YouthElement ', 'background: green; color: white; display: block;');
-        testText = this.add.text( 300, 10, 'Youth Element', { font: '20px Arial'})
-          .setFontSize(64).setFontStyle('bold')
-          .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
-          .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
-          .setBackgroundColor('#000000');
-
-        var shapeTest = this.cache.json.get('pinkShape');
-        playerTest = this.matter.add.sprite(250, 400, 'pinkMove','pinkMove',{shape: shapeTest.pinkCapture })
-
-    },
-
-    update: function (time, delta)
-    {
-          console.log('Youth Element Screen');
-
-    }
-
-});
-
 var GameOverScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -490,8 +462,7 @@ var GameOverScene = new Phaser.Class({
                 .setBackgroundColor('#000000');
 
             this.input.once('pointerdown', function (){
-              //  this.scene.add('Boot1', MyGame.Boot, true);
-                this.scene.start('game');
+                this.scene.start('youthelement');
                 console.log('pointer press');
                   }, this);
     },
@@ -499,6 +470,41 @@ var GameOverScene = new Phaser.Class({
     update: function (time, delta)
     {
           console.log('Game Over Update Screen');
+    }
+
+});
+
+var yesSprite;
+var noSprite;
+var maybeSprite;
+
+var YouthElement = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    initialize:
+
+    function YouthElement ()
+    {
+        Phaser.Scene.call(this, { key: 'youthelement' });
+        window.MENU = this;
+        this.controls;
+    },
+
+
+
+    create: function ()
+    {
+      yesSprite = this.add.image(100,100, 'yes').setScale(1);
+      noSprite = this.add.image(150,150, 'no').setScale(1);
+      maybeSprite = this.add.image(200,200, 'maybe').setScale(1);
+
+        console.log('%c YouthElement ', 'background: green; color: white; display: block;');
+    },
+
+    update: function (time, delta)
+    {
+          console.log('Youth Element Screen');
+
     }
 
 });
