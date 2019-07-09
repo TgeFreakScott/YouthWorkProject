@@ -25,11 +25,11 @@ var pinkData = {x: 0, y:0};
 var pinkArrowData = {x: 0, y:0, angle: 0};
 var redData = {x: 0, y:0};
 var clawAnchorData = {x: 0, y:0};
-var clawBodyData = {x: 0, y:0};
-var clawArmLeftData = {x: 0, y:0};
-var clawArmRightData = {x: 0, y:0};
-var clawGrabberLeftData = {x: 0, y:0};
-var clawGrabberRightData = {x: 0, y:0};
+var clawBodyData = {x: 0, y:0, angle: 0};
+var clawArmLeftData = {x: 0, y:0, angle: 0};
+var clawArmRightData = {x: 0, y:0, angle: 0};
+var clawGrabberLeftData = {x: 0, y:0, angle: 0};
+var clawGrabberRightData = {x: 0, y:0, angle: 0};
 var playerOneEntered = false;
 var playerTwoEntered = false;
 var playerThreeEntered = false;
@@ -163,6 +163,7 @@ io.on('connection', function (socket)
    {
      clawBodyData.x = movementData.x;
      clawBodyData.y = movementData.y;
+     clawBodyData.angle = movementData.angle;
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawBodyMoved', clawBodyData);
    });
@@ -170,6 +171,7 @@ io.on('connection', function (socket)
    {
      clawArmLeftData.x = movementData.x;
      clawArmLeftData.y = movementData.y;
+     clawArmLeftData.angle = movementData.angle;
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawArmLeftMoved', clawArmLeftData);
    });
@@ -177,6 +179,7 @@ io.on('connection', function (socket)
    {
      clawArmRightData.x = movementData.x;
      clawArmRightData.y = movementData.y;
+     clawArmRightData.angle = movementData.angle;
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawArmRightMoved', clawArmRightData);
    });
@@ -184,6 +187,7 @@ io.on('connection', function (socket)
    {
      clawGrabberLeftData.x = movementData.x;
      clawGrabberLeftData.y = movementData.y;
+     clawGrabberLeftData.angle = movementData.angle;
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawGrabberLeftMoved', clawGrabberLeftData);
    });
@@ -191,6 +195,7 @@ io.on('connection', function (socket)
    {
      clawGrabberRightData.x = movementData.x;
      clawGrabberRightData.y = movementData.y;
+     clawGrabberRightData.angle = movementData.angle;
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });

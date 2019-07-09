@@ -1094,22 +1094,27 @@ var Game = new Phaser.Class({
         this.socket.on('clawBodyMoved', function (clawBodyData)
         {
           clawBodySprite.setPosition(clawBodyData.x, clawBodyData.y);
+          clawBodySprite.setAngle(clawBodyData.angle);
         });
         this.socket.on('clawArmLeftMoved', function (clawArmLeftData)
         {
           armConnectLeftSprite.setPosition(clawArmLeftData.x, clawArmLeftData.y);
+          armConnectLeftSprite.setAngle(clawArmLeftData.angle);
         });
         this.socket.on('clawArmRightMoved', function (clawArmRightData)
         {
           armConnectRightSprite.setPosition(clawArmRightData.x, clawArmRightData.y);
+          armConnectRightSprite.setAngle(clawArmRightData.angle);
         });
         this.socket.on('clawGrabberLeftMoved', function (clawGrabberLeftData)
         {
           armLeftSprite.setPosition(clawGrabberLeftData.x, clawGrabberLeftData.y);
+          armLeftSprite.setAngle(clawGrabberLeftData.angle);
         });
         this.socket.on('clawGrabberRightMoved', function (clawGrabberRightData)
         {
           armRightSprite.setPosition(clawGrabberRightData.x, clawGrabberRightData.y);
+          armRightSprite.setAngle(clawGrabberRightData.angle);
         });
         this.input.setPollAlways();
     },
@@ -1121,9 +1126,14 @@ var Game = new Phaser.Class({
         //this.controls.update(delta);
         var player = 1;
         var self = this;
-        console.log(delta);
+        var fps = delta / 100;
+        var fps2 = delta / 1000;
+        var fps3 = delta / 20;
 
-        textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
+        console.log(delta);
+        console.log(rightConnectToClawTop.pointA)
+
+        textTimer.setText([ 'Timer: ' + Math.trunc(timer -= (0.02 * fps3)) ]);
 
         if(timer < 0)
         {
@@ -1134,12 +1144,12 @@ var Game = new Phaser.Class({
         customPipeline.setFloat1('time', pipeTime);
         //time += 0.005;
 
-          greyArrow.thrustLeft(0.5); //* delta);
-          blueArrow.thrustLeft(0.5);//* delta);
-          yellowArrow.thrustLeft(0.5);//* delta);
-          greenArrow.thrustLeft(0.5);//* delta);
-          pinkArrow.thrustLeft(0.5);//* delta);
-          pipeBodySprite.thrustLeft(3);//* delta);
+          greyArrow.thrustLeft(0.5);
+          blueArrow.thrustLeft(0.5);
+          yellowArrow.thrustLeft(0.5);
+          greenArrow.thrustLeft(0.5);
+          pinkArrow.thrustLeft(0.5);
+          pipeBodySprite.thrustLeft(3);
           //redArrow.thrustLeft(0.01);
           //Client.sendPosition(greyPlayer.x, greyPlayer.y);
 
@@ -1194,7 +1204,7 @@ var Game = new Phaser.Class({
 
               if(greyAxisH > 0) //right
               {
-                greyArrow.angle += 15 * delta;
+                greyArrow.angle += 15 * fps;
                 if(greyArrow.angle > 90)
                 {
                   greyArrow.angle = 90;
@@ -1204,7 +1214,7 @@ var Game = new Phaser.Class({
               }
               if(greyAxisH < 0) //left
               {
-                greyArrow.angle -= 15 * delta;
+                greyArrow.angle -= 15 * fps;
                 if(greyArrow.angle < -90)
                 {
                   greyArrow.angle = -90;
@@ -1238,7 +1248,7 @@ var Game = new Phaser.Class({
 
               if(blueAxisH > 0) //right
               {
-                blueArrow.angle += 15 * delta;
+                blueArrow.angle += 15 * fps;
                 if(blueArrow.angle > 90)
                 {
                   blueArrow.angle = 90;
@@ -1248,7 +1258,7 @@ var Game = new Phaser.Class({
               }
               if(blueAxisH < 0) //left
               {
-                blueArrow.angle -= 15 * delta;
+                blueArrow.angle -= 15 * fps;
                 if(blueArrow.angle < -90)
                 {
                   blueArrow.angle = -90;
@@ -1282,7 +1292,7 @@ var Game = new Phaser.Class({
 
               if(yellowAxisH > 0) //right
               {
-                yellowArrow.angle += 15 * delta;
+                yellowArrow.angle += 15 * fps;
                 if(yellowArrow.angle > 90)
                 {
                   yellowArrow.angle = 90;
@@ -1292,7 +1302,7 @@ var Game = new Phaser.Class({
               }
               if(yellowAxisH < 0) //left
               {
-                yellowArrow.angle -= 15 * delta;
+                yellowArrow.angle -= 15 * fps;
                 if(yellowArrow.angle < -90)
                 {
                   yellowArrow.angle = -90;
@@ -1326,7 +1336,7 @@ var Game = new Phaser.Class({
 
               if(greenAxisH > 0) //right
               {
-                greenArrow.angle += 15 * delta;
+                greenArrow.angle += 15 * fps;
                 if(greenArrow.angle > 90)
                 {
                   greenArrow.angle = 90;
@@ -1336,7 +1346,7 @@ var Game = new Phaser.Class({
               }
               if(greenAxisH < 0) //left
               {
-                greenArrow.angle -= 15 * delta;
+                greenArrow.angle -= 15 * fps;
                 if(greenArrow.angle < -90)
                 {
                   greenArrow.angle = -90;
@@ -1370,7 +1380,7 @@ var Game = new Phaser.Class({
 
                 if(pinkAxisH > 0) //right
                 {
-                  pinkArrow.angle += 15 * delta;
+                  pinkArrow.angle += 15 * fps;
                   if(pinkArrow.angle > 90)
                   {
                     pinkArrow.angle = 90;
@@ -1379,7 +1389,7 @@ var Game = new Phaser.Class({
                   pinkRight = false;
                 if(pinkAxisH < 0) //left
                 {
-                  pinkArrow.angle -= 15 * delta;
+                  pinkArrow.angle -= 15 * fps;
                   if(pinkArrow.angle < -90)
                   {
                     pinkArrow.angle = -90;
@@ -1397,7 +1407,7 @@ var Game = new Phaser.Class({
                 if (pinkButton === 1 && !pinkJump)
                 {
                     pinkJump = true;
-                    pinkPlayer.setVelocityY(-25);
+                    pinkPlayer.setVelocityY(-27);
                 }
                 if (pinkButton === 0)
                 {
@@ -1415,7 +1425,7 @@ var Game = new Phaser.Class({
                 {
                   if(pipeBodySprite.x < 950)
                   {
-                    pipeBodySprite.x += pipeBodySprite.x * delta;
+                    pipeBodySprite.x += pipeBodySprite.x * fps2;
                   }
                 }
                 if(clawHorizontalAxes < 0) //left
@@ -1423,7 +1433,7 @@ var Game = new Phaser.Class({
                   //pipeBodySprite.thrustBack(1 * delta);
                   if(pipeBodySprite.x > 50)
                   {
-                    pipeBodySprite.x -= pipeBodySprite.x * delta;
+                    pipeBodySprite.x -= pipeBodySprite.x * fps2;
                   }
                 }
 
@@ -1438,14 +1448,14 @@ var Game = new Phaser.Class({
               {
                 if(clawToPipeBody.length < 215)
                 {
-                    clawToPipeBody.length = clawToPipeBody.length + (5 * delta);
+                    clawToPipeBody.length = clawToPipeBody.length + (5 * fps2);
                 }
               }
               if(clawverticalAxes < 0) //up
               {
                 if(clawToPipeBody.length > 8)
                 {
-                  clawToPipeBody.length = clawToPipeBody.length - (5 * delta);
+                  clawToPipeBody.length = clawToPipeBody.length - (5 * fps2);
                 }
               }
 
@@ -1458,32 +1468,32 @@ var Game = new Phaser.Class({
               {
                 if(rightArmToLeftArm.length < 200)
                 {
-                  rightArmToLeftArm.length = rightArmToLeftArm.length + (7 * delta);
+                  rightArmToLeftArm.length = rightArmToLeftArm.length + (7 * fps2);
                 }
                 if(leftConnectToRightConnect.length < 175)
                 {
-                  leftConnectToRightConnect.length = leftConnectToRightConnect.length+ (2 * delta);
+                  leftConnectToRightConnect.length = leftConnectToRightConnect.length+ (2 * fps2);
                 }
                 if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
                 {
-                  leftConnectToClawTop.length = leftConnectToClawTop.length - (2 * delta);
-                  rightConnectToClawTop.length = rightConnectToClawTop.length - (2 * delta);
+                  leftConnectToClawTop.length = leftConnectToClawTop.length - (2 * fps2);
+                  rightConnectToClawTop.length = rightConnectToClawTop.length - (2 * fps2);
                 }
               }
               if(clawGripHorizontalAxes < 0) //left
               {
                 if(rightArmToLeftArm.length > 1)
                 {
-                  rightArmToLeftArm.length = rightArmToLeftArm.length - (5 * delta);
+                  rightArmToLeftArm.length = rightArmToLeftArm.length - (5 * fps2);
                 }
                 if(leftConnectToRightConnect.length > 125)
                 {
-                  leftConnectToRightConnect.length = leftConnectToRightConnect.length - (2 * delta);
+                  leftConnectToRightConnect.length = leftConnectToRightConnect.length - (2 * fps2);
                 }
                 if(leftConnectToClawTop.length < 220 && rightConnectToClawTop.length < 220)
                 {
-                  leftConnectToClawTop.length = leftConnectToClawTop.length + (2 * delta);
-                  rightConnectToClawTop.length = rightConnectToClawTop.length + (2 * delta);
+                  leftConnectToClawTop.length = leftConnectToClawTop.length + (2 * fps2);
+                  rightConnectToClawTop.length = rightConnectToClawTop.length + (2 * fps2);
                 }
               }
             }
@@ -1491,7 +1501,6 @@ var Game = new Phaser.Class({
             //Test Player
 
         });
-
 
           /*if(!redLeft)
           {
@@ -1758,15 +1767,17 @@ var Game = new Phaser.Class({
           {
             var clawBodyX = clawBodySprite.x;
             var clawBodyY = clawBodySprite.y;
-            if (clawBodySprite.oldPosition && (clawBodyX !== clawBodySprite.oldPosition.x || clawBodyY !== clawBodySprite.oldPosition.y))
+            var clawBodyAngle = clawBodySprite.angle;
+            if (clawBodySprite.oldPosition && (clawBodyX !== clawBodySprite.oldPosition.x || clawBodyY !== clawBodySprite.oldPosition.y || clawBodyAngle !== clawBodySprite.oldPosition.angle))
             {
-              this.socket.emit('clawBodyMovement', { x: clawBodySprite.x, y: clawBodySprite.y});
+              this.socket.emit('clawBodyMovement', { x: clawBodySprite.x, y: clawBodySprite.y, angle: clawBodySprite.angle});
             }
 
             // save old position data
             clawBodySprite.oldPosition = {
               x: clawBodySprite.x,
-              y: clawBodySprite.y
+              y: clawBodySprite.y,
+              angle: clawBodySprite.angle
             };
           }
 
@@ -1774,15 +1785,18 @@ var Game = new Phaser.Class({
           {
             var armConnectLeftX = armConnectLeftSprite.x;
             var armConnectLeftY = armConnectLeftSprite.y;
-            if (armConnectLeftSprite.oldPosition && (armConnectLeftX !== armConnectLeftSprite.oldPosition.x || armConnectLeftY !== armConnectLeftSprite.oldPosition.y))
+            var armConnectLeftAngle = armConnectLeftSprite.angle;
+
+            if (armConnectLeftSprite.oldPosition && (armConnectLeftX !== armConnectLeftSprite.oldPosition.x || armConnectLeftY !== armConnectLeftSprite.oldPosition.y || armConnectLeftAngle !== armConnectLeftSprite.oldPosition.angle))
             {
-              this.socket.emit('clawArmLeftMovement', { x: armConnectLeftSprite.x, y: armConnectLeftSprite.y});
+              this.socket.emit('clawArmLeftMovement', { x: armConnectLeftSprite.x, y: armConnectLeftSprite.y, angle: armConnectLeftSprite.angle});
             }
 
             // save old position data
             armConnectLeftSprite.oldPosition = {
               x: armConnectLeftSprite.x,
-              y: armConnectLeftSprite.y
+              y: armConnectLeftSprite.y,
+              angle: armConnectLeftSprite.angle
             };
           }
 
@@ -1790,15 +1804,17 @@ var Game = new Phaser.Class({
           {
             var armConnectRightX = armConnectRightSprite.x;
             var armConnectRightY = armConnectRightSprite.y;
-            if (armConnectRightSprite.oldPosition && (armConnectRightX !== armConnectRightSprite.oldPosition.x || armConnectRightY !== armConnectRightSprite.oldPosition.y))
+            var armConnectRightAngle = armConnectRightSprite.angle;
+            if (armConnectRightSprite.oldPosition && (armConnectRightX !== armConnectRightSprite.oldPosition.x || armConnectRightY !== armConnectRightSprite.oldPosition.y || armConnectRightAngle !== armConnectRightSprite.oldPosition.angle))
             {
-              this.socket.emit('clawArmRightMovement', { x: armConnectRightSprite.x, y: armConnectRightSprite.y});
+              this.socket.emit('clawArmRightMovement', { x: armConnectRightSprite.x, y: armConnectRightSprite.y, angle: armConnectRightSprite.angle});
             }
 
             // save old position data
             armConnectRightSprite.oldPosition = {
               x: armConnectRightSprite.x,
-              y: armConnectRightSprite.y
+              y: armConnectRightSprite.y,
+              angle: armConnectRightSprite.angle
             };
           }
 
@@ -1806,7 +1822,9 @@ var Game = new Phaser.Class({
           {
             var armLeftX = armLeftSprite.x;
             var armLeftY = armLeftSprite.y;
-            if (armLeftSprite.oldPosition && (pipeBodyX !== armLeftSprite.oldPosition.x || pipeBodyY !== armLeftSprite.oldPosition.y))
+            var armLeftAngle = armLeftSprite.angle;
+
+            if (armLeftSprite.oldPosition && (pipeBodyX !== armLeftSprite.oldPosition.x || pipeBodyY !== armLeftSprite.oldPosition.y || armLeftAngle !== armLeftSprite.oldPosition.angle))
             {
               this.socket.emit('clawGrabberLeftMovement', { x: armLeftSprite.x, y: armLeftSprite.y});
             }
@@ -1814,7 +1832,8 @@ var Game = new Phaser.Class({
             // save old position data
             armLeftSprite.oldPosition = {
               x: armLeftSprite.x,
-              y: armLeftSprite.y
+              y: armLeftSprite.y,
+              angle: armLeftSprite.angle
             };
           }
 
@@ -1822,7 +1841,9 @@ var Game = new Phaser.Class({
           {
             var armRightX = armRightSprite.x;
             var armRightY = armRightSprite.y;
-            if (armRightSprite.oldPosition && (armRightX !== armRightSprite.oldPosition.x || armRightY !== armRightSprite.oldPosition.y))
+            var armRightAngle = armRightSprite.angle;
+
+            if (armRightSprite.oldPosition && (armRightX !== armRightSprite.oldPosition.x || armRightY !== armRightSprite.oldPosition.y || armRightAngle !== armRightSprite.oldPosition.angle))
             {
               this.socket.emit('clawGrabberRightMovement', { x: armRightSprite.x, y: armRightSprite.y});
             }
@@ -1830,7 +1851,8 @@ var Game = new Phaser.Class({
             // save old position data
             armRightSprite.oldPosition = {
               x: armRightSprite.x,
-              y: armRightSprite.y
+              y: armRightSprite.y,
+              angle: armRightSprite.angle
             };
           }
     }
