@@ -1105,13 +1105,6 @@ var Game = new Phaser.Class({
         {
           armRightSprite.setPosition(clawGrabberRightData.x, clawGrabberRightData.y);
         });
-        /*this.socket.on('disconnect', function (socketID)
-        {
-
-        });*/
-
-
-
         this.input.setPollAlways();
     },
 
@@ -1122,9 +1115,7 @@ var Game = new Phaser.Class({
         //this.controls.update(delta);
         var player = 1;
         var self = this;
-        Math.trunc(pinkTimer = pinkTimer - 0.02);
-        Math.trunc(pinkJumpTimer = pinkJumpTimer - 0.02);
-
+        console.log(delta);
 
         textTimer.setText([ 'Timer: ' + Math.trunc(timer = timer - 0.02) ]);
 
@@ -1370,23 +1361,27 @@ var Game = new Phaser.Class({
             if (pad1.axes.length && computerID === socketID.secondConnection)
             {
                 var pinkAxisH = pad1.axes[0].getValue();
-                var pinkAxisV = pad1.axes[1].getValue();
 
-                pinkPlayer.x += 20 * pinkAxisH;
-                pinkPlayer.y += 20 * pinkAxisV;
-
-                if(pinkAxisH > 0)
-                {
-                  pinkArrow.angle -= 15 * delta;
-                  pinkLeft = true;
-                  pinkRight = false;
-                }
-                if(pinkAxisH < 0)
+                if(pinkAxisH > 0) //right
                 {
                   pinkArrow.angle += 15 * delta;
+                  if(pinkArrow.angle > 90)
+                  {
+                    pinkArrow.angle = 90;
+                  }
+                  pinkLeft = true;
+                  pinkRight = false;
+                if(pinkAxisH < 0) //left
+                {
+                  pinkArrow.angle -= 15 * delta;
+                  if(pinkArrow.angle < -90)
+                  {
+                    pinkArrow.angle = -90;
+                  }
                   pinkLeft = false;
                   pinkRight = true;
                 }
+              }
             }
 
             if(pad1.buttons.length && computerID === socketID.secondConnection)
@@ -1428,7 +1423,7 @@ var Game = new Phaser.Class({
 
 
             }
-              console.log(speed)
+              //console.log(speed)
 
             if (pad3.axes.length && computerID === socketID.secondConnection)
             {
@@ -1437,14 +1432,14 @@ var Game = new Phaser.Class({
               {
                 if(clawToPipeBody.length < 215)
                 {
-                    clawToPipeBody.length = clawToPipeBody.length + (5 );
+                    clawToPipeBody.length = clawToPipeBody.length + (5 * delta);
                 }
               }
               if(clawverticalAxes < 0) //up
               {
                 if(clawToPipeBody.length > 8)
                 {
-                  clawToPipeBody.length = clawToPipeBody.length - (5 ) ;
+                  clawToPipeBody.length = clawToPipeBody.length - (5 * delta);
                 }
               }
 
@@ -1457,32 +1452,32 @@ var Game = new Phaser.Class({
               {
                 if(rightArmToLeftArm.length < 200)
                 {
-                  rightArmToLeftArm.length = rightArmToLeftArm.length + (7);
+                  rightArmToLeftArm.length = rightArmToLeftArm.length + (7 * delta);
                 }
                 if(leftConnectToRightConnect.length < 175)
                 {
-                  leftConnectToRightConnect.length = leftConnectToRightConnect.length+ (2);
+                  leftConnectToRightConnect.length = leftConnectToRightConnect.length+ (2 * delta);
                 }
                 if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
                 {
-                  leftConnectToClawTop.length = leftConnectToClawTop.length - (2 );
-                  rightConnectToClawTop.length = rightConnectToClawTop.length - (2 );
+                  leftConnectToClawTop.length = leftConnectToClawTop.length - (2 * delta);
+                  rightConnectToClawTop.length = rightConnectToClawTop.length - (2 * delta);
                 }
               }
               if(clawGripHorizontalAxes < 0) //left
               {
                 if(rightArmToLeftArm.length > 1)
                 {
-                  rightArmToLeftArm.length = rightArmToLeftArm.length - (5 );
+                  rightArmToLeftArm.length = rightArmToLeftArm.length - (5 * delta);
                 }
                 if(leftConnectToRightConnect.length > 125)
                 {
-                  leftConnectToRightConnect.length = leftConnectToRightConnect.length - (2 );
+                  leftConnectToRightConnect.length = leftConnectToRightConnect.length - (2 * delta);
                 }
                 if(leftConnectToClawTop.length < 220 && rightConnectToClawTop.length < 220)
                 {
-                  leftConnectToClawTop.length = leftConnectToClawTop.length + (2 );
-                  rightConnectToClawTop.length = rightConnectToClawTop.length + (2 );
+                  leftConnectToClawTop.length = leftConnectToClawTop.length + (2 * delta);
+                  rightConnectToClawTop.length = rightConnectToClawTop.length + (2 * delta);
                 }
               }
             }
