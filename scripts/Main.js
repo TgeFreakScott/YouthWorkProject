@@ -1130,9 +1130,6 @@ var Game = new Phaser.Class({
         var fps2 = delta / 1000;
         var fps3 = delta / 20;
 
-        console.log(delta);
-        console.log(rightConnectToClawTop.pointA)
-
         textTimer.setText([ 'Timer: ' + Math.trunc(timer -= (0.02 * fps3)) ]);
 
         if(timer < 0)
