@@ -247,7 +247,7 @@ io.on('connection', function (socket)
      leftArmToLeftConnectData.length = movementData.length;
      socket.broadcast.emit('leftArmToLeftConnectMoved', leftArmToLeftConnectData);
    });
-   socket.on('rightConnectToClawMovement', function (movementData)
+   socket.on('rightArmToRightConnectMovement', function (movementData)
    {
      rightArmToRightConnectData.x1 = movementData.x1;
      rightArmToRightConnectData.y1 = movementData.y1;
@@ -255,7 +255,7 @@ io.on('connection', function (socket)
      rightArmToRightConnectData.y2 = movementData.y2;
      rightArmToRightConnectData.length = movementData.length;
      // emit a message to all players about the player that moved
-     socket.broadcast.emit('rightConnectToClawMoved', rightArmToRightConnectData);
+     socket.broadcast.emit('rightArmToRightConnectMoved', rightArmToRightConnectData);
    });
    socket.on('rightArmToLeftArmMovement', function (movementData)
    {

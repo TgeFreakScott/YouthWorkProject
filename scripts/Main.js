@@ -495,8 +495,8 @@ var YouthElement = new Phaser.Class({
     create: function ()
     {
       yesSprite = this.add.image(100,100, 'yes').setScale(1);
-      noSprite = this.add.image(150,150, 'no').setScale(1);
-      maybeSprite = this.add.image(200,200, 'maybe').setScale(1);
+      noSprite = this.add.image(100,150, 'no').setScale(1);
+      maybeSprite = this.add.image(100,200, 'maybe').setScale(1);
 
         console.log('%c YouthElement ', 'background: green; color: white; display: block;');
     },
@@ -616,7 +616,7 @@ var textBool = false;
 var pinkTimer = 1.2;
 
 var speed = Phaser.Math.GetSpeed(400, 1);
-var fps = 60/1000;
+//var fps = 60/1000;
 
 
 var Game = new Phaser.Class({
@@ -1116,6 +1116,88 @@ var Game = new Phaser.Class({
           armRightSprite.setPosition(clawGrabberRightData.x, clawGrabberRightData.y);
           armRightSprite.setAngle(clawGrabberRightData.angle);
         });
+
+        this.socket.on('clawToPipeBodyMoved', function (clawToPipeBodyData)
+        {
+          clawToPipeBody.pointA.x = clawToPipeBodyData.x1;
+          clawToPipeBody.pointA.y = clawToPipeBodyData.y1;
+          clawToPipeBody.pointB.x = clawToPipeBodyData.x2;
+          clawToPipeBody.pointB.y = clawToPipeBodyData.y2;
+          clawToPipeBody.length = clawToPipeBodyData.length;
+        });
+
+        this.socket.on('leftConnectToClawMoved', function (leftConnectToClawData)
+        {
+          leftConnectToClaw.pointA.x = leftConnectToClawData.x1;
+          leftConnectToClaw.pointA.y = leftConnectToClawData.y1;
+          leftConnectToClaw.pointB.x = leftConnectToClawData.x2;
+          leftConnectToClaw.pointB.y = leftConnectToClawData.y2;
+          leftConnectToClaw.length = leftConnectToClawData.length;
+        });
+
+        this.socket.on('rightConnectToClawMoved', function (rightConnectToClawData)
+        {
+          rightConnectToClaw.pointA.x = rightConnectToClawData.x1;
+          rightConnectToClaw.pointA.y = rightConnectToClawData.y1;
+          rightConnectToClaw.pointB.x = rightConnectToClawData.x2;
+          rightConnectToClaw.pointB.y = rightConnectToClawData.y2;
+          rightConnectToClaw.length = rightConnectToClawData.length;
+        });
+
+        this.socket.on('leftArmToLeftConnectMoved', function (leftArmToLeftConnectData)
+        {
+          leftArmToLeftConnect.pointA.x = leftArmToLeftConnectData.x1;
+          leftArmToLeftConnect.pointA.y = leftArmToLeftConnectData.y1;
+          leftArmToLeftConnect.pointB.x = leftArmToLeftConnectData.x2;
+          leftArmToLeftConnect.pointB.y = leftArmToLeftConnectData.y2;
+          leftArmToLeftConnect.length = leftArmToLeftConnectData.length;
+        });
+
+        this.socket.on('rightArmToRightConnectMoved', function (rightArmToRightConnectData)
+        {
+          rightArmToRightConnect.pointA.x = rightArmToRightConnectData.x1;
+          rightArmToRightConnect.pointA.y = rightArmToRightConnectData.y1;
+          rightArmToRightConnect.pointB.x = rightArmToRightConnectData.x2;
+          rightArmToRightConnect.pointB.y = rightArmToRightConnectData.y2;
+          rightArmToRightConnect.length = rightArmToRightConnectData.length;
+        });
+
+        this.socket.on('rightArmToLeftArmMoved', function (rightArmToLeftArmData)
+        {
+          rightArmToLeftArm.pointA.x = rightArmToLeftArmData.x1;
+          rightArmToLeftArm.pointA.y = rightArmToLeftArmData.y1;
+          rightArmToLeftArm.pointB.x = rightArmToLeftArmData.x2;
+          rightArmToLeftArm.pointB.y = rightArmToLeftArmData.y2;
+          rightArmToLeftArm.length = rightArmToLeftArmData.length;
+        });
+
+        this.socket.on('leftConnectToRightConnectMoved', function (leftConnectToRightConnectData)
+        {
+          leftConnectToRightConnect.pointA.x = leftConnectToRightConnectData.x1;
+          leftConnectToRightConnect.pointA.y = leftConnectToRightConnectData.y1;
+          leftConnectToRightConnect.pointB.x = leftConnectToRightConnectData.x2;
+          leftConnectToRightConnect.pointB.y = leftConnectToRightConnectData.y2;
+          leftConnectToRightConnect.length = leftConnectToRightConnectData.length;
+        });
+
+        this.socket.on('leftConnectToClawTopMoved', function (leftConnectToClawTopData)
+        {
+          leftConnectToClawTop.pointA.x = leftConnectToClawTopData.x1;
+          leftConnectToClawTop.pointA.y = leftConnectToClawTopData.y1;
+          leftConnectToClawTop.pointB.x = leftConnectToClawTopData.x2;
+          leftConnectToClawTop.pointB.y = leftConnectToClawTopData.y2;
+          leftConnectToClawTop.length = leftConnectToClawTopData.length;
+        });
+
+        this.socket.on('rightConnectToClawTopMoved', function (rightConnectToClawTopData)
+        {
+          rightConnectToClawTop.pointA.x = rightConnectToClawTopData.x1;
+          rightConnectToClawTop.pointA.y = rightConnectToClawTopData.y1;
+          rightConnectToClawTop.pointB.x = rightConnectToClawTopData.x2;
+          rightConnectToClawTop.pointB.y = rightConnectToClawTopData.y2;
+          rightConnectToClawTop.length = rightConnectToClawTopData.length;
+        });
+
         this.input.setPollAlways();
     },
 
@@ -1127,7 +1209,7 @@ var Game = new Phaser.Class({
         var player = 1;
         var self = this;
         var fps = delta / 100;
-        var fps2 = delta / 1000;
+        var fps2 = delta / 10000;
         var fps3 = delta / 20;
 
         textTimer.setText([ 'Timer: ' + Math.trunc(timer -= (0.02 * fps3)) ]);
@@ -1564,9 +1646,12 @@ var Game = new Phaser.Class({
           {
             var redX = redTest.x;
             var redY = redTest.y;
-            if (redTest.oldPosition && (redX !== redTest.oldPosition.x || redY !== redTest.oldPosition.y))
+            if (redTest.oldPosition && (redX !== redTest.oldPosition.x
+              || redY !== redTest.oldPosition.y))
             {
-              this.socket.emit('redMovement', { x: redTest.x, y: redTest.y});
+              this.socket.emit('redMovement', {
+                x: redTest.x,
+                y: redTest.y});
             }
 
             // save old position data
@@ -1580,9 +1665,12 @@ var Game = new Phaser.Class({
           {
             var greyX = greyPlayer.x;
             var greyY = greyPlayer.y;
-            if (greyPlayer.oldPosition && (greyX !== greyPlayer.oldPosition.x || greyY !== greyPlayer.oldPosition.y))
+            if (greyPlayer.oldPosition && (greyX !== greyPlayer.oldPosition.x
+              || greyY !== greyPlayer.oldPosition.y))
             {
-              this.socket.emit('greyMovement', { x: greyPlayer.x, y: greyPlayer.y});
+              this.socket.emit('greyMovement', {
+                x: greyPlayer.x,
+                y: greyPlayer.y});
             }
 
             // save old position data
@@ -1596,9 +1684,14 @@ var Game = new Phaser.Class({
             var greyArrowX = greyArrow.x;
             var greyArrowY = greyArrow.y;
             var greyArrowAngle = greyArrow.angle;
-            if (greyArrow.oldPosition && (greyArrowX !== greyArrow.oldPosition.x || greyArrowY !== greyArrow.oldPosition.y || greyArrowAngle !== greyArrow.oldPosition.angle))
+            if (greyArrow.oldPosition && (greyArrowX !== greyArrow.oldPosition.x
+              || greyArrowY !== greyArrow.oldPosition.y
+              || greyArrowAngle !== greyArrow.oldPosition.angle))
             {
-              this.socket.emit('greyArrowMovement', { x: greyArrow.x, y: greyArrow.y, angle: greyArrow.angle});
+              this.socket.emit('greyArrowMovement', {
+                x: greyArrow.x,
+                y: greyArrow.y,
+                angle: greyArrow.angle});
             }
 
             // save old position data
@@ -1613,9 +1706,12 @@ var Game = new Phaser.Class({
           {
             var blueX = bluePlayer.x;
             var blueY = bluePlayer.y;
-            if (bluePlayer.oldPosition && (blueX !== bluePlayer.oldPosition.x || blueY !== bluePlayer.oldPosition.y))
+            if (bluePlayer.oldPosition && (blueX !== bluePlayer.oldPosition.x
+              || blueY !== bluePlayer.oldPosition.y))
             {
-              this.socket.emit('blueMovement', { x: bluePlayer.x, y: bluePlayer.y});
+              this.socket.emit('blueMovement', {
+                x: bluePlayer.x,
+                y: bluePlayer.y});
             }
 
             // save old position data
@@ -1629,9 +1725,14 @@ var Game = new Phaser.Class({
             var blueArrowX = blueArrow.x;
             var blueArrowY = blueArrow.y;
             var blueArrowAngle = blueArrow.angle;
-            if (blueArrow.oldPosition && (blueArrowX !== blueArrow.oldPosition.x || blueArrowY !== blueArrow.oldPosition.y || blueArrowAngle !== blueArrow.oldPosition.angle))
+            if (blueArrow.oldPosition && (blueArrowX !== blueArrow.oldPosition.x
+              || blueArrowY !== blueArrow.oldPosition.y
+              || blueArrowAngle !== blueArrow.oldPosition.angle))
             {
-              this.socket.emit('blueArrowMovement', { x: blueArrow.x, y: blueArrow.y, angle: blueArrow.angle});
+              this.socket.emit('blueArrowMovement', {
+                x: blueArrow.x,
+                y: blueArrow.y,
+                angle: blueArrow.angle});
             }
 
             // save old position data
@@ -1646,9 +1747,12 @@ var Game = new Phaser.Class({
           {
             var yellowX = yellowPlayer.x;
             var yellowY = yellowPlayer.y;
-            if (yellowPlayer.oldPosition && (yellowX !== yellowPlayer.oldPosition.x || yellowY !== yellowPlayer.oldPosition.y))
+            if (yellowPlayer.oldPosition && (yellowX !== yellowPlayer.oldPosition.x
+              || yellowY !== yellowPlayer.oldPosition.y))
             {
-              this.socket.emit('yellowMovement', { x: yellowPlayer.x, y: yellowPlayer.y});
+              this.socket.emit('yellowMovement', {
+                x: yellowPlayer.x,
+                y: yellowPlayer.y});
             }
 
             // save old position data
@@ -1663,9 +1767,14 @@ var Game = new Phaser.Class({
             var yellowArrowX = yellowArrow.x;
             var yellowArrowY = yellowArrow.y;
             var yellowArrowAngle = yellowArrow.angle;
-            if (yellowArrow.oldPosition && (yellowArrowX !== yellowArrow.oldPosition.x || yellowArrowY !== yellowArrow.oldPosition.y || yellowArrowAngle !== yellowArrow.oldPosition.angle))
+            if (yellowArrow.oldPosition && (yellowArrowX !== yellowArrow.oldPosition.x
+              || yellowArrowY !== yellowArrow.oldPosition.y
+              || yellowArrowAngle !== yellowArrow.oldPosition.angle))
             {
-              this.socket.emit('yellowArrowMovement', { x: yellowArrow.x, y: yellowArrow.y, angle: yellowArrow.angle});
+              this.socket.emit('yellowArrowMovement', {
+                x: yellowArrow.x,
+                y: yellowArrow.y,
+                angle: yellowArrow.angle});
             }
 
             // save old position data
@@ -1680,9 +1789,12 @@ var Game = new Phaser.Class({
           {
             var greenX = greenPlayer.x;
             var greenY = greenPlayer.y;
-            if (greenPlayer.oldPosition && (greenX !== greenPlayer.oldPosition.x || greenY !== greenPlayer.oldPosition.y))
+            if (greenPlayer.oldPosition && (greenX !== greenPlayer.oldPosition.x
+              || greenY !== greenPlayer.oldPosition.y))
             {
-              this.socket.emit('greenMovement', { x: greenPlayer.x, y: greenPlayer.y});
+              this.socket.emit('greenMovement', {
+                x: greenPlayer.x,
+                y: greenPlayer.y});
             }
 
             // save old position data
@@ -1697,9 +1809,14 @@ var Game = new Phaser.Class({
             var greenArrowX = greenArrow.x;
             var greenArrowY = greenArrow.y;
             var greenArrowAngle = greenArrow.angle;
-            if (greenArrow.oldPosition && (greenArrowX !== greenArrow.oldPosition.x || greenArrowY !== greenArrow.oldPosition.y || greenArrowAngle !== greenArrow.oldPosition.angle))
+            if (greenArrow.oldPosition && (greenArrowX !== greenArrow.oldPosition.x
+              || greenArrowY !== greenArrow.oldPosition.y
+              || greenArrowAngle !== greenArrow.oldPosition.angle))
             {
-              this.socket.emit('greenArrowMovement', { x: greenArrow.x, y: greenArrow.y, angle: greenArrow.angle});
+              this.socket.emit('greenArrowMovement', {
+                x: greenArrow.x,
+                y: greenArrow.y,
+                angle: greenArrow.angle});
             }
 
             // save old position data
@@ -1714,9 +1831,12 @@ var Game = new Phaser.Class({
           {
             var pinkX = pinkPlayer.x;
             var pinkY = pinkPlayer.y;
-            if (pinkPlayer.oldPosition && (pinkX !== pinkPlayer.oldPosition.x || pinkY !== pinkPlayer.oldPosition.y))
+            if (pinkPlayer.oldPosition && (pinkX !== pinkPlayer.oldPosition.x
+              || pinkY !== pinkPlayer.oldPosition.y))
             {
-              this.socket.emit('pinkMovement', { x: pinkPlayer.x, y: pinkPlayer.y});
+              this.socket.emit('pinkMovement', {
+                x: pinkPlayer.x,
+                y: pinkPlayer.y});
             }
 
             // save old position data
@@ -1731,9 +1851,14 @@ var Game = new Phaser.Class({
             var pinkArrowX = pinkArrow.x;
             var pinkArrowY = pinkArrow.y;
             var pinkArrowAngle = pinkArrow.angle;
-            if (pinkArrow.oldPosition && (pinkArrowX !== pinkArrow.oldPosition.x || pinkArrowY !== pinkArrow.oldPosition.y || pinkArrowAngle !== pinkArrow.oldPosition.angle))
+            if (pinkArrow.oldPosition && (pinkArrowX !== pinkArrow.oldPosition.x
+              || pinkArrowY !== pinkArrow.oldPosition.y
+              || pinkArrowAngle !== pinkArrow.oldPosition.angle))
             {
-              this.socket.emit('pinkArrowMovement', { x: pinkArrow.x, y: pinkArrow.y, angle: pinkArrow.angle});
+              this.socket.emit('pinkArrowMovement', {
+                x: pinkArrow.x,
+                y: pinkArrow.y,
+                angle: pinkArrow.angle});
             }
 
             // save old position data
@@ -1748,9 +1873,12 @@ var Game = new Phaser.Class({
           {
             var pipeBodyX = pipeBodySprite.x;
             var pipeBodyY = pipeBodySprite.y;
-            if (pipeBodySprite.oldPosition && (pipeBodyX !== pipeBodySprite.oldPosition.x || pipeBodyY !== pipeBodySprite.oldPosition.y))
+            if (pipeBodySprite.oldPosition && (pipeBodyX !== pipeBodySprite.oldPosition.x
+              || pipeBodyY !== pipeBodySprite.oldPosition.y))
             {
-              this.socket.emit('clawAnchorMovement', { x: pipeBodySprite.x, y: pipeBodySprite.y});
+              this.socket.emit('clawAnchorMovement', {
+                 x: pipeBodySprite.x,
+                 y: pipeBodySprite.y});
             }
 
             // save old position data
@@ -1765,9 +1893,14 @@ var Game = new Phaser.Class({
             var clawBodyX = clawBodySprite.x;
             var clawBodyY = clawBodySprite.y;
             var clawBodyAngle = clawBodySprite.angle;
-            if (clawBodySprite.oldPosition && (clawBodyX !== clawBodySprite.oldPosition.x || clawBodyY !== clawBodySprite.oldPosition.y || clawBodyAngle !== clawBodySprite.oldPosition.angle))
+            if (clawBodySprite.oldPosition && (clawBodyX !== clawBodySprite.oldPosition.x
+              || clawBodyY !== clawBodySprite.oldPosition.y
+              || clawBodyAngle !== clawBodySprite.oldPosition.angle))
             {
-              this.socket.emit('clawBodyMovement', { x: clawBodySprite.x, y: clawBodySprite.y, angle: clawBodySprite.angle});
+              this.socket.emit('clawBodyMovement', {
+                x: clawBodySprite.x,
+                y: clawBodySprite.y,
+                angle: clawBodySprite.angle});
             }
 
             // save old position data
@@ -1784,9 +1917,14 @@ var Game = new Phaser.Class({
             var armConnectLeftY = armConnectLeftSprite.y;
             var armConnectLeftAngle = armConnectLeftSprite.angle;
 
-            if (armConnectLeftSprite.oldPosition && (armConnectLeftX !== armConnectLeftSprite.oldPosition.x || armConnectLeftY !== armConnectLeftSprite.oldPosition.y || armConnectLeftAngle !== armConnectLeftSprite.oldPosition.angle))
+            if (armConnectLeftSprite.oldPosition && (armConnectLeftX !== armConnectLeftSprite.oldPosition.x
+              || armConnectLeftY !== armConnectLeftSprite.oldPosition.y
+              || armConnectLeftAngle !== armConnectLeftSprite.oldPosition.angle))
             {
-              this.socket.emit('clawArmLeftMovement', { x: armConnectLeftSprite.x, y: armConnectLeftSprite.y, angle: armConnectLeftSprite.angle});
+              this.socket.emit('clawArmLeftMovement', {
+                x: armConnectLeftSprite.x,
+                y: armConnectLeftSprite.y,
+                angle: armConnectLeftSprite.angle});
             }
 
             // save old position data
@@ -1802,9 +1940,14 @@ var Game = new Phaser.Class({
             var armConnectRightX = armConnectRightSprite.x;
             var armConnectRightY = armConnectRightSprite.y;
             var armConnectRightAngle = armConnectRightSprite.angle;
-            if (armConnectRightSprite.oldPosition && (armConnectRightX !== armConnectRightSprite.oldPosition.x || armConnectRightY !== armConnectRightSprite.oldPosition.y || armConnectRightAngle !== armConnectRightSprite.oldPosition.angle))
+            if (armConnectRightSprite.oldPosition && (armConnectRightX !== armConnectRightSprite.oldPosition.x
+              || armConnectRightY !== armConnectRightSprite.oldPosition.y
+              || armConnectRightAngle !== armConnectRightSprite.oldPosition.angle))
             {
-              this.socket.emit('clawArmRightMovement', { x: armConnectRightSprite.x, y: armConnectRightSprite.y, angle: armConnectRightSprite.angle});
+              this.socket.emit('clawArmRightMovement', {
+                x: armConnectRightSprite.x,
+                y: armConnectRightSprite.y,
+                angle: armConnectRightSprite.angle});
             }
 
             // save old position data
@@ -1821,9 +1964,13 @@ var Game = new Phaser.Class({
             var armLeftY = armLeftSprite.y;
             var armLeftAngle = armLeftSprite.angle;
 
-            if (armLeftSprite.oldPosition && (pipeBodyX !== armLeftSprite.oldPosition.x || pipeBodyY !== armLeftSprite.oldPosition.y || armLeftAngle !== armLeftSprite.oldPosition.angle))
+            if (armLeftSprite.oldPosition && (pipeBodyX !== armLeftSprite.oldPosition.x
+              || pipeBodyY !== armLeftSprite.oldPosition.y
+              || armLeftAngle !== armLeftSprite.oldPosition.angle))
             {
-              this.socket.emit('clawGrabberLeftMovement', { x: armLeftSprite.x, y: armLeftSprite.y});
+              this.socket.emit('clawGrabberLeftMovement', {
+                x: armLeftSprite.x,
+                y: armLeftSprite.y});
             }
 
             // save old position data
@@ -1840,7 +1987,9 @@ var Game = new Phaser.Class({
             var armRightY = armRightSprite.y;
             var armRightAngle = armRightSprite.angle;
 
-            if (armRightSprite.oldPosition && (armRightX !== armRightSprite.oldPosition.x || armRightY !== armRightSprite.oldPosition.y || armRightAngle !== armRightSprite.oldPosition.angle))
+            if (armRightSprite.oldPosition && (armRightX !== armRightSprite.oldPosition.x
+              || armRightY !== armRightSprite.oldPosition.y
+              || armRightAngle !== armRightSprite.oldPosition.angle))
             {
               this.socket.emit('clawGrabberRightMovement', { x: armRightSprite.x, y: armRightSprite.y});
             }
@@ -1852,6 +2001,304 @@ var Game = new Phaser.Class({
               angle: armRightSprite.angle
             };
           }
+
+          if(clawToPipeBody)
+          {
+            var clawToPipeBodyX1 = clawToPipeBody.pointA.x;
+            var clawToPipeBodyY1 = clawToPipeBody.pointA.y;
+            var clawToPipeBodyX2 = clawToPipeBody.pointB.x;
+            var clawToPipeBodyY2 = clawToPipeBody.pointB.y;
+            var clawToPipeBodyLength = clawToPipeBody.length;
+
+            if (clawToPipeBody.oldPosition &&
+              (clawToPipeBodyX1 !== clawToPipeBody.oldPosition.x1
+              || clawToPipeBodyY1 !== clawToPipeBody.oldPosition.y1
+              || clawToPipeBodyX2 !== clawToPipeBody.oldPosition.x2
+              || clawToPipeBodyY2 !== clawToPipeBody.oldPosition.y2
+              || clawToPipeBodyLength !== clawToPipeBody.oldPosition.length))
+            {
+              this.socket.emit('clawToPipeBodyMovement', {
+                x1: clawToPipeBody.pointA.x,
+                y1: clawToPipeBody.pointA.y,
+                x2: clawToPipeBody.pointB.x,
+                y2: clawToPipeBody.pointB.y,
+                length: clawToPipeBody.length});
+            }
+
+            // save old position data
+            clawToPipeBody.oldPosition = {
+              x1: clawToPipeBody.pointA.x,
+              y1: clawToPipeBody.pointA.y,
+              x2: clawToPipeBody.pointB.x,
+              y2: clawToPipeBody.pointB.y,
+              length: clawToPipeBody.length
+            };
+          }
+
+          if(leftConnectToClaw)
+          {
+            var leftConnectToClawX1 = leftConnectToClaw.pointA.x;
+            var leftConnectToClawY1 = leftConnectToClaw.pointA.y;
+            var leftConnectToClawX2 = leftConnectToClaw.pointB.x;
+            var leftConnectToClawY2 = leftConnectToClaw.pointB.y;
+            var leftConnectToClawLength = leftConnectToClaw.length;
+
+            if (leftConnectToClaw.oldPosition &&
+              (leftConnectToClawX1 !== leftConnectToClaw.oldPosition.x1
+              || leftConnectToClawY1 !== leftConnectToClaw.oldPosition.y1
+              || leftConnectToClawX2 !== leftConnectToClaw.oldPosition.x2
+              || leftConnectToClawY2 !== leftConnectToClaw.oldPosition.y2
+              || leftConnectToClawLength !== leftConnectToClaw.oldPosition.length))
+            {
+              this.socket.emit('leftConnectToClawMovement', {
+                x1: leftConnectToClaw.pointA.x,
+                y1: leftConnectToClaw.pointA.y,
+                x2: leftConnectToClaw.pointB.x,
+                y2: leftConnectToClaw.pointB.y,
+                length: leftConnectToClaw.length});
+            }
+
+            // save old position data
+            leftConnectToClaw.oldPosition = {
+              x1: leftConnectToClaw.pointA.x,
+              y1: leftConnectToClaw.pointA.y,
+              x2: leftConnectToClaw.pointB.x,
+              y2: leftConnectToClaw.pointB.y,
+              length: leftConnectToClaw.length
+            };
+          }
+
+          if(rightConnectToClaw)
+          {
+            var rightConnectToClawX1 = rightConnectToClaw.pointA.x;
+            var rightConnectToClawY1 = rightConnectToClaw.pointA.y;
+            var rightConnectToClawX2 = rightConnectToClaw.pointB.x;
+            var rightConnectToClawY2 = rightConnectToClaw.pointB.y;
+            var rightConnectToClawLength = rightConnectToClaw.length;
+
+            if (rightConnectToClaw.oldPosition &&
+              (rightConnectToClawX1 !== rightConnectToClaw.oldPosition.x1
+              || rightConnectToClawY1 !== rightConnectToClaw.oldPosition.y1
+              || rightConnectToClawX2 !== rightConnectToClaw.oldPosition.x2
+              || rightConnectToClawY2 !== rightConnectToClaw.oldPosition.y2
+              || rightConnectToClawLength !== rightConnectToClaw.oldPosition.length))
+            {
+              this.socket.emit('rightConnectToClawMovement', {
+                x1: rightConnectToClaw.pointA.x,
+                y1: rightConnectToClaw.pointA.y,
+                x2: rightConnectToClaw.pointB.x,
+                y2: rightConnectToClaw.pointB.y,
+                length: rightConnectToClaw.length});
+            }
+
+            // save old position data
+            rightConnectToClaw.oldPosition = {
+              x1: rightConnectToClaw.pointA.x,
+              y1: rightConnectToClaw.pointA.y,
+              x2: rightConnectToClaw.pointB.x,
+              y2: rightConnectToClaw.pointB.y,
+              length: rightConnectToClaw.length
+            };
+          }
+
+          if(leftArmToLeftConnect)
+          {
+            var leftArmToLeftConnectX1 = leftArmToLeftConnect.pointA.x;
+            var leftArmToLeftConnectY1 = leftArmToLeftConnect.pointA.y;
+            var leftArmToLeftConnectX2 = leftArmToLeftConnect.pointB.x;
+            var leftArmToLeftConnectY2 = leftArmToLeftConnect.pointB.y;
+            var leftArmToLeftConnectLength = leftArmToLeftConnect.length;
+
+            if (leftArmToLeftConnect.oldPosition &&
+              (leftArmToLeftConnectX1 !== leftArmToLeftConnect.oldPosition.x1
+              || leftArmToLeftConnectY1 !== leftArmToLeftConnect.oldPosition.y1
+              || leftArmToLeftConnectX2 !== leftArmToLeftConnect.oldPosition.x2
+              || leftArmToLeftConnectY2 !== leftArmToLeftConnect.oldPosition.y2
+              || leftArmToLeftConnectLength !== leftArmToLeftConnect.oldPosition.length))
+            {
+              this.socket.emit('leftArmToLeftConnectMovement', {
+                x1: leftArmToLeftConnect.pointA.x,
+                y1: leftArmToLeftConnect.pointA.y,
+                x2: leftArmToLeftConnect.pointB.x,
+                y2: leftArmToLeftConnect.pointB.y,
+                length: leftArmToLeftConnect.length});
+            }
+
+            // save old position data
+            leftArmToLeftConnect.oldPosition = {
+              x1: leftArmToLeftConnect.pointA.x,
+              y1: leftArmToLeftConnect.pointA.y,
+              x2: leftArmToLeftConnect.pointB.x,
+              y2: leftArmToLeftConnect.pointB.y,
+              length: leftArmToLeftConnect.length
+            };
+          }
+
+          if(rightArmToRightConnect)
+          {
+            var rightArmToRightConnectX1 = rightArmToRightConnect.pointA.x;
+            var rightArmToRightConnectY1 = rightArmToRightConnect.pointA.y;
+            var rightArmToRightConnectX2 = rightArmToRightConnect.pointB.x;
+            var rightArmToRightConnectY2 = rightArmToRightConnect.pointB.y;
+            var rightArmToRightConnectLength = rightArmToRightConnect.length;
+
+            if (rightArmToRightConnect.oldPosition &&
+              (rightArmToRightConnectX1 !== rightArmToRightConnect.oldPosition.x1
+              ||rightArmToRightConnectY1 !== rightArmToRightConnect.oldPosition.y1
+              || rightArmToRightConnectX2 !== rightArmToRightConnect.oldPosition.x2
+              || rightArmToRightConnectY2 !== rightArmToRightConnect.oldPosition.y2
+              || rightArmToRightConnectLength !== rightArmToRightConnect.oldPosition.length))
+            {
+              this.socket.emit('rightArmToRightConnectMovement', {
+                x1: rightArmToRightConnect.pointA.x,
+                y1: rightArmToRightConnect.pointA.y,
+                x2: rightArmToRightConnect.pointB.x,
+                y2: rightArmToRightConnect.pointB.y,
+                length: rightArmToRightConnect.length});
+            }
+
+            // save old position data
+            rightArmToRightConnect.oldPosition = {
+              x1: rightArmToRightConnect.pointA.x,
+              y1: rightArmToRightConnect.pointA.y,
+              x2: rightArmToRightConnect.pointB.x,
+              y2: rightArmToRightConnect.pointB.y,
+              length: rightArmToRightConnect.length
+            };
+          }
+
+          if(rightArmToLeftArm)
+          {
+            var rightArmToLeftArmX1 = rightArmToLeftArm.pointA.x;
+            var rightArmToLeftArmY1 = rightArmToLeftArm.pointA.y;
+            var rightArmToLeftArmX2 = rightArmToLeftArm.pointB.x;
+            var rightArmToLeftArmY2 = rightArmToLeftArm.pointB.y;
+            var rightArmToLeftArmLength = rightArmToLeftArm.length;
+
+            if (rightArmToLeftArm.oldPosition &&
+              (rightArmToLeftArmX1 !== rightArmToLeftArm.oldPosition.x1
+              || rightArmToLeftArmY1 !== rightArmToLeftArm.oldPosition.y1
+              || rightArmToLeftArmX2 !== rightArmToLeftArm.oldPosition.x2
+              || rightArmToLeftArmY2 !== rightArmToLeftArm.oldPosition.y2
+              || rightArmToLeftArmLength !== rightArmToLeftArm.oldPosition.length))
+            {
+              this.socket.emit('rightArmToLeftArmMovement', {
+                x1: rightArmToLeftArm.pointA.x,
+                y1: rightArmToLeftArm.pointA.y,
+                x2: rightArmToLeftArm.pointB.x,
+                y2: rightArmToLeftArm.pointB.y,
+                length: rightArmToLeftArm.length});
+            }
+
+            // save old position data
+            rightArmToLeftArm.oldPosition = {
+              x1: rightArmToLeftArm.pointA.x,
+              y1: rightArmToLeftArm.pointA.y,
+              x2: rightArmToLeftArm.pointB.x,
+              y2: rightArmToLeftArm.pointB.y,
+              length: rightArmToLeftArm.length
+            };
+          }
+
+          if(leftConnectToRightConnect)
+          {
+            var leftConnectToRightConnectX1 = leftConnectToRightConnect.pointA.x;
+            var leftConnectToRightConnectY1 = leftConnectToRightConnect.pointA.y;
+            var leftConnectToRightConnectX2 = leftConnectToRightConnect.pointB.x;
+            var leftConnectToRightConnectY2 = leftConnectToRightConnect.pointB.y;
+            var leftConnectToRightConnectLength = leftConnectToRightConnect.length;
+
+            if (leftConnectToRightConnect.oldPosition &&
+              (leftConnectToRightConnectX1 !== leftConnectToRightConnect.oldPosition.x1
+              || leftConnectToRightConnectY1 !== leftConnectToRightConnect.oldPosition.y1
+              || leftConnectToRightConnectX2 !== leftConnectToRightConnect.oldPosition.x2
+              || leftConnectToRightConnectY2 !== leftConnectToRightConnect.oldPosition.y2
+              || leftConnectToRightConnectLength !== leftConnectToRightConnect.oldPosition.length))
+            {
+              this.socket.emit('leftConnectToRightConnectMovement', {
+                x1: leftConnectToRightConnect.pointA.x,
+                y1: leftConnectToRightConnect.pointA.y,
+                x2: leftConnectToRightConnect.pointB.x,
+                y2: leftConnectToRightConnect.pointB.y,
+                length: leftConnectToRightConnect.length});
+            }
+
+            // save old position data
+            leftConnectToRightConnect.oldPosition = {
+              x1: leftConnectToRightConnect.pointA.x,
+              y1: leftConnectToRightConnect.pointA.y,
+              x2: leftConnectToRightConnect.pointB.x,
+              y2: leftConnectToRightConnect.pointB.y,
+              length: leftConnectToRightConnect.length
+            };
+          }
+
+          if(leftConnectToClawTop)
+          {
+            var leftConnectToClawTopX1 = leftConnectToClawTop.pointA.x;
+            var leftConnectToClawTopY1 = leftConnectToClawTop.pointA.y;
+            var leftConnectToClawTopX2 = leftConnectToClawTop.pointB.x;
+            var leftConnectToClawTopY2 = leftConnectToClawTop.pointB.y;
+            var leftConnectToClawTopLength = leftConnectToClawTop.length;
+
+            if (leftConnectToClawTop.oldPosition &&
+              (leftConnectToClawTopX1 !== leftConnectToClawTop.oldPosition.x1
+              || leftConnectToClawTopY1 !== leftConnectToClawTop.oldPosition.y1
+              || leftConnectToClawTopX2 !== leftConnectToClawTop.oldPosition.x2
+              || leftConnectToClawTopY2 !== leftConnectToClawTop.oldPosition.y2
+              || leftConnectToClawTopLength !== leftConnectToClawTop.oldPosition.length))
+            {
+              this.socket.emit('leftConnectToClawTopMovement', {
+                x1: leftConnectToClawTop.pointA.x,
+                y1: leftConnectToClawTop.pointA.y,
+                x2: leftConnectToClawTop.pointB.x,
+                y2: leftConnectToClawTop.pointB.y,
+                length: leftConnectToClawTop.length});
+            }
+
+            // save old position data
+            leftConnectToClawTop.oldPosition = {
+              x1: leftConnectToClawTop.pointA.x,
+              y1: leftConnectToClawTop.pointA.y,
+              x2: leftConnectToClawTop.pointB.x,
+              y2: leftConnectToClawTop.pointB.y,
+              length: leftConnectToClawTop.length
+            };
+          }
+
+          if(rightConnectToClawTop)
+          {
+            var rightConnectToClawTopX1 = rightConnectToClawTop.pointA.x;
+            var rightConnectToClawTopY1 = rightConnectToClawTop.pointA.y;
+            var rightConnectToClawTopX2 = rightConnectToClawTop.pointB.x;
+            var rightConnectToClawTopY2 = rightConnectToClawTop.pointB.y;
+            var rightConnectToClawTopLength = rightConnectToClawTop.length;
+
+            if (rightConnectToClawTop.oldPosition &&
+              (rightConnectToClawTopX1 !== rightConnectToClawTop.oldPosition.x1
+              || rightConnectToClawTopY1 !== rightConnectToClawTop.oldPosition.y1
+              || rightConnectToClawTopX2 !== rightConnectToClawTop.oldPosition.x2
+              || rightConnectToClawTopY2 !== rightConnectToClawTop.oldPosition.y2
+              || rightConnectToClawTopLength !== rightConnectToClawTop.oldPosition.length))
+            {
+              this.socket.emit('rightConnectToClawTopMovement', {
+                x1: rightConnectToClawTop.pointA.x,
+                y1: rightConnectToClawTop.pointA.y,
+                x2: rightConnectToClawTop.pointB.x,
+                y2: rightConnectToClawTop.pointB.y,
+                length: rightConnectToClawTop.length});
+            }
+
+            // save old position data
+            rightConnectToClawTop.oldPosition = {
+              x1: rightConnectToClawTop.pointA.x,
+              y1: rightConnectToClawTop.pointA.y,
+              x2: rightConnectToClawTop.pointB.x,
+              y2: rightConnectToClawTop.pointB.y,
+              length: rightConnectToClawTop.length
+            };
+          }
+
     }
 
 });
