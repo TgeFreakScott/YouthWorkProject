@@ -87,7 +87,7 @@ var Preloader = new Phaser.Class({
 
       //loads image by ("Name your giving to sprite" , "the sprite location" , "JSON file location")
       //player Sprites
-      this.load.image('red', 'Sprite/redCapture.png','Sprite/physics/redShape.json');
+      //this.load.image('red', 'Sprite/redCapture.png','Sprite/physics/redShape.json');
       this.load.image('grey', 'Sprite/greyCapture.png','Sprite/physics/greyShape.json');
       this.load.image('green', 'Sprite/greenCapture.png','Sprite/physics/greenShape.json');
       this.load.image('yellow', 'Sprite/yellowCapture.png','Sprite/physics/yellowShape.json');
@@ -117,7 +117,7 @@ var Preloader = new Phaser.Class({
       this.load.image('yellowArrow', 'Sprite/yellowArrow.png');
       this.load.image('greenArrow', 'Sprite/greenArrow.png');
       this.load.image('pinkArrow', 'Sprite/pinkArrow.png');
-      this.load.image('redArrow', 'Sprite/greenArrow.png');
+      //this.load.image('redArrow', 'Sprite/greenArrow.png');
 
       this.load.image('yes', 'Sprite/yes.png');
       this.load.image('no', 'Sprite/no.png');
@@ -127,7 +127,7 @@ var Preloader = new Phaser.Class({
       this.load.spritesheet('notEnter', 'Sprite/x.png',{ frameWidth: 455, frameHeight: 455 });
 
       //Loading in animated Sprites
-      this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
+      //this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('greyMove' ,'Sprite/greyPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('pinkMove' ,'Sprite/pinkPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('yellowMove' ,'Sprite/yellowPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
@@ -135,7 +135,7 @@ var Preloader = new Phaser.Class({
       this.load.spritesheet('greenMove' ,'Sprite/greenPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
 
       this.load.spritesheet('greyJump' ,'Sprite/greyJump.png' ,{ frameWidth: 331, frameHeight: 294 });
-      this.load.spritesheet('redJump' ,'Sprite/redJump.png' ,{ frameWidth: 331, frameHeight: 294 });
+      //this.load.spritesheet('redJump' ,'Sprite/redJump.png' ,{ frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('pinkJump' ,'Sprite/pinkJump.png' ,{ frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('yellowJump' ,'Sprite/yellowJump.png' ,{ frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('blueJump' ,'Sprite/blueJump.png' ,{ frameWidth: 331, frameHeight: 294 });
@@ -146,7 +146,7 @@ var Preloader = new Phaser.Class({
       this.load.json('blueShape', 'Sprite/physics/blueShape.json');
       this.load.json('pinkShape', 'Sprite/physics/pinkShape.json');
       this.load.json('greyShape', 'Sprite/physics/greyShape.json');
-      this.load.json('redShape', 'Sprite/physics/redShape.json');
+      //this.load.json('redShape', 'Sprite/physics/redShape.json');
       this.load.json('armLeftShape','Sprite/physics/armLeftShape.json');
       this.load.json('armRightShape','Sprite/physics/armRightShape.json');
       this.load.json('armConnectShape','Sprite/physics/armConnectShape.json');
@@ -498,6 +498,10 @@ var YouthElement = new Phaser.Class({
       noSprite = this.add.image(100,150, 'no').setScale(1);
       maybeSprite = this.add.image(100,200, 'maybe').setScale(1);
 
+      light = this.light.addLight(0,0,200).setScrollFactor(0.0);
+      this.lights.enable().setAmbientColor(0x555555);
+
+
         console.log('%c YouthElement ', 'background: green; color: white; display: block;');
     },
 
@@ -540,7 +544,6 @@ var pinkRight = true;
 var pinkJump = false;
 
 var computerID;
-var redSprite;
 var greySprite;
 var blueSprite;
 var pinkSprite;
@@ -561,7 +564,6 @@ var rightBucket;
 var backgroundSprite;
 var floorSprite;
 
-var redTest;
 var pinkPlayer;
 var greyPlayer;
 var bluePlayer;
@@ -572,6 +574,7 @@ var greyArrowToGreyPlayer;
 var blueArrowToBluePlayer;
 var yellowArrowToYellowPlayer;
 var greenArrowToGreenPlayer;
+var pinkArrowToPinkPlayer;
 
 //Constraint Variables
 var clawToPipeBody;
@@ -584,7 +587,6 @@ var leftConnectToClawTop;
 var rightConnectToClawTop;
 var leftConnectToRightConnect;
 
-var redArrow;
 var greyArrow;
 var blueArrow;
 var yellowArrow;
@@ -616,7 +618,6 @@ var textBool = false;
 var pinkTimer = 1.2;
 
 var speed = Phaser.Math.GetSpeed(400, 1);
-//var fps = 60/1000;
 
 
 var Game = new Phaser.Class({
@@ -727,7 +728,6 @@ var Game = new Phaser.Class({
         var shapeBlue = this.cache.json.get('blueShape');
         var shapePink = this.cache.json.get('pinkShape');
         var shapeGrey = this.cache.json.get('greyShape');
-        var shapeRed = this.cache.json.get('redShape');
         var shapeGreen = this.cache.json.get('greenShape');
         var shapeYellow = this.cache.json.get('yellowShape');
 
@@ -760,12 +760,6 @@ var Game = new Phaser.Class({
         pipeBodySprite = this.matter.add.image(400, 50, 'pipeBody',{ shape: 'square'})
         .setFixedRotation().setScale(0.7).setMass(22000).setIgnoreGravity(true).setStatic({x:false, y:true});
 
-        //Setting JSON collider for Sprite
-        redTest = this.matter.add.sprite(600, 300, 'redMove','redMove',{shape: shapeRed.redCapture})
-        .setScale(0.2).setMass(400).setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
-        redTest.setExistingBody(compoundBody2);
-        redTest.setPosition(600,300).setScale(0.2).setMass(400)
-        .setDensity(10).setBounce(0.7).setFixedRotation(true).setInteractive();
 
         greyPlayer = this.matter.add.sprite(300, 500, 'greyMove','greyMove',{shape: shapeGrey.greyCapture})
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
@@ -804,7 +798,7 @@ var Game = new Phaser.Class({
         leftBucket.setPosition(70,550)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
-         rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket',) // {shape:shapeBucket.glassPanel})
+         rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket',)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         rightBucket.setExistingBody(compoundCaptureBox1);
@@ -812,9 +806,6 @@ var Game = new Phaser.Class({
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
-            .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
-            .setFixedRotation(true).setSensor(true).setInteractive();
-        redArrow = this.matter.add.image(50, 300, 'redArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
             .setFixedRotation(true).setSensor(true).setInteractive();
         blueArrow = this.matter.add.image(50, 300, 'blueArrow', null,)
@@ -830,14 +821,6 @@ var Game = new Phaser.Class({
         pinkArrow = this.matter.add.image(50, 300, 'pinkArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
             .setFixedRotation(true).setSensor(true).setInteractive();
-
-        //Creates Animation for Sprite
-        //Walking
-        var redAnimation = this.anims.create({
-            key: 'walk',
-            frames: this.anims.generateFrameNumbers('redMove'),
-            frameRate: 6, repeat: -1,
-        });
 
         var greyAnimation = this.anims.create({
               key: 'walk1',
@@ -894,19 +877,12 @@ var Game = new Phaser.Class({
               frameRate: 8, repeat: -1
         });
 
-        var redJumpAnimation = this.anims.create({
-              key: 'redJump',
-              frames: this.anims.generateFrameNumbers('redJump'),
-              frameRate: 8, repeat: -1
-        });
-
         var pinkJumpAnimation = this.anims.create({
               key: 'pinkJump',
               frames: this.anims.generateFrameNumbers('pinkJump'),
               frameRate: 8, repeat: -1
         });
 
-          redTest.play('walk');
           greyPlayer.play('walk1');
           bluePlayer.play('walk2');
           yellowPlayer.play('walk3');
@@ -933,7 +909,6 @@ var Game = new Phaser.Class({
           bodyA: armConnectLeftSprite.body, bodyB: clawBodySprite.body,
           pointA: {x: 35, y: 0 }, pointB: {x: -30, y: 70 },length: 4, stiffness: 1
         });
-        this.matter.world.add(leftConnectToClaw);
 
         rightConnectToClaw = Phaser.Physics.Matter.Matter.Constraint.create(
         {
@@ -956,6 +931,35 @@ var Game = new Phaser.Class({
         });
         this.matter.world.add(rightArmToRightConnect);
 
+        rightArmToLeftArm = Phaser.Physics.Matter.Matter.Constraint.create(
+        {
+          bodyA: armRightSprite.body, bodyB: armLeftSprite.body,
+          pointA: {x: -5, y: 55 }, pointB: {x: 0, y: 55 }, length: 150, stiffness: 1
+        });
+        this.matter.world.add(rightArmToLeftArm);
+
+        leftConnectToRightConnect = Phaser.Physics.Matter.Matter.Constraint.create(
+        {
+          bodyA: armConnectLeftSprite.body, bodyB: armConnectRightSprite.body,
+          pointA: {x: -30, y: 0 }, pointB: {x: 30, y: 0 }, length: 170, stiffness: 1
+        });
+        this.matter.world.add(leftConnectToRightConnect);
+
+        leftConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
+        {
+          bodyA: armConnectLeftSprite.body, bodyB: clawBodySprite.body,
+          pointA: {x: -30, y: 0 }, pointB: {x: 0, y: -90 }, length: 200, stiffness: 1
+        });
+        this.matter.world.add(leftConnectToClawTop);
+
+        rightConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
+        {
+          bodyA: armConnectRightSprite.body, bodyB: clawBodySprite.body,
+          pointA: {x: 30, y: 0 }, pointB: {x: 0, y: -90 }, length: 200, stiffness: 1
+        });
+        this.matter.world.add(rightConnectToClawTop);
+
+        //Arrow Constraints
         greyArrowToGreyPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
         {
           bodyA: greyArrow.body, bodyB: greyPlayer.body,
@@ -991,51 +995,10 @@ var Game = new Phaser.Class({
         });
         this.matter.world.add(pinkArrowToPinkPlayer);
 
-        rightArmToLeftArm = Phaser.Physics.Matter.Matter.Constraint.create(
-        {
-          bodyA: armRightSprite.body, bodyB: armLeftSprite.body,
-          pointA: {x: -5, y: 55 }, pointB: {x: 0, y: 55 }, length: 150, stiffness: 1
-        });
-        this.matter.world.add(rightArmToLeftArm);
-
-        leftConnectToRightConnect = Phaser.Physics.Matter.Matter.Constraint.create(
-        {
-          bodyA: armConnectLeftSprite.body, bodyB: armConnectRightSprite.body,
-          pointA: {x: -30, y: 0 }, pointB: {x: 30, y: 0 }, length: 170, stiffness: 1
-        });
-        this.matter.world.add(leftConnectToRightConnect);
-
-        leftConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
-        {
-          bodyA: armConnectLeftSprite.body, bodyB: clawBodySprite.body,
-          pointA: {x: -30, y: 0 }, pointB: {x: 0, y: -90 }, length: 200, stiffness: 1
-        });
-        this.matter.world.add(leftConnectToClawTop);
-
-        rightConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
-        {
-          bodyA: armConnectRightSprite.body, bodyB: clawBodySprite.body,
-          pointA: {x: 30, y: 0 }, pointB: {x: 0, y: -90 }, length: 200, stiffness: 1
-        });
-        this.matter.world.add(rightConnectToClawTop);
-
         textTimer = this.add.text(30, 100, 'Timer: ' + timer, { font: '20px Arial' }).setFontSize(20);
         textTimer.setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000);
         textLives = this.add.text(30, 120, 'Lives: ' + lives).setFontSize(20);
         textLives.setTint(0xff000f, 0xfff000, 0x00000f, 0xf00000);
-
-        //var tween = this.tweens.add({
-        //    targets: pinkPlayer,
-        //    props: {
-        //        x: { value: '+=600', duration: 3000, yoyo: true, repeat: -1, ease: 'Power1', repeat: -1 },
-        //        y: { value: '-=64', duration: 600, yoyo: true, repeat: -1, ease: 'Power1' } },
-        //    delay: 1000
-        //});
-
-        this.socket.on('redMoved', function (redData)
-        {
-          redTest.setPosition(redData.x, redData.y);
-        });
 
         this.socket.on('greyMoved', function (greyData)
         {
@@ -1045,6 +1008,14 @@ var Game = new Phaser.Class({
         {
           greyArrow.setPosition(greyArrowData.x, greyArrowData.y);
           greyArrow.setAngle(greyArrowData.angle);
+        });
+        this.socket.on('greyConstraintMoved', function (greyArrowToGreyPlayerData)
+        {
+          greyArrowToGreyPlayer.pointA.x = greyArrowToGreyPlayerData.x1;
+          greyArrowToGreyPlayer.pointA.y = greyArrowToGreyPlayerData.y1;
+          greyArrowToGreyPlayer.pointB.x = greyArrowToGreyPlayerData.x2;
+          greyArrowToGreyPlayer.pointB.y = greyArrowToGreyPlayerData.y2;
+          greyArrowToGreyPlayer.length = greyArrowToGreyPlayerData.length;
         });
 
         this.socket.on('blueMoved', function (blueData)
@@ -1056,6 +1027,14 @@ var Game = new Phaser.Class({
           blueArrow.setPosition(blueArrowData.x, blueArrowData.y);
           blueArrow.setAngle(blueArrowData.angle);
         });
+        this.socket.on('blueConstraintMoved', function (blueArrowToBlueData)
+        {
+          blueArrowToBluePlayer.pointA.x = blueArrowToBluePlayerData.x1;
+          blueArrowToBluePlayer.pointA.y = blueArrowToBluePlayerData.y1;
+          blueArrowToBluePlayer.pointB.x = blueArrowToBluePlayerData.x2;
+          blueArrowToBluePlayer.pointB.y = blueArrowToBluePlayerData.y2;
+          blueArrowToBluePlayer.length = blueArrowToBluePlayerData.length;
+        });
 
         this.socket.on('yellowMoved', function (yellowData)
         {
@@ -1066,6 +1045,15 @@ var Game = new Phaser.Class({
           yellowArrow.setPosition(yellowArrowData.x, yellowArrowData.y);
           yellowArrow.setAngle(yellowArrowData.angle);
         });
+        this.socket.on('yellowConstraintMoved', function (yellowArrowToYellowPlayerData)
+        {
+          yellowArrowToYellowPlayer.pointA.x = yellowArrowToYellowPlayerData.x1;
+          yellowArrowToYellowPlayer.pointA.y = yellowArrowToYellowPlayerData.y1;
+          yellowArrowToYellowPlayer.pointB.x = yellowArrowToYellowPlayerData.x2;
+          yellowArrowToYellowPlayer.pointB.y = yellowArrowToYellowPlayerData.y2;
+          yellowArrowToYellowPlayer.length = yellowArrowToYellowPlayerData.length;
+        });
+
 
         this.socket.on('greenMoved', function (greenData)
         {
@@ -1076,6 +1064,14 @@ var Game = new Phaser.Class({
           greenArrow.setPosition(greenArrowData.x, greenArrowData.y);
           greenArrow.setAngle(greenArrowData.angle);
         });
+        this.socket.on('greenConstraintMoved', function (greenArrowToGreenPlayerData)
+        {
+          greenArrowToGreenPlayer.pointA.x = greenArrowToGreenPlayerData.x1;
+          greenArrowToGreenPlayer.pointA.y = greenArrowToGreenPlayerData.y1;
+          greenArrowToGreenPlayer.pointB.x = greenArrowToGreenPlayerData.x2;
+          greenArrowToGreenPlayer.pointB.y = greenArrowToGreenPlayerData.y2;
+          greenArrowToGreenPlayer.length = greenArrowToGreenPlayerData.length;
+        });
 
         this.socket.on('pinkMoved', function (pinkData)
         {
@@ -1085,6 +1081,14 @@ var Game = new Phaser.Class({
         {
           pinkArrow.setPosition(pinkArrowData.x, pinkArrowData.y);
           pinkArrow.setAngle(pinkArrowData.angle);
+        });
+        this.socket.on('pinkConstraintMoved', function (pinkArrowToPinkPlayerData)
+        {
+          pinkArrowToPinkPlayer.pointA.x = pinkArrowToPinkPlayerData.x1;
+          pinkArrowToPinkPlayer.pointA.y = pinkArrowToPinkPlayerData.y1;
+          pinkArrowToPinkPlayer.pointB.x = pinkArrowToPinkPlayerData.x2;
+          pinkArrowToPinkPlayer.pointB.y = pinkArrowToPinkPlayerData.y2;
+          pinkArrowToPinkPlayer.length = pinkArrowToPinkPlayerData.length;
         });
 
         this.socket.on('clawAnchorMoved', function (clawAnchorData)
@@ -1117,53 +1121,73 @@ var Game = new Phaser.Class({
           armRightSprite.setAngle(clawGrabberRightData.angle);
         });
 
+
         this.socket.on('clawToPipeBodyMoved', function (clawToPipeBodyData)
         {
+          clawToPipeBody.bodyA = clawToPipeBodyData.bodyA;
+          clawToPipeBody.bodyB = clawToPipeBodyData.bodyB;
           clawToPipeBody.pointA.x = clawToPipeBodyData.x1;
           clawToPipeBody.pointA.y = clawToPipeBodyData.y1;
           clawToPipeBody.pointB.x = clawToPipeBodyData.x2;
           clawToPipeBody.pointB.y = clawToPipeBodyData.y2;
           clawToPipeBody.length = clawToPipeBodyData.length;
+          console.log(clawToPipeBody.bodyA);
+          console.log(clawToPipeBody.bodyB);
+
         });
 
         this.socket.on('leftConnectToClawMoved', function (leftConnectToClawData)
         {
+          leftConnectToClaw.bodyA = leftConnectToClawData.bodyA;
+          leftConnectToClaw.bodyB = leftConnectToClawData.bodyB;
           leftConnectToClaw.pointA.x = leftConnectToClawData.x1;
           leftConnectToClaw.pointA.y = leftConnectToClawData.y1;
           leftConnectToClaw.pointB.x = leftConnectToClawData.x2;
           leftConnectToClaw.pointB.y = leftConnectToClawData.y2;
           leftConnectToClaw.length = leftConnectToClawData.length;
+
         });
 
         this.socket.on('rightConnectToClawMoved', function (rightConnectToClawData)
         {
+          rightConnectToClaw.bodyA = rightConnectToClawData.bodyA;
+          rightConnectToClaw.bodyB = rightConnectToClawData.bodyB;
           rightConnectToClaw.pointA.x = rightConnectToClawData.x1;
           rightConnectToClaw.pointA.y = rightConnectToClawData.y1;
           rightConnectToClaw.pointB.x = rightConnectToClawData.x2;
           rightConnectToClaw.pointB.y = rightConnectToClawData.y2;
           rightConnectToClaw.length = rightConnectToClawData.length;
+
         });
 
         this.socket.on('leftArmToLeftConnectMoved', function (leftArmToLeftConnectData)
         {
+          leftArmToLeftConnect.bodyA = leftArmToLeftConnectData.bodyA;
+          leftArmToLeftConnect.bodyB = leftArmToLeftConnectData.bodyB;
           leftArmToLeftConnect.pointA.x = leftArmToLeftConnectData.x1;
           leftArmToLeftConnect.pointA.y = leftArmToLeftConnectData.y1;
           leftArmToLeftConnect.pointB.x = leftArmToLeftConnectData.x2;
           leftArmToLeftConnect.pointB.y = leftArmToLeftConnectData.y2;
           leftArmToLeftConnect.length = leftArmToLeftConnectData.length;
+
         });
 
         this.socket.on('rightArmToRightConnectMoved', function (rightArmToRightConnectData)
         {
+          rightArmToRightConnect.bodyA = rightArmToRightConnectData.bodyA;
+          rightArmToRightConnect.bodyB = rightArmToRightConnectData.bodyB;
           rightArmToRightConnect.pointA.x = rightArmToRightConnectData.x1;
           rightArmToRightConnect.pointA.y = rightArmToRightConnectData.y1;
           rightArmToRightConnect.pointB.x = rightArmToRightConnectData.x2;
           rightArmToRightConnect.pointB.y = rightArmToRightConnectData.y2;
           rightArmToRightConnect.length = rightArmToRightConnectData.length;
+
         });
 
         this.socket.on('rightArmToLeftArmMoved', function (rightArmToLeftArmData)
         {
+          rightArmToLeftArm.bodyA = rightArmToLeftArmData.bodyA;
+          rightArmToLeftArm.bodyB = rightArmToLeftArmData.bodyB;
           rightArmToLeftArm.pointA.x = rightArmToLeftArmData.x1;
           rightArmToLeftArm.pointA.y = rightArmToLeftArmData.y1;
           rightArmToLeftArm.pointB.x = rightArmToLeftArmData.x2;
@@ -1173,29 +1197,38 @@ var Game = new Phaser.Class({
 
         this.socket.on('leftConnectToRightConnectMoved', function (leftConnectToRightConnectData)
         {
+          leftConnectToRightConnect.bodyA = leftConnectToRightConnectData.bodyA;
+          leftConnectToRightConnect.bodyB = leftConnectToRightConnectData.bodyB;
           leftConnectToRightConnect.pointA.x = leftConnectToRightConnectData.x1;
           leftConnectToRightConnect.pointA.y = leftConnectToRightConnectData.y1;
           leftConnectToRightConnect.pointB.x = leftConnectToRightConnectData.x2;
           leftConnectToRightConnect.pointB.y = leftConnectToRightConnectData.y2;
           leftConnectToRightConnect.length = leftConnectToRightConnectData.length;
+
         });
 
         this.socket.on('leftConnectToClawTopMoved', function (leftConnectToClawTopData)
         {
+          leftConnectToClawTop.bodyA = leftConnectToClawTopData.bodyA;
+          leftConnectToClawTop.bodyB = leftConnectToClawTopData.bodyB;
           leftConnectToClawTop.pointA.x = leftConnectToClawTopData.x1;
           leftConnectToClawTop.pointA.y = leftConnectToClawTopData.y1;
           leftConnectToClawTop.pointB.x = leftConnectToClawTopData.x2;
           leftConnectToClawTop.pointB.y = leftConnectToClawTopData.y2;
           leftConnectToClawTop.length = leftConnectToClawTopData.length;
+
         });
 
         this.socket.on('rightConnectToClawTopMoved', function (rightConnectToClawTopData)
         {
+          rightConnectToClawTop.bodyA = rightConnectToClawTopData.bodyA;
+          rightConnectToClawTop.bodyB = rightConnectToClawTopData.bodyB;
           rightConnectToClawTop.pointA.x = rightConnectToClawTopData.x1;
           rightConnectToClawTop.pointA.y = rightConnectToClawTopData.y1;
           rightConnectToClawTop.pointB.x = rightConnectToClawTopData.x2;
           rightConnectToClawTop.pointB.y = rightConnectToClawTopData.y2;
           rightConnectToClawTop.length = rightConnectToClawTopData.length;
+
         });
 
         this.input.setPollAlways();
@@ -1208,8 +1241,8 @@ var Game = new Phaser.Class({
         //this.controls.update(delta);
         var player = 1;
         var self = this;
-        var fps = delta / 100;
-        var fps2 = delta / 10000;
+        var fps = 1;
+        var fps2 = delta /1000;
         var fps3 = delta / 20;
 
         textTimer.setText([ 'Timer: ' + Math.trunc(timer -= (0.02 * fps3)) ]);
@@ -1221,7 +1254,6 @@ var Game = new Phaser.Class({
         }
 
         customPipeline.setFloat1('time', pipeTime);
-        //time += 0.005;
 
           greyArrow.thrustLeft(0.5);
           blueArrow.thrustLeft(0.5);
@@ -1229,8 +1261,6 @@ var Game = new Phaser.Class({
           greenArrow.thrustLeft(0.5);
           pinkArrow.thrustLeft(0.5);
           pipeBodySprite.thrustLeft(3);
-          //redArrow.thrustLeft(0.01);
-          //Client.sendPosition(greyPlayer.x, greyPlayer.y);
 
           greyJumpTimer = (this.time.now - lastGreyJump) > 550;
           blueJumpTimer = (this.time.now - lastBlueJump) > 550;
@@ -1279,6 +1309,7 @@ var Game = new Phaser.Class({
             //Player 1
             if (pad1.axes.length && computerID === socketID.firstConnection)
             {
+
               var greyAxisH = pad1.axes[0].getValue();
 
               if(greyAxisH > 0) //right
@@ -1305,6 +1336,7 @@ var Game = new Phaser.Class({
 
             if(pad1.buttons.length && computerID === socketID.firstConnection)
             {
+
               var greyButton = pad1.buttons[1].value;
               if (greyButton === 1 && greyJumpTimer && !greyJump)
               {
@@ -1323,6 +1355,7 @@ var Game = new Phaser.Class({
             //Player 2
             if (pad2.axes.length && computerID === socketID.firstConnection)
             {
+
               var blueAxisH = pad2.axes[0].getValue();
 
               if(blueAxisH > 0) //right
@@ -1349,6 +1382,7 @@ var Game = new Phaser.Class({
 
             if(pad2.buttons.length && computerID === socketID.firstConnection)
             {
+
               var blueButton = pad2.buttons[1].value;
               if (blueButton === 1 && blueJumpTimer && !blueJump)
               {
@@ -1367,6 +1401,7 @@ var Game = new Phaser.Class({
             //Player 3
             if (pad3.axes.length && computerID === socketID.firstConnection)
             {
+
               var yellowAxisH = pad3.axes[0].getValue();
 
               if(yellowAxisH > 0) //right
@@ -1393,6 +1428,7 @@ var Game = new Phaser.Class({
 
             if(pad3.buttons.length && computerID === socketID.firstConnection)
             {
+
               var yellowButton = pad3.buttons[1].value;
               if (yellowButton === 1 && yellowJumpTimer && !yellowJump)
               {
@@ -1411,6 +1447,7 @@ var Game = new Phaser.Class({
             //Player 4
             if (pad4.axes.length && computerID === socketID.firstConnection)
             {
+
               var greenAxisH = pad4.axes[0].getValue();
 
               if(greenAxisH > 0) //right
@@ -1437,6 +1474,7 @@ var Game = new Phaser.Class({
 
             if(pad4.buttons.length && computerID === socketID.firstConnection)
             {
+
               var greenButton = pad4.buttons[1].value;
               if (greenButton === 1 && greenJumpTimer && !greenJump)
               {
@@ -1455,6 +1493,7 @@ var Game = new Phaser.Class({
             //Second Computer
             if (pad1.axes.length && computerID === socketID.secondConnection)
             {
+
                 var pinkAxisH = pad1.axes[0].getValue();
 
                 if(pinkAxisH > 0) //right
@@ -1481,6 +1520,7 @@ var Game = new Phaser.Class({
 
             if(pad1.buttons.length && computerID === socketID.secondConnection)
             {
+
                 var pinkButton = pad1.buttons[1].value;
 
                 if (pinkButton === 1 && !pinkJump)
@@ -1496,6 +1536,7 @@ var Game = new Phaser.Class({
 
             if (pad2.axes.length && computerID === socketID.secondConnection)
             {
+
               //var speed = (600 / 2) / 1000;
               // image.x += speed * dt;
 
@@ -1504,7 +1545,7 @@ var Game = new Phaser.Class({
                 {
                   if(pipeBodySprite.x < 950)
                   {
-                    pipeBodySprite.x += pipeBodySprite.x * fps2;
+                    pipeBodySprite.x += 2 * fps2;
                   }
                 }
                 if(clawHorizontalAxes < 0) //left
@@ -1512,29 +1553,30 @@ var Game = new Phaser.Class({
                   //pipeBodySprite.thrustBack(1 * delta);
                   if(pipeBodySprite.x > 50)
                   {
-                    pipeBodySprite.x -= pipeBodySprite.x * fps2;
+                    pipeBodySprite.x -= 2 * fps2;
                   }
                 }
-
-
             }
               //console.log(speed)
 
             if (pad3.axes.length && computerID === socketID.secondConnection)
             {
+
               clawverticalAxes = pad3.axes[1].getValue();
               if(clawverticalAxes > 0) //down
               {
+                //self.socket.emit('down');
                 if(clawToPipeBody.length < 215)
                 {
-                    clawToPipeBody.length = clawToPipeBody.length + (5 * fps2);
+                    clawToPipeBody.length += (5);
                 }
               }
               if(clawverticalAxes < 0) //up
               {
-                if(clawToPipeBody.length > 8)
+                //self.socket.emit('up');
+                if(clawToPipeBody.length > 10)
                 {
-                  clawToPipeBody.length = clawToPipeBody.length - (5 * fps2);
+                  clawToPipeBody.length -= (5);
                 }
               }
 
@@ -1542,54 +1584,45 @@ var Game = new Phaser.Class({
 
             if (pad4.axes.length && computerID === socketID.secondConnection)
             {
+
               clawGripHorizontalAxes = pad4.axes[0].getValue();
-              if(clawGripHorizontalAxes > 0) //right
+              if(clawGripHorizontalAxes > 0) //open
               {
+                //self.socket.emit('open');
                 if(rightArmToLeftArm.length < 200)
                 {
-                  rightArmToLeftArm.length = rightArmToLeftArm.length + (7 * fps2);
+                  rightArmToLeftArm.length += (7 * fps2);
                 }
                 if(leftConnectToRightConnect.length < 175)
                 {
-                  leftConnectToRightConnect.length = leftConnectToRightConnect.length+ (2 * fps2);
+                  leftConnectToRightConnect.length += (2 * fps2);
                 }
                 if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
                 {
-                  leftConnectToClawTop.length = leftConnectToClawTop.length - (2 * fps2);
-                  rightConnectToClawTop.length = rightConnectToClawTop.length - (2 * fps2);
+                  leftConnectToClawTop.length -= (2 * fps2);
+                  rightConnectToClawTop.length -= (2 * fps2);
                 }
               }
-              if(clawGripHorizontalAxes < 0) //left
+              if(clawGripHorizontalAxes < 0) //close
               {
+                //self.socket.emit('close');
                 if(rightArmToLeftArm.length > 1)
                 {
                   rightArmToLeftArm.length = rightArmToLeftArm.length - (5 * fps2);
                 }
                 if(leftConnectToRightConnect.length > 125)
                 {
-                  leftConnectToRightConnect.length = leftConnectToRightConnect.length - (2 * fps2);
+                  leftConnectToRightConnect.length -= (2 * fps2);
                 }
                 if(leftConnectToClawTop.length < 220 && rightConnectToClawTop.length < 220)
                 {
-                  leftConnectToClawTop.length = leftConnectToClawTop.length + (2 * fps2);
-                  rightConnectToClawTop.length = rightConnectToClawTop.length + (2 * fps2);
+                  leftConnectToClawTop.length += (2 * fps2);
+                  rightConnectToClawTop.length += (2 * fps2);
                 }
               }
             }
 
-            //Test Player
-
         });
-
-          /*if(!redLeft)
-          {
-            redTest.flipX = true;
-          }
-
-          if(!redRight)
-          {
-            redTest.flipX = false;
-          }*/
 
           if(!greyLeft)
           {
@@ -1641,26 +1674,6 @@ var Game = new Phaser.Class({
             pinkPlayer.flipX = false;
           }
 
-
-          if(redTest)
-          {
-            var redX = redTest.x;
-            var redY = redTest.y;
-            if (redTest.oldPosition && (redX !== redTest.oldPosition.x
-              || redY !== redTest.oldPosition.y))
-            {
-              this.socket.emit('redMovement', {
-                x: redTest.x,
-                y: redTest.y});
-            }
-
-            // save old position data
-            redTest.oldPosition = {
-              x: redTest.x,
-              y: redTest.y
-            };
-          }
-
           if(greyPlayer)
           {
             var greyX = greyPlayer.x;
@@ -1699,6 +1712,38 @@ var Game = new Phaser.Class({
               x: greyArrow.x,
               y: greyArrow.y,
               angle: greyArrow.angle
+            };
+          }
+          if(greyArrowToGreyPlayer)
+          {
+            var greyArrowToGreyPlayerX1 = greyArrowToGreyPlayer.pointA.x;
+            var greyArrowToGreyPlayerY1 = greyArrowToGreyPlayer.pointA.y;
+            var greyArrowToGreyPlayerX2 = greyArrowToGreyPlayer.pointB.x;
+            var greyArrowToGreyPlayerY2 = greyArrowToGreyPlayer.pointB.y;
+            var greyArrowToGreyPlayerLength = greyArrowToGreyPlayer.length;
+
+            if (greyArrowToGreyPlayer.oldPosition &&
+              (greyArrowToGreyPlayerX1 !== greyArrowToGreyPlayer.oldPosition.x1
+              || greyArrowToGreyPlayerY1 !== greyArrowToGreyPlayer.oldPosition.y1
+              || greyArrowToGreyPlayerX2 !== greyArrowToGreyPlayer.oldPosition.x2
+              || greyArrowToGreyPlayerY2 !== greyArrowToGreyPlayer.oldPosition.y2
+              || greyArrowToGreyPlayerLength !== greyArrowToGreyPlayer.oldPosition.length))
+            {
+              this.socket.emit('greyConstraintMovement', {
+                x1: greyArrowToGreyPlayer.pointA.x,
+                y1: greyArrowToGreyPlayer.pointA.y,
+                x2: greyArrowToGreyPlayer.pointB.x,
+                y2: greyArrowToGreyPlayer.pointB.y,
+                length: greyArrowToGreyPlayer.length});
+            }
+
+            // save old position data
+            greyArrowToGreyPlayer.oldPosition = {
+              x1: greyArrowToGreyPlayer.pointA.x,
+              y1: greyArrowToGreyPlayer.pointA.y,
+              x2: greyArrowToGreyPlayer.pointB.x,
+              y2: greyArrowToGreyPlayer.pointB.y,
+              length: greyArrowToGreyPlayer.length
             };
           }
 
@@ -1740,6 +1785,38 @@ var Game = new Phaser.Class({
               x: blueArrow.x,
               y: blueArrow.y,
               angle: blueArrow.angle
+            };
+          }
+          if(blueArrowToBluePlayer)
+          {
+            var blueArrowToBluePlayerX1 = blueArrowToBluePlayer.pointA.x;
+            var blueArrowToBluePlayerY1 = blueArrowToBluePlayer.pointA.y;
+            var blueArrowToBluePlayerX2 = blueArrowToBluePlayer.pointB.x;
+            var blueArrowToBluePlayerY2 = blueArrowToBluePlayer.pointB.y;
+            var blueArrowToBluePlayerLength = blueArrowToBluePlayer.length;
+
+            if (blueArrowToBluePlayer.oldPosition &&
+              (blueArrowToBluePlayerX1 !== blueArrowToBluePlayer.oldPosition.x1
+              || blueArrowToBluePlayerY1 !== blueArrowToBluePlayer.oldPosition.y1
+              || blueArrowToBluePlayerX2 !== blueArrowToBluePlayer.oldPosition.x2
+              || blueArrowToBluePlayerY2 !== blueArrowToBluePlayer.oldPosition.y2
+              || blueArrowToBluePlayerLength !== blueArrowToBluePlayer.oldPosition.length))
+            {
+              this.socket.emit('blueConstraintMovement', {
+                x1: blueArrowToBluePlayer.pointA.x,
+                y1: blueArrowToBluePlayer.pointA.y,
+                x2: blueArrowToBluePlayer.pointB.x,
+                y2: blueArrowToBluePlayer.pointB.y,
+                length: blueArrowToBluePlayer.length});
+            }
+
+            // save old position data
+            blueArrowToBluePlayer.oldPosition = {
+              x1: blueArrowToBluePlayer.pointA.x,
+              y1: blueArrowToBluePlayer.pointA.y,
+              x2: blueArrowToBluePlayer.pointB.x,
+              y2: blueArrowToBluePlayer.pointB.y,
+              length: blueArrowToBluePlayer.length
             };
           }
 
@@ -1784,6 +1861,38 @@ var Game = new Phaser.Class({
               angle: yellowArrow.angle
             };
           }
+          if(yellowArrowToYellowPlayer)
+          {
+            var yellowArrowToYellowPlayerX1 = yellowArrowToYellowPlayer.pointA.x;
+            var yellowArrowToYellowPlayerY1 = yellowArrowToYellowPlayer.pointA.y;
+            var yellowArrowToYellowPlayerX2 = yellowArrowToYellowPlayer.pointB.x;
+            var yellowArrowToYellowPlayerY2 = yellowArrowToYellowPlayer.pointB.y;
+            var yellowArrowToYellowPlayerLength = yellowArrowToYellowPlayer.length;
+
+            if (yellowArrowToYellowPlayer.oldPosition &&
+              (yellowArrowToYellowPlayerX1 !== yellowArrowToYellowPlayer.oldPosition.x1
+              || yellowArrowToYellowPlayerY1 !== yellowArrowToYellowPlayer.oldPosition.y1
+              || yellowArrowToYellowPlayerX2 !== yellowArrowToYellowPlayer.oldPosition.x2
+              || yellowArrowToYellowPlayerY2 !== yellowArrowToYellowPlayer.oldPosition.y2
+              || yellowArrowToYellowPlayerLength !== yellowArrowToYellowPlayer.oldPosition.length))
+            {
+              this.socket.emit('yellowConstraintMovement', {
+                x1: yellowArrowToYellowPlayer.pointA.x,
+                y1: yellowArrowToYellowPlayer.pointA.y,
+                x2: yellowArrowToYellowPlayer.pointB.x,
+                y2: yellowArrowToYellowPlayer.pointB.y,
+                length: yellowArrowToYellowPlayer.length});
+            }
+
+            // save old position data
+            yellowArrowToYellowPlayer.oldPosition = {
+              x1: yellowArrowToYellowPlayer.pointA.x,
+              y1: yellowArrowToYellowPlayer.pointA.y,
+              x2: yellowArrowToYellowPlayer.pointB.x,
+              y2: yellowArrowToYellowPlayer.pointB.y,
+              length: yellowArrowToYellowPlayer.length
+            };
+          }
 
           if(greenPlayer)
           {
@@ -1826,6 +1935,38 @@ var Game = new Phaser.Class({
               angle: greenArrow.angle
             };
           }
+          if(greenArrowToGreenPlayer)
+          {
+            var greenArrowToGreenPlayerX1 = greenArrowToGreenPlayer.pointA.x;
+            var greenArrowToGreenPlayerY1 = greenArrowToGreenPlayer.pointA.y;
+            var greenArrowToGreenPlayerX2 = greenArrowToGreenPlayer.pointB.x;
+            var greenArrowToGreenPlayerY2 = greenArrowToGreenPlayer.pointB.y;
+            var greenArrowToGreenPlayerLength = greenArrowToGreenPlayer.length;
+
+            if (greenArrowToGreenPlayer.oldPosition &&
+              (greenArrowToGreenPlayerX1 !== greenArrowToGreenPlayer.oldPosition.x1
+              || greenArrowToGreenPlayerY1 !== greenArrowToGreenPlayer.oldPosition.y1
+              || greenArrowToGreenPlayerX2 !== greenArrowToGreenPlayer.oldPosition.x2
+              || greenArrowToGreenPlayerY2 !== greenArrowToGreenPlayer.oldPosition.y2
+              || greenArrowToGreenPlayerLength !== greenArrowToGreenPlayer.oldPosition.length))
+            {
+              this.socket.emit('greenConstraintMovement', {
+                x1: greenArrowToGreenPlayer.pointA.x,
+                y1: greenArrowToGreenPlayer.pointA.y,
+                x2: greenArrowToGreenPlayer.pointB.x,
+                y2: greenArrowToGreenPlayer.pointB.y,
+                length: greenArrowToGreenPlayer.length});
+            }
+
+            // save old position data
+            greenArrowToGreenPlayer.oldPosition = {
+              x1: greenArrowToGreenPlayer.pointA.x,
+              y1: greenArrowToGreenPlayer.pointA.y,
+              x2: greenArrowToGreenPlayer.pointB.x,
+              y2: greenArrowToGreenPlayer.pointB.y,
+              length: greenArrowToGreenPlayer.length
+            };
+          }
 
           if(pinkPlayer)
           {
@@ -1866,6 +2007,38 @@ var Game = new Phaser.Class({
               x: pinkArrow.x,
               y: pinkArrow.y,
               angle: pinkArrow.angle
+            };
+          }
+          if(pinkArrowToPinkPlayer)
+          {
+            var pinkArrowToPinkPlayerX1 = pinkArrowToPinkPlayer.pointA.x;
+            var pinkArrowToPinkPlayerY1 = pinkArrowToPinkPlayer.pointA.y;
+            var pinkArrowToPinkPlayerX2 = pinkArrowToPinkPlayer.pointB.x;
+            var pinkArrowToPinkPlayerY2 = pinkArrowToPinkPlayer.pointB.y;
+            var pinkArrowToPinkPlayerLength = pinkArrowToPinkPlayer.length;
+
+            if (pinkArrowToPinkPlayer.oldPosition &&
+              (pinkArrowToPinkPlayerX1 !== pinkArrowToPinkPlayer.oldPosition.x1
+              || pinkArrowToPinkPlayerY1 !== pinkArrowToPinkPlayer.oldPosition.y1
+              || pinkArrowToPinkPlayerX2 !== pinkArrowToPinkPlayer.oldPosition.x2
+              || pinkArrowToPinkPlayerY2 !== pinkArrowToPinkPlayer.oldPosition.y2
+              || pinkArrowToPinkPlayerLength !== pinkArrowToPinkPlayer.oldPosition.length))
+            {
+              this.socket.emit('pinkConstraintMovement', {
+                x1: pinkArrowToPinkPlayer.pointA.x,
+                y1: pinkArrowToPinkPlayer.pointA.y,
+                x2: pinkArrowToPinkPlayer.pointB.x,
+                y2: pinkArrowToPinkPlayer.pointB.y,
+                length: pinkArrowToPinkPlayer.length});
+            }
+
+            // save old position data
+            pinkArrowToPinkPlayer.oldPosition = {
+              x1: pinkArrowToPinkPlayer.pointA.x,
+              y1: pinkArrowToPinkPlayer.pointA.y,
+              x2: pinkArrowToPinkPlayer.pointB.x,
+              y2: pinkArrowToPinkPlayer.pointB.y,
+              length: pinkArrowToPinkPlayer.length
             };
           }
 
@@ -2001,7 +2174,7 @@ var Game = new Phaser.Class({
               angle: armRightSprite.angle
             };
           }
-
+          var pipeBodySpriteTest = pipeBodySprite;
           if(clawToPipeBody)
           {
             var clawToPipeBodyX1 = clawToPipeBody.pointA.x;
@@ -2015,14 +2188,20 @@ var Game = new Phaser.Class({
               || clawToPipeBodyY1 !== clawToPipeBody.oldPosition.y1
               || clawToPipeBodyX2 !== clawToPipeBody.oldPosition.x2
               || clawToPipeBodyY2 !== clawToPipeBody.oldPosition.y2
-              || clawToPipeBodyLength !== clawToPipeBody.oldPosition.length))
+              || clawToPipeBodyLength !== clawToPipeBody.oldPosition.length
+            ))
             {
-              this.socket.emit('clawToPipeBodyMovement', {
+              console.log("is this the real life: " + pipeBodySpriteTest);
+              this.socket.emit('clawToPipeBodyMovement',
+              pipeBodySpriteTest,
+              clawBodySprite,
+               {
                 x1: clawToPipeBody.pointA.x,
                 y1: clawToPipeBody.pointA.y,
                 x2: clawToPipeBody.pointB.x,
                 y2: clawToPipeBody.pointB.y,
-                length: clawToPipeBody.length});
+                length: clawToPipeBody.length
+              });
             }
 
             // save old position data
@@ -2048,14 +2227,19 @@ var Game = new Phaser.Class({
               || leftConnectToClawY1 !== leftConnectToClaw.oldPosition.y1
               || leftConnectToClawX2 !== leftConnectToClaw.oldPosition.x2
               || leftConnectToClawY2 !== leftConnectToClaw.oldPosition.y2
-              || leftConnectToClawLength !== leftConnectToClaw.oldPosition.length))
+              || leftConnectToClawLength !== leftConnectToClaw.oldPosition.length
+          ))
             {
-              this.socket.emit('leftConnectToClawMovement', {
+              this.socket.emit('leftConnectToClawMovement',
+              armConnectLeftSprite,
+              clawBodySprite,
+              {
                 x1: leftConnectToClaw.pointA.x,
                 y1: leftConnectToClaw.pointA.y,
                 x2: leftConnectToClaw.pointB.x,
                 y2: leftConnectToClaw.pointB.y,
-                length: leftConnectToClaw.length});
+                length: leftConnectToClaw.length
+              });
             }
 
             // save old position data
@@ -2083,12 +2267,17 @@ var Game = new Phaser.Class({
               || rightConnectToClawY2 !== rightConnectToClaw.oldPosition.y2
               || rightConnectToClawLength !== rightConnectToClaw.oldPosition.length))
             {
-              this.socket.emit('rightConnectToClawMovement', {
+              this.socket.emit('rightConnectToClawMovement',
+              armConnectRightSprite,
+              clawBodySprite,
+              {
                 x1: rightConnectToClaw.pointA.x,
                 y1: rightConnectToClaw.pointA.y,
                 x2: rightConnectToClaw.pointB.x,
                 y2: rightConnectToClaw.pointB.y,
-                length: rightConnectToClaw.length});
+                length: rightConnectToClaw.length
+              });
+
             }
 
             // save old position data
@@ -2116,12 +2305,16 @@ var Game = new Phaser.Class({
               || leftArmToLeftConnectY2 !== leftArmToLeftConnect.oldPosition.y2
               || leftArmToLeftConnectLength !== leftArmToLeftConnect.oldPosition.length))
             {
-              this.socket.emit('leftArmToLeftConnectMovement', {
+              this.socket.emit('leftArmToLeftConnectMovement',
+              armLeftSprite,
+              armConnectLeftSprite,
+              {
                 x1: leftArmToLeftConnect.pointA.x,
                 y1: leftArmToLeftConnect.pointA.y,
                 x2: leftArmToLeftConnect.pointB.x,
                 y2: leftArmToLeftConnect.pointB.y,
-                length: leftArmToLeftConnect.length});
+                length: leftArmToLeftConnect.length
+              });
             }
 
             // save old position data
@@ -2147,14 +2340,19 @@ var Game = new Phaser.Class({
               ||rightArmToRightConnectY1 !== rightArmToRightConnect.oldPosition.y1
               || rightArmToRightConnectX2 !== rightArmToRightConnect.oldPosition.x2
               || rightArmToRightConnectY2 !== rightArmToRightConnect.oldPosition.y2
-              || rightArmToRightConnectLength !== rightArmToRightConnect.oldPosition.length))
+              || rightArmToRightConnectLength !== rightArmToRightConnect.oldPosition.length
+            ))
             {
-              this.socket.emit('rightArmToRightConnectMovement', {
+              this.socket.emit('rightArmToRightConnectMovement',
+              armRightSprite,
+              armConnectRightSprite,
+              {
                 x1: rightArmToRightConnect.pointA.x,
                 y1: rightArmToRightConnect.pointA.y,
                 x2: rightArmToRightConnect.pointB.x,
                 y2: rightArmToRightConnect.pointB.y,
-                length: rightArmToRightConnect.length});
+                length: rightArmToRightConnect.length
+              });
             }
 
             // save old position data
@@ -2180,14 +2378,19 @@ var Game = new Phaser.Class({
               || rightArmToLeftArmY1 !== rightArmToLeftArm.oldPosition.y1
               || rightArmToLeftArmX2 !== rightArmToLeftArm.oldPosition.x2
               || rightArmToLeftArmY2 !== rightArmToLeftArm.oldPosition.y2
-              || rightArmToLeftArmLength !== rightArmToLeftArm.oldPosition.length))
+              || rightArmToLeftArmLength !== rightArmToLeftArm.oldPosition.length
+            ))
             {
-              this.socket.emit('rightArmToLeftArmMovement', {
+              this.socket.emit('rightArmToLeftArmMovement',
+              armRightSprite,
+              armLeftSprite,
+              {
                 x1: rightArmToLeftArm.pointA.x,
                 y1: rightArmToLeftArm.pointA.y,
                 x2: rightArmToLeftArm.pointB.x,
                 y2: rightArmToLeftArm.pointB.y,
-                length: rightArmToLeftArm.length});
+                length: rightArmToLeftArm.length
+            });
             }
 
             // save old position data
@@ -2213,14 +2416,19 @@ var Game = new Phaser.Class({
               || leftConnectToRightConnectY1 !== leftConnectToRightConnect.oldPosition.y1
               || leftConnectToRightConnectX2 !== leftConnectToRightConnect.oldPosition.x2
               || leftConnectToRightConnectY2 !== leftConnectToRightConnect.oldPosition.y2
-              || leftConnectToRightConnectLength !== leftConnectToRightConnect.oldPosition.length))
+              || leftConnectToRightConnectLength !== leftConnectToRightConnect.oldPosition.length
+            ))
             {
-              this.socket.emit('leftConnectToRightConnectMovement', {
+              this.socket.emit('leftConnectToRightConnectMovement',
+              armConnectLeftSprite,
+              armConnectRightSprite,
+              {
                 x1: leftConnectToRightConnect.pointA.x,
                 y1: leftConnectToRightConnect.pointA.y,
                 x2: leftConnectToRightConnect.pointB.x,
                 y2: leftConnectToRightConnect.pointB.y,
-                length: leftConnectToRightConnect.length});
+                length: leftConnectToRightConnect.length
+            });
             }
 
             // save old position data
@@ -2246,14 +2454,19 @@ var Game = new Phaser.Class({
               || leftConnectToClawTopY1 !== leftConnectToClawTop.oldPosition.y1
               || leftConnectToClawTopX2 !== leftConnectToClawTop.oldPosition.x2
               || leftConnectToClawTopY2 !== leftConnectToClawTop.oldPosition.y2
-              || leftConnectToClawTopLength !== leftConnectToClawTop.oldPosition.length))
+              || leftConnectToClawTopLength !== leftConnectToClawTop.oldPosition.length
+            ))
             {
-              this.socket.emit('leftConnectToClawTopMovement', {
+              this.socket.emit('leftConnectToClawTopMovement',
+              armConnectLeftSprite,
+              clawBodySprite,
+              {
                 x1: leftConnectToClawTop.pointA.x,
                 y1: leftConnectToClawTop.pointA.y,
                 x2: leftConnectToClawTop.pointB.x,
                 y2: leftConnectToClawTop.pointB.y,
-                length: leftConnectToClawTop.length});
+                length: leftConnectToClawTop.length
+            });
             }
 
             // save old position data
@@ -2279,14 +2492,19 @@ var Game = new Phaser.Class({
               || rightConnectToClawTopY1 !== rightConnectToClawTop.oldPosition.y1
               || rightConnectToClawTopX2 !== rightConnectToClawTop.oldPosition.x2
               || rightConnectToClawTopY2 !== rightConnectToClawTop.oldPosition.y2
-              || rightConnectToClawTopLength !== rightConnectToClawTop.oldPosition.length))
+              || rightConnectToClawTopLength !== rightConnectToClawTop.oldPosition.length
+            ))
             {
-              this.socket.emit('rightConnectToClawTopMovement', {
+              this.socket.emit('rightConnectToClawTopMovement',
+              armConnectRightSprite,
+              clawBodySprite,
+              {
                 x1: rightConnectToClawTop.pointA.x,
                 y1: rightConnectToClawTop.pointA.y,
                 x2: rightConnectToClawTop.pointB.x,
                 y2: rightConnectToClawTop.pointB.y,
-                length: rightConnectToClawTop.length});
+                length: rightConnectToClawTop.length
+            });
             }
 
             // save old position data
@@ -2298,9 +2516,7 @@ var Game = new Phaser.Class({
               length: rightConnectToClawTop.length
             };
           }
-
     }
-
 });
 
 var config = {
