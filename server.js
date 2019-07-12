@@ -34,15 +34,15 @@ var clawArmLeftData = {x: 0, y:0, angle: 0};
 var clawArmRightData = {x: 0, y:0, angle: 0};
 var clawGrabberLeftData = {x: 0, y:0, angle: 0};
 var clawGrabberRightData = {x: 0, y:0, angle: 0};
-var clawToPipeBodyData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, bodyA: 0 , bodyB: 0 };
-var leftConnectToClawData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, bodyA: 0 , bodyB: 0};
-var rightConnectToClawData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, bodyA: 0 , bodyB: 0};
-var leftArmToLeftConnectData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, odyA: 0 , bodyB: 0};
-var rightArmToRightConnectData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, bodyA: 0 , bodyB: 0};
-var rightArmToLeftArmData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, bodyA: 0 , bodyB: 0};
-var leftConnectToRightConnectData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, bodyA: 0 , bodyB: 0};
-var leftConnectToClawTopData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, bodyA: 0 , bodyB: 0};
-var rightConnectToClawTopData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, bodyA: 0 , bodyB: 0};
+var clawToPipeBodyData = {x1: 0, y1:0, x2: 0, y2:0, bodyX1: 0, bodyY1: 0, bodyX2: 0, bodyY2: 0 ,length: 0};
+var leftConnectToClawData = {x1: 0, y1:0, x2: 0, y2:0, bodyX1: 0, bodyY1: 0, bodyX2: 0, bodyY2: 0 ,length: 0};
+var rightConnectToClawData = {x1: 0, y1:0, x2: 0, y2:0, bodyX1: 0, bodyY1: 0, bodyX2: 0, bodyY2: 0 ,length: 0};
+var leftArmToLeftConnectData = {x1: 0, y1:0, x2: 0, y2:0, bodyX1: 0, bodyY1: 0, bodyX2: 0, bodyY2: 0 ,length: 0};
+var rightArmToRightConnectData = {x1: 0, y1:0, x2: 0, y2:0, bodyX1: 0, bodyY1: 0, bodyX2: 0, bodyY2: 0 ,length: 0};
+var rightArmToLeftArmData = {x1: 0, y1:0, x2: 0, y2:0, length: 0, bodyX1: 0, bodyY1: 0, bodyX2: 0, bodyY2: 0 ,length: 0};
+var leftConnectToRightConnectData = {x1: 0, y1:0, x2: 0, y2:0, bodyX1: 0, bodyY1: 0, bodyX2: 0, bodyY2: 0 ,length: 0};
+var leftConnectToClawTopData = {x1: 0, y1:0, x2: 0, y2:0, bodyX1: 0, bodyY1: 0, bodyX2: 0, bodyY2: 0 ,length: 0};
+var rightConnectToClawTopData = {x1: 0, y1:0, x2: 0, y2:0, bodyX1: 0, bodyY1: 0, bodyX2: 0, bodyY2: 0 ,length: 0};
 var playerOneEntered = false;
 var playerTwoEntered = false;
 var playerThreeEntered = false;
@@ -249,116 +249,134 @@ io.on('connection', function (socket)
      // emit a message to all players about the player that moved
      socket.broadcast.emit('clawGrabberRightMoved', clawGrabberRightData);
    });
-   socket.on('clawToPipeBodyMovement', function(sprite1, sprite2, movementData)
+   socket.on('clawToPipeBodyMovement', function(movementData)
    {
-     console.log("sprite1.body: " + sprite1.bodyA.x);
-     clawToPipeBodyData.bodyA = sprite1.body;
-     clawToPipeBodyData.bodyB = sprite2.body;
      clawToPipeBodyData.x1 = movementData.x1;
      clawToPipeBodyData.y1 = movementData.y1;
      clawToPipeBodyData.x2 = movementData.x2;
      clawToPipeBodyData.y2 = movementData.y2;
+     clawToPipeBodyData.bodyX1 = movementData.bodyX1;
+     clawToPipeBodyData.bodyY1 = movementData.bodyY1;
+     clawToPipeBodyData.bodyX2 = movementData.bodyX2;
+     clawToPipeBodyData.bodyY2 = movementData.bodyY2;
      clawToPipeBodyData.length = movementData.length;
-
      socket.broadcast.emit('clawToPipeBodyMoved', clawToPipeBodyData);
    });
-   socket.on('leftConnectToClawMovement', function (sprite1, sprite2, movementData)
+   socket.on('leftConnectToClawMovement', function (movementData)
    {
-     leftConnectToClawData.bodyA = sprite1.body;
-     leftConnectToClawData.bodyB = sprite2.body
      leftConnectToClawData.x1 = movementData.x1;
      leftConnectToClawData.y1 = movementData.y1;
      leftConnectToClawData.x2 = movementData.x2;
      leftConnectToClawData.y2 = movementData.y2;
+     leftConnectToClawData.bodyX1 = movementData.bodyX1;
+     leftConnectToClawData.bodyY1 = movementData.bodyY1;
+     leftConnectToClawData.bodyX2 = movementData.bodyX2;
+     leftConnectToClawData.bodyY2 = movementData.bodyY2;
      leftConnectToClawData.length = movementData.length;
      // emit a message to all players about the player that moved
      socket.broadcast.emit('leftConnectToClawMoved', leftConnectToClawData);
    });
-   socket.on('rightConnectToClawMovement', function (sprite1, sprite2, movementData)
+   socket.on('rightConnectToClawMovement', function (movementData)
    {
-     rightConnectToClawData.bodyA = sprite1.body;
-     rightConnectToClawData.bodyB = sprite2.body;
      rightConnectToClawData.x1 = movementData.x1;
      rightConnectToClawData.y1 = movementData.y1;
      rightConnectToClawData.x2 = movementData.x2;
      rightConnectToClawData.y2 = movementData.y2;
+     rightConnectToClawData.bodyX1 = movementData.bodyX1;
+     rightConnectToClawData.bodyY1 = movementData.bodyY1;
+     rightConnectToClawData.bodyX2 = movementData.bodyX2;
+     rightConnectToClawData.bodyY2 = movementData.bodyY2;
      rightConnectToClawData.length = movementData.length;
 
      // emit a message to all players about the player that moved
      socket.broadcast.emit('rightConnectToClawMoved', rightConnectToClawData);
    });
 
-   socket.on('leftArmToLeftConnectMovement', function(sprite1, sprite2, movementData)
+   socket.on('leftArmToLeftConnectMovement', function(movementData)
    {
-     leftArmToLeftConnectData.bodyA = sprite1.body;
-     leftArmToLeftConnectData.bodyB = sprite2.body;
+
      leftArmToLeftConnectData.x1 = movementData.x1;
      leftArmToLeftConnectData.y1 = movementData.y1;
      leftArmToLeftConnectData.x2 = movementData.x2;
      leftArmToLeftConnectData.y2 = movementData.y2;
+     leftArmToLeftConnectData.bodyX1 = movementData.bodyX1;
+     leftArmToLeftConnectData.bodyY1 = movementData.bodyY1;
+     leftArmToLeftConnectData.bodyX2 = movementData.bodyX2;
+     leftArmToLeftConnectData.bodyY2 = movementData.bodyY2;
      leftArmToLeftConnectData.length = movementData.length;
 
      socket.broadcast.emit('leftArmToLeftConnectMoved', leftArmToLeftConnectData);
    });
-   socket.on('rightArmToRightConnectMovement', function (sprite1, sprite2, movementData)
+   socket.on('rightArmToRightConnectMovement', function (movementData)
    {
-     rightArmToRightConnectData.bodyA = sprite1.body;
-     rightArmToRightConnectData.bodyB = sprite2.body;
      rightArmToRightConnectData.x1 = movementData.x1;
      rightArmToRightConnectData.y1 = movementData.y1;
      rightArmToRightConnectData.x2 = movementData.x2;
      rightArmToRightConnectData.y2 = movementData.y2;
+     rightArmToRightConnectData.bodyX1 = movementData.bodyX1;
+     rightArmToRightConnectData.bodyY1 = movementData.bodyY1;
+     rightArmToRightConnectData.bodyX2 = movementData.bodyX2;
+     rightArmToRightConnectData.bodyY2 = movementData.bodyY2;
      rightArmToRightConnectData.length = movementData.length;
 
      // emit a message to all players about the player that moved
      socket.broadcast.emit('rightArmToRightConnectMoved', rightArmToRightConnectData);
    });
-   socket.on('rightArmToLeftArmMovement', function (sprite1, sprite2, movementData)
+   socket.on('rightArmToLeftArmMovement', function (movementData)
    {
-     rightArmToLeftArmData.bodyA = sprite1.body;
-     rightArmToLeftArmData.bodyB = sprite2.body;
      rightArmToLeftArmData.x1 = movementData.x1;
      rightArmToLeftArmData.y1 = movementData.y1;
      rightArmToLeftArmData.x2 = movementData.x2;
      rightArmToLeftArmData.y2 = movementData.y2;
+     rightArmToLeftArmData.bodyX1 = movementData.bodyX1;
+     rightArmToLeftArmData.bodyY1 = movementData.bodyY1;
+     rightArmToLeftArmData.bodyX2 = movementData.bodyX2;
+     rightArmToLeftArmData.bodyY2 = movementData.bodyY2;
      rightArmToLeftArmData.length = movementData.length;
 
      // emit a message to all players about the player that moved
      socket.broadcast.emit('rightArmToLeftArmMoved', rightArmToLeftArmData);
    });
-   socket.on('leftConnectToRightConnectMovement', function(sprite1, sprite2, movementData)
+   socket.on('leftConnectToRightConnectMovement', function(movementData)
    {
-     leftConnectToRightConnectData.bodyA = sprite1.body;
-     leftConnectToRightConnectData.bodyB = sprite2.body;
      leftConnectToRightConnectData.x1 = movementData.x1;
      leftConnectToRightConnectData.y1 = movementData.y1;
      leftConnectToRightConnectData.x2 = movementData.x2;
      leftConnectToRightConnectData.y2 = movementData.y2;
+     leftConnectToRightConnectData.bodyX1 = movementData.bodyX1;
+     leftConnectToRightConnectData.bodyY1 = movementData.bodyY1;
+     leftConnectToRightConnectData.bodyX2 = movementData.bodyX2;
+     leftConnectToRightConnectData.bodyY2 = movementData.bodyY2;
      leftConnectToRightConnectData.length = movementData.length;
 
      socket.broadcast.emit('leftConnectToRightConnectMoved', leftConnectToRightConnectData);
    });
-   socket.on('leftConnectToClawTopMovement', function (sprite1, sprite2, movementData)
+   socket.on('leftConnectToClawTopMovement', function (movementData)
    {
-     leftConnectToClawTopData.bodyA = sprite1.body;
-     leftConnectToClawTopData.bodyB = sprite2.body;
      leftConnectToClawTopData.x1 = movementData.x1;
      leftConnectToClawTopData.y1 = movementData.y1;
      leftConnectToClawTopData.x2 = movementData.x2;
      leftConnectToClawTopData.y2 = movementData.y2;
+     leftConnectToClawTopData.bodyX1 = movementData.bodyX1;
+     leftConnectToClawTopData.bodyY1 = movementData.bodyY1;
+     leftConnectToClawTopData.bodyX2 = movementData.bodyX2;
+     leftConnectToClawTopData.bodyY2 = movementData.bodyY2;
      leftConnectToClawTopData.length = movementData.length;
 
      // emit a message to all players about the player that moved
      socket.broadcast.emit('leftConnectToClawTopMoved', leftConnectToClawTopData);
    });
-   socket.on('rightConnectToClawTopMovement', function (sprite1, sprite2, movementData)
+   socket.on('rightConnectToClawTopMovement', function (movementData)
    {
-     rightConnectToClawTopData.bodyA = sprite1.body;
-     rightConnectToClawTopData.bodyB = sprite2.body;
+
      rightConnectToClawTopData.x1 = movementData.x1;
      rightConnectToClawTopData.y1 = movementData.y1;
      rightConnectToClawTopData.x2 = movementData.x2;
      rightConnectToClawTopData.y2 = movementData.y2;
+     rightConnectToClawTopData.bodyX1 = movementData.bodyX1;
+     rightConnectToClawTopData.bodyY1 = movementData.bodyY1;
+     rightConnectToClawTopData.bodyX2 = movementData.bodyX2;
+     rightConnectToClawTopData.bodyY2 = movementData.bodyY2;
      rightConnectToClawTopData.length = movementData.length;
 
      // emit a message to all players about the player that moved

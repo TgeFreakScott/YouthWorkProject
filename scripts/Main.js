@@ -739,20 +739,20 @@ var Game = new Phaser.Class({
         backgroundSprite = this.add.image(500,300,'background').setScale(1.15).setAlpha(0.4);
         floorSprite = this.matter.add.image(500,930,'floor',{ shape: 'square'}).setScale(1.1).setAlpha(1).setStatic(true);
 
-        armLeftSprite = this.matter.add.image(300, 400,'armLeftBody', 'armLeftBody',{ shape: shapeArmLeft.armLeft})
-        .setMass(0.01).setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(1000).setMass(2750);
+        armLeftSprite = this.matter.add.image(300, 400,'armLeftBody', 'armLeftBody', { shape: shapeArmLeft.armLeft})
+        .setMass(0.01).setIgnoreGravity(true).setStatic(false).setScale(0.5).setDensity(1000).setMass(2750);
 
-        armRightSprite = this.matter.add.image(500, 400,'armRightBody', 'armRightBody',{ shape: shapeArmRight.armRight})
+        armRightSprite = this.matter.add.image(500, 400,'armRightBody', 'armRightBody', { shape: shapeArmRight.armRight})
         .setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(1000).setMass(2750);
 
-        armConnectRightSprite = this.matter.add.image(800, 500,'armConnectBody', 'armConnectBody',{ shape: shapeArmConnect.armConnect})
+        armConnectRightSprite = this.matter.add.image(450, 350,'armConnectBody', 'armConnectBody',{ shape: shapeArmConnect.armConnect})
         .setIgnoreGravity(false).setStatic(false).setScale(0.5).setDensity(100).setMass(2750);
 
-        armConnectLeftSprite = this.matter.add.image(600, 400,'armConnectBody', 'armConnectBody',{ shape: shapeArmConnect.armConnect})
+        armConnectLeftSprite = this.matter.add.image(350, 350,'armConnectBody', 'armConnectBody', { shape: shapeArmConnect.armConnect})
         .setIgnoreGravity(false).setStatic(false).setScale(0.5).setMass(2750);
 
-        clawBodySprite = this.matter.add.image(400, 210,'clawBody' ,'clawBody', {shape: shapeClaw.clawBody})
-        .setScale(0.5).setMass(11000);//.setFixedRotation();
+        clawBodySprite = this.matter.add.image(400, 210,'clawBody' ,'clawBody',{shape: shapeClaw.clawBody})
+        .setScale(0.5).setMass(11000).setStatic(false);//.setFixedRotation();
 
         pipeSprite = this.matter.add.image(460, 50, 'pipe',{ shape: 'square'})
         .setFixedRotation().setScale(0.6).setMass(50000000).setIgnoreGravity(true).setStatic(true);
@@ -898,100 +898,142 @@ var Game = new Phaser.Class({
         //Constraints connect 2 Bodies to another by a point
         clawToPipeBody = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: pipeBodySprite.body, bodyB: clawBodySprite.body,
-          pointA: {x: 0, y: 35 }, pointB: {x: 0, y: -110 },
+          bodyA: pipeBodySprite.body,
+          bodyB: clawBodySprite.body,
+          pointA: {x: 0, y: 35 },
+          pointB: {x: 0, y: -110 },
           length: 18, stiffness: 1
         });
         this.matter.world.add(clawToPipeBody);
 
         leftConnectToClaw = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: armConnectLeftSprite.body, bodyB: clawBodySprite.body,
-          pointA: {x: 35, y: 0 }, pointB: {x: -30, y: 70 },length: 4, stiffness: 1
+          bodyA: armConnectLeftSprite.body,
+          bodyB: clawBodySprite.body,
+          pointA: {x: 35, y: 0 },
+          pointB: {x: -30, y: 70 },
+          length: 4, stiffness: 1
         });
 
         rightConnectToClaw = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: armConnectRightSprite.body, bodyB: clawBodySprite.body,
-          pointA: {x: -35, y: 0 }, pointB: {x: 30, y: 70 },length: 4, stiffness: 1
+          bodyA: armConnectRightSprite.body,
+          bodyB: clawBodySprite.body,
+          pointA: {x: -35, y: 0 },
+          pointB: {x: 30, y: 70 },
+          length: 4, stiffness: 1
         });
         this.matter.world.add(rightConnectToClaw);
 
         leftArmToLeftConnect = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: armLeftSprite.body, bodyB: armConnectLeftSprite.body,
-          pointA: {x: 15, y: -55 }, pointB: {x: -30, y: 0 }, length: 5, stiffness: 1
+          bodyA: armLeftSprite.body,
+          bodyB: armConnectLeftSprite.body,
+          pointA: {x: 15, y: -55 },
+          pointB: {x: -30, y: 0 },
+          length: 5, stiffness: 1
         });
         this.matter.world.add(leftArmToLeftConnect);
 
         rightArmToRightConnect = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: armRightSprite.body, bodyB: armConnectRightSprite.body,
-          pointA: {x: -15, y: -55 }, pointB: {x: 30, y: 0 }, length: 5, stiffness: 1
+          bodyA: armRightSprite.body,
+          bodyB: armConnectRightSprite.body,
+          pointA: {x: -15, y: -55 },
+          pointB: {x: 30, y: 0 },
+          length: 5, stiffness: 1
         });
         this.matter.world.add(rightArmToRightConnect);
 
         rightArmToLeftArm = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: armRightSprite.body, bodyB: armLeftSprite.body,
-          pointA: {x: -5, y: 55 }, pointB: {x: 0, y: 55 }, length: 150, stiffness: 1
+          bodyA: armRightSprite.body,
+          bodyB: armLeftSprite.body,
+          pointA: {x: -5, y: 55 },
+          pointB: {x: 0, y: 55 },
+          length: 150, stiffness: 1
         });
         this.matter.world.add(rightArmToLeftArm);
 
         leftConnectToRightConnect = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: armConnectLeftSprite.body, bodyB: armConnectRightSprite.body,
-          pointA: {x: -30, y: 0 }, pointB: {x: 30, y: 0 }, length: 170, stiffness: 1
+          bodyA: armConnectLeftSprite.body,
+          bodyB: armConnectRightSprite.body,
+          pointA: {x: -30, y: 0 },
+          pointB: {x: 30, y: 0 },
+          length: 170, stiffness: 1
         });
         this.matter.world.add(leftConnectToRightConnect);
 
         leftConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: armConnectLeftSprite.body, bodyB: clawBodySprite.body,
-          pointA: {x: -30, y: 0 }, pointB: {x: 0, y: -90 }, length: 200, stiffness: 1
+          bodyA: armConnectLeftSprite.body,
+          bodyB: clawBodySprite.body,
+          pointA: {x: -30, y: 0 },
+          pointB: {x: 0, y: -90 },
+          length: 200, stiffness: 1
         });
         this.matter.world.add(leftConnectToClawTop);
+        console.log(leftConnectToClawTop);
 
         rightConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: armConnectRightSprite.body, bodyB: clawBodySprite.body,
-          pointA: {x: 30, y: 0 }, pointB: {x: 0, y: -90 }, length: 200, stiffness: 1
+          bodyA: armConnectRightSprite.body,
+          bodyB: clawBodySprite.body,
+          pointA: {x: 30, y: 0 },
+          pointB: {x: 0, y: -90 },
+          length: 200, stiffness: 1
         });
         this.matter.world.add(rightConnectToClawTop);
 
         //Arrow Constraints
         greyArrowToGreyPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: greyArrow.body, bodyB: greyPlayer.body,
-          pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
+          bodyA: greyArrow.body,
+          bodyB: greyPlayer.body,
+          pointA: {x: 0, y: 0 },
+          pointB: {x: 0, y: 0 },
+          length: 70, stiffness: 1
         });
         this.matter.world.add(greyArrowToGreyPlayer);
 
         blueArrowToBluePlayer = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: blueArrow.body, bodyB: bluePlayer.body,
-          pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
+          bodyA: blueArrow.body,
+          bodyB: bluePlayer.body,
+          pointA: {x: 0, y: 0 },
+          pointB: {x: 0, y: 0 },
+          length: 70, stiffness: 1
         });
         this.matter.world.add(blueArrowToBluePlayer);
 
         yellowArrowToYellowPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: yellowArrow.body, bodyB: yellowPlayer.body,
-          pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
+          bodyA: yellowArrow.body,
+          bodyB: yellowPlayer.body,
+          pointA: {x: 0, y: 0 },
+          pointB: {x: 0, y: 0 },
+          length: 70, stiffness: 1
         });
         this.matter.world.add(yellowArrowToYellowPlayer);
 
         greenArrowToGreenPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: greenArrow.body, bodyB: greenPlayer.body,
-          pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
+          bodyA: greenArrow.body,
+          bodyB: greenPlayer.body,
+          pointA: {x: 0, y: 0 },
+          pointB: {x: 0, y: 0 },
+          length: 70, stiffness: 1
         });
         this.matter.world.add(greenArrowToGreenPlayer);
 
         pinkArrowToPinkPlayer = Phaser.Physics.Matter.Matter.Constraint.create(
         {
-          bodyA: pinkArrow.body, bodyB: pinkPlayer.body,
-          pointA: {x: 0, y: 0 }, pointB: {x: 0, y: 0 }, length: 70, stiffness: 1
+          bodyA: pinkArrow.body,
+          bodyB: pinkPlayer.body,
+          pointA: {x: 0, y: 0 },
+          pointB: {x: 0, y: 0 },
+          length: 70, stiffness: 1
         });
         this.matter.world.add(pinkArrowToPinkPlayer);
 
@@ -1091,6 +1133,7 @@ var Game = new Phaser.Class({
           pinkArrowToPinkPlayer.length = pinkArrowToPinkPlayerData.length;
         });
 
+
         this.socket.on('clawAnchorMoved', function (clawAnchorData)
         {
           pipeBodySprite.setPosition(clawAnchorData.x, clawAnchorData.y);
@@ -1124,111 +1167,126 @@ var Game = new Phaser.Class({
 
         this.socket.on('clawToPipeBodyMoved', function (clawToPipeBodyData)
         {
-          clawToPipeBody.bodyA = clawToPipeBodyData.bodyA;
-          clawToPipeBody.bodyB = clawToPipeBodyData.bodyB;
           clawToPipeBody.pointA.x = clawToPipeBodyData.x1;
           clawToPipeBody.pointA.y = clawToPipeBodyData.y1;
           clawToPipeBody.pointB.x = clawToPipeBodyData.x2;
           clawToPipeBody.pointB.y = clawToPipeBodyData.y2;
+          clawToPipeBody.bodyA.position.x = clawToPipeBodyData.bodyX1;
+          clawToPipeBody.bodyA.position.y = clawToPipeBodyData.bodyY1;
+          clawToPipeBody.bodyB.position.x = clawToPipeBodyData.bodyX2;
+          clawToPipeBody.bodyB.position.y = clawToPipeBodyData.bodyY2;
           clawToPipeBody.length = clawToPipeBodyData.length;
-          console.log(clawToPipeBody.bodyA);
-          console.log(clawToPipeBody.bodyB);
 
         });
 
         this.socket.on('leftConnectToClawMoved', function (leftConnectToClawData)
         {
-          leftConnectToClaw.bodyA = leftConnectToClawData.bodyA;
-          leftConnectToClaw.bodyB = leftConnectToClawData.bodyB;
           leftConnectToClaw.pointA.x = leftConnectToClawData.x1;
           leftConnectToClaw.pointA.y = leftConnectToClawData.y1;
           leftConnectToClaw.pointB.x = leftConnectToClawData.x2;
           leftConnectToClaw.pointB.y = leftConnectToClawData.y2;
+          leftConnectToClaw.bodyA.position.x = leftConnectToClawData.bodyX1;
+          leftConnectToClaw.bodyA.position.y = leftConnectToClawData.bodyY1;
+          leftConnectToClaw.bodyB.position.x = leftConnectToClawData.bodyX2;
+          leftConnectToClaw.bodyB.position.y = leftConnectToClawData.bodyY2;
           leftConnectToClaw.length = leftConnectToClawData.length;
 
         });
 
         this.socket.on('rightConnectToClawMoved', function (rightConnectToClawData)
         {
-          rightConnectToClaw.bodyA = rightConnectToClawData.bodyA;
-          rightConnectToClaw.bodyB = rightConnectToClawData.bodyB;
           rightConnectToClaw.pointA.x = rightConnectToClawData.x1;
           rightConnectToClaw.pointA.y = rightConnectToClawData.y1;
           rightConnectToClaw.pointB.x = rightConnectToClawData.x2;
           rightConnectToClaw.pointB.y = rightConnectToClawData.y2;
+          rightConnectToClaw.bodyA.position.x = rightConnectToClawData.bodyX1;
+          rightConnectToClaw.bodyA.position.y = rightConnectToClawData.bodyY1;
+          rightConnectToClaw.bodyB.position.x = rightConnectToClawData.bodyX2;
+          rightConnectToClaw.bodyB.position.y = rightConnectToClawData.bodyY2;
           rightConnectToClaw.length = rightConnectToClawData.length;
 
         });
 
         this.socket.on('leftArmToLeftConnectMoved', function (leftArmToLeftConnectData)
         {
-          leftArmToLeftConnect.bodyA = leftArmToLeftConnectData.bodyA;
-          leftArmToLeftConnect.bodyB = leftArmToLeftConnectData.bodyB;
           leftArmToLeftConnect.pointA.x = leftArmToLeftConnectData.x1;
           leftArmToLeftConnect.pointA.y = leftArmToLeftConnectData.y1;
           leftArmToLeftConnect.pointB.x = leftArmToLeftConnectData.x2;
           leftArmToLeftConnect.pointB.y = leftArmToLeftConnectData.y2;
+          leftArmToLeftConnect.bodyA.position.x = leftArmToLeftConnectData.bodyX1;
+          leftArmToLeftConnect.bodyA.position.y = leftArmToLeftConnectData.bodyY1;
+          leftArmToLeftConnect.bodyB.position.x = leftArmToLeftConnectData.bodyX2;
+          leftArmToLeftConnect.bodyB.position.y = leftArmToLeftConnectData.bodyY2;
           leftArmToLeftConnect.length = leftArmToLeftConnectData.length;
 
         });
 
         this.socket.on('rightArmToRightConnectMoved', function (rightArmToRightConnectData)
         {
-          rightArmToRightConnect.bodyA = rightArmToRightConnectData.bodyA;
-          rightArmToRightConnect.bodyB = rightArmToRightConnectData.bodyB;
           rightArmToRightConnect.pointA.x = rightArmToRightConnectData.x1;
           rightArmToRightConnect.pointA.y = rightArmToRightConnectData.y1;
           rightArmToRightConnect.pointB.x = rightArmToRightConnectData.x2;
           rightArmToRightConnect.pointB.y = rightArmToRightConnectData.y2;
+          rightArmToRightConnect.bodyA.position.x = rightArmToRightConnectData.bodyX1;
+          rightArmToRightConnect.bodyA.position.y = rightArmToRightConnectData.bodyY1;
+          rightArmToRightConnect.bodyB.position.x = rightArmToRightConnectData.bodyX2;
+          rightArmToRightConnect.bodyB.position.y = rightArmToRightConnectData.bodyY2;
           rightArmToRightConnect.length = rightArmToRightConnectData.length;
 
         });
 
         this.socket.on('rightArmToLeftArmMoved', function (rightArmToLeftArmData)
         {
-          rightArmToLeftArm.bodyA = rightArmToLeftArmData.bodyA;
-          rightArmToLeftArm.bodyB = rightArmToLeftArmData.bodyB;
           rightArmToLeftArm.pointA.x = rightArmToLeftArmData.x1;
           rightArmToLeftArm.pointA.y = rightArmToLeftArmData.y1;
           rightArmToLeftArm.pointB.x = rightArmToLeftArmData.x2;
           rightArmToLeftArm.pointB.y = rightArmToLeftArmData.y2;
+          rightArmToLeftArm.bodyA.position.x = rightArmToLeftArmData.bodyX1;
+          rightArmToLeftArm.bodyA.position.y = rightArmToLeftArmData.bodyY1;
+          rightArmToLeftArm.bodyB.position.x = rightArmToLeftArmData.bodyX2;
+          rightArmToLeftArm.bodyB.position.y = rightArmToLeftArmData.bodyY2;
           rightArmToLeftArm.length = rightArmToLeftArmData.length;
         });
 
         this.socket.on('leftConnectToRightConnectMoved', function (leftConnectToRightConnectData)
         {
-          leftConnectToRightConnect.bodyA = leftConnectToRightConnectData.bodyA;
-          leftConnectToRightConnect.bodyB = leftConnectToRightConnectData.bodyB;
           leftConnectToRightConnect.pointA.x = leftConnectToRightConnectData.x1;
           leftConnectToRightConnect.pointA.y = leftConnectToRightConnectData.y1;
           leftConnectToRightConnect.pointB.x = leftConnectToRightConnectData.x2;
           leftConnectToRightConnect.pointB.y = leftConnectToRightConnectData.y2;
+          leftConnectToRightConnect.bodyA.position.x = leftConnectToRightConnectData.bodyX1;
+          leftConnectToRightConnect.bodyA.position.y = leftConnectToRightConnectData.bodyY1;
+          leftConnectToRightConnect.bodyB.position.x = leftConnectToRightConnectData.bodyX2;
+          leftConnectToRightConnect.bodyB.position.y = leftConnectToRightConnectData.bodyY2;
           leftConnectToRightConnect.length = leftConnectToRightConnectData.length;
 
         });
 
         this.socket.on('leftConnectToClawTopMoved', function (leftConnectToClawTopData)
         {
-          leftConnectToClawTop.bodyA = leftConnectToClawTopData.bodyA;
-          leftConnectToClawTop.bodyB = leftConnectToClawTopData.bodyB;
           leftConnectToClawTop.pointA.x = leftConnectToClawTopData.x1;
           leftConnectToClawTop.pointA.y = leftConnectToClawTopData.y1;
           leftConnectToClawTop.pointB.x = leftConnectToClawTopData.x2;
           leftConnectToClawTop.pointB.y = leftConnectToClawTopData.y2;
+          leftConnectToClawTop.bodyA.position.x = leftConnectToClawTopData.bodyX1;
+          leftConnectToClawTop.bodyA.position.y = leftConnectToClawTopData.bodyY1;
+          leftConnectToClawTop.bodyB.position.x = leftConnectToClawTopData.bodyX2;
+          leftConnectToClawTop.bodyB.position.y = leftConnectToClawTopData.bodyY2;
           leftConnectToClawTop.length = leftConnectToClawTopData.length;
 
         });
 
         this.socket.on('rightConnectToClawTopMoved', function (rightConnectToClawTopData)
         {
-          rightConnectToClawTop.bodyA = rightConnectToClawTopData.bodyA;
-          rightConnectToClawTop.bodyB = rightConnectToClawTopData.bodyB;
           rightConnectToClawTop.pointA.x = rightConnectToClawTopData.x1;
           rightConnectToClawTop.pointA.y = rightConnectToClawTopData.y1;
           rightConnectToClawTop.pointB.x = rightConnectToClawTopData.x2;
           rightConnectToClawTop.pointB.y = rightConnectToClawTopData.y2;
+          rightConnectToClawTop.bodyA.position.x = rightConnectToClawTopData.bodyX1;
+          rightConnectToClawTop.bodyA.position.y = rightConnectToClawTopData.bodyY1;
+          rightConnectToClawTop.bodyB.position.x = rightConnectToClawTopData.bodyX2;
+          rightConnectToClawTop.bodyB.position.y = rightConnectToClawTopData.bodyY2;
           rightConnectToClawTop.length = rightConnectToClawTopData.length;
-
         });
 
         this.input.setPollAlways();
@@ -1241,8 +1299,8 @@ var Game = new Phaser.Class({
         //this.controls.update(delta);
         var player = 1;
         var self = this;
-        var fps = 1;
-        var fps2 = delta /1000;
+        var fps = delta / 10;
+        var fps2 = delta / 1000;
         var fps3 = delta / 20;
 
         textTimer.setText([ 'Timer: ' + Math.trunc(timer -= (0.02 * fps3)) ]);
@@ -2065,6 +2123,7 @@ var Game = new Phaser.Class({
           {
             var clawBodyX = clawBodySprite.x;
             var clawBodyY = clawBodySprite.y;
+
             var clawBodyAngle = clawBodySprite.angle;
             if (clawBodySprite.oldPosition && (clawBodyX !== clawBodySprite.oldPosition.x
               || clawBodyY !== clawBodySprite.oldPosition.y
@@ -2174,32 +2233,36 @@ var Game = new Phaser.Class({
               angle: armRightSprite.angle
             };
           }
-          var pipeBodySpriteTest = pipeBodySprite;
+
           if(clawToPipeBody)
           {
             var clawToPipeBodyX1 = clawToPipeBody.pointA.x;
             var clawToPipeBodyY1 = clawToPipeBody.pointA.y;
             var clawToPipeBodyX2 = clawToPipeBody.pointB.x;
             var clawToPipeBodyY2 = clawToPipeBody.pointB.y;
+            var clawToPipeBodyBodyX1 = pipeBodySprite.x;
+            var clawToPipeBodyBodyY1 = pipeBodySprite.y;
+            var clawToPipeBodyBodyX2 = clawBodySprite.x;
+            var clawToPipeBodyBodyY2 = clawBodySprite.y;
             var clawToPipeBodyLength = clawToPipeBody.length;
 
             if (clawToPipeBody.oldPosition &&
-              (clawToPipeBodyX1 !== clawToPipeBody.oldPosition.x1
-              || clawToPipeBodyY1 !== clawToPipeBody.oldPosition.y1
-              || clawToPipeBodyX2 !== clawToPipeBody.oldPosition.x2
-              || clawToPipeBodyY2 !== clawToPipeBody.oldPosition.y2
-              || clawToPipeBodyLength !== clawToPipeBody.oldPosition.length
-            ))
+              ((clawToPipeBodyX1 !== clawToPipeBody.oldPosition.x1 && clawToPipeBodyBodyX1 !== clawToPipeBody.oldPosition.bodyAX)
+              || (clawToPipeBodyY1 !== clawToPipeBody.oldPosition.y1 && clawToPipeBodyBodyY1 !== clawToPipeBody.oldPosition.bodyAY)
+              || (clawToPipeBodyX2 !== clawToPipeBody.oldPosition.x2 && clawToPipeBodyBodyX2 !== clawToPipeBody.oldPosition.bodyBX)
+              || (clawToPipeBodyY2 !== clawToPipeBody.oldPosition.y2 && clawToPipeBodyBodyY2 !== clawToPipeBody.oldPosition.bodyBY)
+              || clawToPipeBodyLength !== clawToPipeBody.oldPosition.length ))
             {
-              console.log("is this the real life: " + pipeBodySpriteTest);
               this.socket.emit('clawToPipeBodyMovement',
-              pipeBodySpriteTest,
-              clawBodySprite,
                {
                 x1: clawToPipeBody.pointA.x,
                 y1: clawToPipeBody.pointA.y,
                 x2: clawToPipeBody.pointB.x,
                 y2: clawToPipeBody.pointB.y,
+                bodyX1: pipeBodySprite.x,
+                bodyY1: pipeBodySprite.y,
+                bodyX2: clawBodySprite.x,
+                bodyY2: clawBodySprite.y,
                 length: clawToPipeBody.length
               });
             }
@@ -2210,6 +2273,10 @@ var Game = new Phaser.Class({
               y1: clawToPipeBody.pointA.y,
               x2: clawToPipeBody.pointB.x,
               y2: clawToPipeBody.pointB.y,
+              bodyAX: pipeBodySprite.x,
+              bodyAY: pipeBodySprite.y,
+              bodyBX: clawBodySprite.x,
+              bodyBY: clawBodySprite.y,
               length: clawToPipeBody.length
             };
           }
@@ -2220,24 +2287,29 @@ var Game = new Phaser.Class({
             var leftConnectToClawY1 = leftConnectToClaw.pointA.y;
             var leftConnectToClawX2 = leftConnectToClaw.pointB.x;
             var leftConnectToClawY2 = leftConnectToClaw.pointB.y;
+            var leftConnectToClawBodyX1 = armConnectLeftSprite.x;
+            var leftConnectToClawBodyY1 = armConnectLeftSprite.y;
+            var leftConnectToClawBodyX2 = clawBodySprite.x;
+            var leftConnectToClawBodyY2 = clawBodySprite.y;
             var leftConnectToClawLength = leftConnectToClaw.length;
 
             if (leftConnectToClaw.oldPosition &&
-              (leftConnectToClawX1 !== leftConnectToClaw.oldPosition.x1
-              || leftConnectToClawY1 !== leftConnectToClaw.oldPosition.y1
-              || leftConnectToClawX2 !== leftConnectToClaw.oldPosition.x2
-              || leftConnectToClawY2 !== leftConnectToClaw.oldPosition.y2
-              || leftConnectToClawLength !== leftConnectToClaw.oldPosition.length
-          ))
+              ((leftConnectToClawX1 !== leftConnectToClaw.oldPosition.x1 && leftConnectToClawBodyX1 !== leftConnectToClaw.oldPosition.bodyAX)
+              || (leftConnectToClawY1 !== leftConnectToClaw.oldPosition.y1 && leftConnectToClawBodyY1 !== leftConnectToClaw.oldPosition.bodyAY)
+              || (leftConnectToClawX2 !== leftConnectToClaw.oldPosition.x2 && leftConnectToClawBodyX2 !== leftConnectToClaw.oldPosition.bodyBX)
+              || (leftConnectToClawY2 !== leftConnectToClaw.oldPosition.y2 && leftConnectToClawBodyY2 !== leftConnectToClaw.oldPosition.bodyBY)
+              || leftConnectToClawLength !== leftConnectToClaw.oldPosition.length ))
             {
               this.socket.emit('leftConnectToClawMovement',
-              armConnectLeftSprite,
-              clawBodySprite,
               {
                 x1: leftConnectToClaw.pointA.x,
                 y1: leftConnectToClaw.pointA.y,
                 x2: leftConnectToClaw.pointB.x,
                 y2: leftConnectToClaw.pointB.y,
+                bodyX1: armConnectLeftSprite.x,
+                bodyY1: armConnectLeftSprite.y,
+                bodyX2: clawBodySprite.x,
+                bodyY2: clawBodySprite.y,
                 length: leftConnectToClaw.length
               });
             }
@@ -2248,6 +2320,10 @@ var Game = new Phaser.Class({
               y1: leftConnectToClaw.pointA.y,
               x2: leftConnectToClaw.pointB.x,
               y2: leftConnectToClaw.pointB.y,
+              bodyAX: armConnectLeftSprite.x,
+              bodyAY: armConnectLeftSprite.y,
+              bodyBX: clawBodySprite.x,
+              bodyBY: clawBodySprite.y,
               length: leftConnectToClaw.length
             };
           }
@@ -2258,23 +2334,29 @@ var Game = new Phaser.Class({
             var rightConnectToClawY1 = rightConnectToClaw.pointA.y;
             var rightConnectToClawX2 = rightConnectToClaw.pointB.x;
             var rightConnectToClawY2 = rightConnectToClaw.pointB.y;
+            var rightConnectToClawBodyX1 = armConnectRightSprite.x;
+            var rightConnectToClawBodyY1 = armConnectRightSprite.y;
+            var rightConnectToClawBodyX2 = clawBodySprite.x;
+            var rightConnectToClawBodyY2 = clawBodySprite.y;
             var rightConnectToClawLength = rightConnectToClaw.length;
 
             if (rightConnectToClaw.oldPosition &&
-              (rightConnectToClawX1 !== rightConnectToClaw.oldPosition.x1
-              || rightConnectToClawY1 !== rightConnectToClaw.oldPosition.y1
-              || rightConnectToClawX2 !== rightConnectToClaw.oldPosition.x2
-              || rightConnectToClawY2 !== rightConnectToClaw.oldPosition.y2
+              ((rightConnectToClawX1 !== rightConnectToClaw.oldPosition.x1 && rightConnectToClawBodyX1 !== rightConnectToClaw.oldPosition.bodyAX)
+              || (rightConnectToClawY1 !== rightConnectToClaw.oldPosition.y1 && rightConnectToClawBodyY1 !== rightConnectToClaw.oldPosition.bodyAY)
+              || (rightConnectToClawX2 !== rightConnectToClaw.oldPosition.x2 && rightConnectToClawBodyX2 !== rightConnectToClaw.oldPosition.bodyBX)
+              || (rightConnectToClawY2 !== rightConnectToClaw.oldPosition.y2 && rightConnectToClawBodyY2 !== rightConnectToClaw.oldPosition.bodyBY)
               || rightConnectToClawLength !== rightConnectToClaw.oldPosition.length))
             {
               this.socket.emit('rightConnectToClawMovement',
-              armConnectRightSprite,
-              clawBodySprite,
               {
                 x1: rightConnectToClaw.pointA.x,
                 y1: rightConnectToClaw.pointA.y,
                 x2: rightConnectToClaw.pointB.x,
                 y2: rightConnectToClaw.pointB.y,
+                bodyX1: armConnectRightSprite.x,
+                bodyY1: armConnectRightSprite.y,
+                bodyX2: clawBodySprite.x,
+                bodyY2: clawBodySprite.y,
                 length: rightConnectToClaw.length
               });
 
@@ -2286,6 +2368,10 @@ var Game = new Phaser.Class({
               y1: rightConnectToClaw.pointA.y,
               x2: rightConnectToClaw.pointB.x,
               y2: rightConnectToClaw.pointB.y,
+              bodyAX: armConnectRightSprite.x,
+              bodyAY: armConnectRightSprite.y,
+              bodyBX: clawBodySprite.x,
+              bodyBY: clawBodySprite.y,
               length: rightConnectToClaw.length
             };
           }
@@ -2296,23 +2382,29 @@ var Game = new Phaser.Class({
             var leftArmToLeftConnectY1 = leftArmToLeftConnect.pointA.y;
             var leftArmToLeftConnectX2 = leftArmToLeftConnect.pointB.x;
             var leftArmToLeftConnectY2 = leftArmToLeftConnect.pointB.y;
+            var leftArmToLeftConnectBodyX1 = leftArmToLeftConnect.bodyA.position.x;
+            var leftArmToLeftConnectBodyY1 = leftArmToLeftConnect.bodyA.position.y;
+            var leftArmToLeftConnectBodyX2 = leftArmToLeftConnect.bodyB.position.x;
+            var leftArmToLeftConnectBodyY2 = leftArmToLeftConnect.bodyB.position.y;
             var leftArmToLeftConnectLength = leftArmToLeftConnect.length;
 
             if (leftArmToLeftConnect.oldPosition &&
-              (leftArmToLeftConnectX1 !== leftArmToLeftConnect.oldPosition.x1
-              || leftArmToLeftConnectY1 !== leftArmToLeftConnect.oldPosition.y1
-              || leftArmToLeftConnectX2 !== leftArmToLeftConnect.oldPosition.x2
-              || leftArmToLeftConnectY2 !== leftArmToLeftConnect.oldPosition.y2
+              ((leftArmToLeftConnectX1 !== leftArmToLeftConnect.oldPosition.x1 && leftArmToLeftConnectBodyX1 !== leftArmToLeftConnect.oldPosition.bodyAX)
+              || (leftArmToLeftConnectY1 !== leftArmToLeftConnect.oldPosition.y1 && leftArmToLeftConnectBodyY1 !== leftArmToLeftConnect.oldPosition.bodyAY)
+              || (leftArmToLeftConnectX2 !== leftArmToLeftConnect.oldPosition.x2 && leftArmToLeftConnectBodyX2 !== leftArmToLeftConnect.oldPosition.bodyBX)
+              || (leftArmToLeftConnectY2 !== leftArmToLeftConnect.oldPosition.y2 && leftArmToLeftConnectBodyY2 !== leftArmToLeftConnect.oldPosition.bodyBY)
               || leftArmToLeftConnectLength !== leftArmToLeftConnect.oldPosition.length))
             {
               this.socket.emit('leftArmToLeftConnectMovement',
-              armLeftSprite,
-              armConnectLeftSprite,
               {
                 x1: leftArmToLeftConnect.pointA.x,
                 y1: leftArmToLeftConnect.pointA.y,
                 x2: leftArmToLeftConnect.pointB.x,
                 y2: leftArmToLeftConnect.pointB.y,
+                bodyX1: leftArmToLeftConnect.bodyA.position.x,
+                bodyY1: leftArmToLeftConnect.bodyA.position.y,
+                bodyX2: leftArmToLeftConnect.bodyB.position.x,
+                bodyY2: leftArmToLeftConnect.bodyB.position.y,
                 length: leftArmToLeftConnect.length
               });
             }
@@ -2323,6 +2415,10 @@ var Game = new Phaser.Class({
               y1: leftArmToLeftConnect.pointA.y,
               x2: leftArmToLeftConnect.pointB.x,
               y2: leftArmToLeftConnect.pointB.y,
+              bodyAX: leftArmToLeftConnect.bodyA.position.x,
+              bodyAY: leftArmToLeftConnect.bodyA.position.y,
+              bodyBX: leftArmToLeftConnect.bodyB.position.x,
+              bodyBY: leftArmToLeftConnect.bodyB.position.y,
               length: leftArmToLeftConnect.length
             };
           }
@@ -2333,24 +2429,29 @@ var Game = new Phaser.Class({
             var rightArmToRightConnectY1 = rightArmToRightConnect.pointA.y;
             var rightArmToRightConnectX2 = rightArmToRightConnect.pointB.x;
             var rightArmToRightConnectY2 = rightArmToRightConnect.pointB.y;
+            var rightArmToRightConnectBodyX1 = rightArmToRightConnect.bodyA.position.x;
+            var rightArmToRightConnectBodyY1 = rightArmToRightConnect.bodyA.position.y;
+            var rightArmToRightConnectBodyX2 = rightArmToRightConnect.bodyB.position.x;
+            var rightArmToRightConnectBodyY2 = rightArmToRightConnect.bodyB.position.y;
             var rightArmToRightConnectLength = rightArmToRightConnect.length;
 
             if (rightArmToRightConnect.oldPosition &&
-              (rightArmToRightConnectX1 !== rightArmToRightConnect.oldPosition.x1
-              ||rightArmToRightConnectY1 !== rightArmToRightConnect.oldPosition.y1
-              || rightArmToRightConnectX2 !== rightArmToRightConnect.oldPosition.x2
-              || rightArmToRightConnectY2 !== rightArmToRightConnect.oldPosition.y2
-              || rightArmToRightConnectLength !== rightArmToRightConnect.oldPosition.length
-            ))
+              ((rightArmToRightConnectX1 !== rightArmToRightConnect.oldPosition.x1 && rightArmToRightConnectBodyX1 !== rightArmToRightConnect.oldPosition.bodyAX)
+              ||(rightArmToRightConnectY1 !== rightArmToRightConnect.oldPosition.y1 && rightArmToRightConnectBodyY1 !== rightArmToRightConnect.oldPosition.bodyAY)
+              || (rightArmToRightConnectX2 !== rightArmToRightConnect.oldPosition.x2 && rightArmToRightConnectBodyX2 !== rightArmToRightConnect.oldPosition.bodyBX)
+              || (rightArmToRightConnectY2 !== rightArmToRightConnect.oldPosition.y2 && rightArmToRightConnectBodyY2 !== rightArmToRightConnect.oldPosition.bodyBY)
+              || rightArmToRightConnectLength !== rightArmToRightConnect.oldPosition.length ))
             {
               this.socket.emit('rightArmToRightConnectMovement',
-              armRightSprite,
-              armConnectRightSprite,
               {
                 x1: rightArmToRightConnect.pointA.x,
                 y1: rightArmToRightConnect.pointA.y,
                 x2: rightArmToRightConnect.pointB.x,
                 y2: rightArmToRightConnect.pointB.y,
+                bodyX1: rightArmToRightConnect.bodyA.position.x,
+                bodyY1: rightArmToRightConnect.bodyA.position.y,
+                bodyX2: rightArmToRightConnect.bodyB.position.x,
+                bodyY2: rightArmToRightConnect.bodyB.position.y,
                 length: rightArmToRightConnect.length
               });
             }
@@ -2361,6 +2462,10 @@ var Game = new Phaser.Class({
               y1: rightArmToRightConnect.pointA.y,
               x2: rightArmToRightConnect.pointB.x,
               y2: rightArmToRightConnect.pointB.y,
+              bodyAX: rightArmToRightConnect.bodyA.position.x,
+              bodyAY: rightArmToRightConnect.bodyA.position.y,
+              bodyBX: rightArmToRightConnect.bodyB.position.x,
+              bodyBY: rightArmToRightConnect.bodyB.position.y,
               length: rightArmToRightConnect.length
             };
           }
@@ -2371,24 +2476,29 @@ var Game = new Phaser.Class({
             var rightArmToLeftArmY1 = rightArmToLeftArm.pointA.y;
             var rightArmToLeftArmX2 = rightArmToLeftArm.pointB.x;
             var rightArmToLeftArmY2 = rightArmToLeftArm.pointB.y;
+            var rightArmToLeftArmBodyX1 = rightArmToLeftArm.bodyA.position.x;
+            var rightArmToLeftArmBodyY1 = rightArmToLeftArm.bodyA.position.y;
+            var rightArmToLeftArmBodyX2 = rightArmToLeftArm.bodyB.position.x;
+            var rightArmToLeftArmBodyY2 = rightArmToLeftArm.bodyB.position.y;
             var rightArmToLeftArmLength = rightArmToLeftArm.length;
 
             if (rightArmToLeftArm.oldPosition &&
-              (rightArmToLeftArmX1 !== rightArmToLeftArm.oldPosition.x1
-              || rightArmToLeftArmY1 !== rightArmToLeftArm.oldPosition.y1
-              || rightArmToLeftArmX2 !== rightArmToLeftArm.oldPosition.x2
-              || rightArmToLeftArmY2 !== rightArmToLeftArm.oldPosition.y2
-              || rightArmToLeftArmLength !== rightArmToLeftArm.oldPosition.length
-            ))
+              ((rightArmToLeftArmX1 !== rightArmToLeftArm.oldPosition.x1 && rightArmToLeftArmBodyX1 !== rightArmToLeftArm.oldPosition.bodyAX)
+              || (rightArmToLeftArmY1 !== rightArmToLeftArm.oldPosition.y1 && rightArmToLeftArmBodyY1 !== rightArmToLeftArm.oldPosition.bodyAY)
+              || (rightArmToLeftArmX2 !== rightArmToLeftArm.oldPosition.x2 && rightArmToLeftArmBodyX2 !== rightArmToLeftArm.oldPosition.bodyBX)
+              || (rightArmToLeftArmY2 !== rightArmToLeftArm.oldPosition.y2 && rightArmToLeftArmBodyY2 !== rightArmToLeftArm.oldPosition.bodyBY)
+              || rightArmToLeftArmLength !== rightArmToLeftArm.oldPosition.length ))
             {
               this.socket.emit('rightArmToLeftArmMovement',
-              armRightSprite,
-              armLeftSprite,
               {
                 x1: rightArmToLeftArm.pointA.x,
                 y1: rightArmToLeftArm.pointA.y,
                 x2: rightArmToLeftArm.pointB.x,
                 y2: rightArmToLeftArm.pointB.y,
+                bodyX1: rightArmToLeftArm.bodyA.position.x,
+                bodyY1: rightArmToLeftArm.bodyA.position.y,
+                bodyX2: rightArmToLeftArm.bodyB.position.x,
+                bodyY2: rightArmToLeftArm.bodyB.position.y,
                 length: rightArmToLeftArm.length
             });
             }
@@ -2399,6 +2509,10 @@ var Game = new Phaser.Class({
               y1: rightArmToLeftArm.pointA.y,
               x2: rightArmToLeftArm.pointB.x,
               y2: rightArmToLeftArm.pointB.y,
+              bodyAX: rightArmToLeftArm.bodyA.position.x,
+              bodyAY: rightArmToLeftArm.bodyA.position.y,
+              bodyBX: rightArmToLeftArm.bodyB.position.x,
+              bodyBY: rightArmToLeftArm.bodyB.position.y,
               length: rightArmToLeftArm.length
             };
           }
@@ -2409,24 +2523,29 @@ var Game = new Phaser.Class({
             var leftConnectToRightConnectY1 = leftConnectToRightConnect.pointA.y;
             var leftConnectToRightConnectX2 = leftConnectToRightConnect.pointB.x;
             var leftConnectToRightConnectY2 = leftConnectToRightConnect.pointB.y;
+            var leftConnectToRightConnectBodyX1 = leftConnectToRightConnect.bodyA.position.x;
+            var leftConnectToRightConnectBodyY1 = leftConnectToRightConnect.bodyA.position.y;
+            var leftConnectToRightConnectBodyX2 = leftConnectToRightConnect.bodyB.position.x;
+            var leftConnectToRightConnectBodyY2 = leftConnectToRightConnect.bodyB.position.y;
             var leftConnectToRightConnectLength = leftConnectToRightConnect.length;
 
             if (leftConnectToRightConnect.oldPosition &&
-              (leftConnectToRightConnectX1 !== leftConnectToRightConnect.oldPosition.x1
-              || leftConnectToRightConnectY1 !== leftConnectToRightConnect.oldPosition.y1
-              || leftConnectToRightConnectX2 !== leftConnectToRightConnect.oldPosition.x2
-              || leftConnectToRightConnectY2 !== leftConnectToRightConnect.oldPosition.y2
-              || leftConnectToRightConnectLength !== leftConnectToRightConnect.oldPosition.length
-            ))
+              ((leftConnectToRightConnectX1 !== leftConnectToRightConnect.oldPosition.x1 && leftConnectToRightConnectBodyX1 !== leftConnectToRightConnect.oldPosition.bodyAX)
+              || (leftConnectToRightConnectY1 !== leftConnectToRightConnect.oldPosition.y1 && leftConnectToRightConnectBodyY1 !== leftConnectToRightConnect.oldPosition.bodyAY)
+              || (leftConnectToRightConnectX2 !== leftConnectToRightConnect.oldPosition.x2 && leftConnectToRightConnectBodyX2 !== leftConnectToRightConnect.oldPosition.bodyBX)
+              || (leftConnectToRightConnectY2 !== leftConnectToRightConnect.oldPosition.y2 && leftConnectToRightConnectBodyY2 !== leftConnectToRightConnect.oldPosition.bodyBY)
+              || leftConnectToRightConnectLength !== leftConnectToRightConnect.oldPosition.length ))
             {
               this.socket.emit('leftConnectToRightConnectMovement',
-              armConnectLeftSprite,
-              armConnectRightSprite,
               {
                 x1: leftConnectToRightConnect.pointA.x,
                 y1: leftConnectToRightConnect.pointA.y,
                 x2: leftConnectToRightConnect.pointB.x,
                 y2: leftConnectToRightConnect.pointB.y,
+                bodyX1: leftConnectToRightConnect.bodyA.position.x,
+                bodyY1: leftConnectToRightConnect.bodyA.position.y,
+                bodyX2: leftConnectToRightConnect.bodyB.position.x,
+                bodyY2: leftConnectToRightConnect.bodyB.position.y,
                 length: leftConnectToRightConnect.length
             });
             }
@@ -2437,6 +2556,10 @@ var Game = new Phaser.Class({
               y1: leftConnectToRightConnect.pointA.y,
               x2: leftConnectToRightConnect.pointB.x,
               y2: leftConnectToRightConnect.pointB.y,
+              bodyAX: leftConnectToRightConnect.bodyA.position.x,
+              bodyAY: leftConnectToRightConnect.bodyA.position.y,
+              bodyBX: leftConnectToRightConnect.bodyB.position.x,
+              bodyBY: leftConnectToRightConnect.bodyB.position.y,
               length: leftConnectToRightConnect.length
             };
           }
@@ -2447,27 +2570,32 @@ var Game = new Phaser.Class({
             var leftConnectToClawTopY1 = leftConnectToClawTop.pointA.y;
             var leftConnectToClawTopX2 = leftConnectToClawTop.pointB.x;
             var leftConnectToClawTopY2 = leftConnectToClawTop.pointB.y;
+            var leftConnectToClawTopBodyX1 = leftConnectToClawTop.bodyA.position.x;
+            var leftConnectToClawTopBodyY1 = leftConnectToClawTop.bodyA.position.y;
+            var leftConnectToClawTopBodyX2 = leftConnectToClawTop.bodyB.position.x;
+            var leftConnectToClawTopBodyY2 = leftConnectToClawTop.bodyB.position.y;
             var leftConnectToClawTopLength = leftConnectToClawTop.length;
 
             if (leftConnectToClawTop.oldPosition &&
-              (leftConnectToClawTopX1 !== leftConnectToClawTop.oldPosition.x1
-              || leftConnectToClawTopY1 !== leftConnectToClawTop.oldPosition.y1
-              || leftConnectToClawTopX2 !== leftConnectToClawTop.oldPosition.x2
-              || leftConnectToClawTopY2 !== leftConnectToClawTop.oldPosition.y2
-              || leftConnectToClawTopLength !== leftConnectToClawTop.oldPosition.length
-            ))
+              ((leftConnectToClawTopX1 !== leftConnectToClawTop.oldPosition.x1 && leftConnectToClawTopBodyX1 !== leftConnectToClawTop.oldPosition.bodyAX)
+              || (leftConnectToClawTopY1 !== leftConnectToClawTop.oldPosition.y1 && leftConnectToClawTopBodyY1 !== leftConnectToClawTop.oldPosition.bodyAY)
+              || (leftConnectToClawTopX2 !== leftConnectToClawTop.oldPosition.x2 && leftConnectToClawTopBodyX2 !== leftConnectToClawTop.oldPosition.bodyBX)
+              || (leftConnectToClawTopY2 !== leftConnectToClawTop.oldPosition.y2 && leftConnectToClawTopBodyY2 !== leftConnectToClawTop.oldPosition.bodyBY)
+              || leftConnectToClawTopLength !== leftConnectToClawTop.oldPosition.length ))
             {
               this.socket.emit('leftConnectToClawTopMovement',
-              armConnectLeftSprite,
-              clawBodySprite,
               {
                 x1: leftConnectToClawTop.pointA.x,
                 y1: leftConnectToClawTop.pointA.y,
                 x2: leftConnectToClawTop.pointB.x,
                 y2: leftConnectToClawTop.pointB.y,
+                bodyX1: leftConnectToClawTop.bodyA.position.x,
+                bodyY1: leftConnectToClawTop.bodyA.position.y,
+                bodyX2: leftConnectToClawTop.bodyB.position.x,
+                bodyY2: leftConnectToClawTop.bodyB.position.y,
                 length: leftConnectToClawTop.length
             });
-            }
+          }
 
             // save old position data
             leftConnectToClawTop.oldPosition = {
@@ -2475,6 +2603,10 @@ var Game = new Phaser.Class({
               y1: leftConnectToClawTop.pointA.y,
               x2: leftConnectToClawTop.pointB.x,
               y2: leftConnectToClawTop.pointB.y,
+              bodyAX: leftConnectToClawTop.bodyA.position.x,
+              bodyAY: leftConnectToClawTop.bodyA.position.y,
+              bodyBX: leftConnectToClawTop.bodyB.position.x,
+              bodyBY: leftConnectToClawTop.bodyB.position.y,
               length: leftConnectToClawTop.length
             };
           }
@@ -2485,24 +2617,29 @@ var Game = new Phaser.Class({
             var rightConnectToClawTopY1 = rightConnectToClawTop.pointA.y;
             var rightConnectToClawTopX2 = rightConnectToClawTop.pointB.x;
             var rightConnectToClawTopY2 = rightConnectToClawTop.pointB.y;
+            var rightConnectToClawTopBodyX1 = rightArmToRightConnect.bodyA.position.x;
+            var rightConnectToClawTopBodyY1 = rightArmToRightConnect.bodyA.position.y;
+            var rightConnectToClawTopBodyX2 = rightArmToRightConnect.bodyB.position.x;
+            var rightConnectToClawTopBodyY2 = rightArmToRightConnect.bodyB.position.y;
             var rightConnectToClawTopLength = rightConnectToClawTop.length;
 
             if (rightConnectToClawTop.oldPosition &&
-              (rightConnectToClawTopX1 !== rightConnectToClawTop.oldPosition.x1
-              || rightConnectToClawTopY1 !== rightConnectToClawTop.oldPosition.y1
-              || rightConnectToClawTopX2 !== rightConnectToClawTop.oldPosition.x2
-              || rightConnectToClawTopY2 !== rightConnectToClawTop.oldPosition.y2
-              || rightConnectToClawTopLength !== rightConnectToClawTop.oldPosition.length
-            ))
+              ((rightConnectToClawTopX1 !== rightConnectToClawTop.oldPosition.x1 && rightConnectToClawTopBodyX1 !== rightConnectToClawTop.oldPosition.bodyAX)
+              || (rightConnectToClawTopY1 !== rightConnectToClawTop.oldPosition.y1 && rightConnectToClawTopBodyY1 !== rightConnectToClawTop.oldPosition.bodyAY)
+              || (rightConnectToClawTopX2 !== rightConnectToClawTop.oldPosition.x2  && rightConnectToClawTopBodyX2 !== rightConnectToClawTop.oldPosition.bodyBX)
+              || (rightConnectToClawTopY2 !== rightConnectToClawTop.oldPosition.y2 && rightConnectToClawTopBodyY2 !== rightConnectToClawTop.oldPosition.bodyBY)
+              || rightConnectToClawTopLength !== rightConnectToClawTop.oldPosition.length ))
             {
               this.socket.emit('rightConnectToClawTopMovement',
-              armConnectRightSprite,
-              clawBodySprite,
               {
                 x1: rightConnectToClawTop.pointA.x,
                 y1: rightConnectToClawTop.pointA.y,
                 x2: rightConnectToClawTop.pointB.x,
                 y2: rightConnectToClawTop.pointB.y,
+                bodyX1: rightConnectToClawTop.bodyA.position.x,
+                bodyY1: rightConnectToClawTop.bodyA.position.y,
+                bodyX2: rightConnectToClawTop.bodyB.position.x,
+                bodyY2: rightConnectToClawTop.bodyB.position.y,
                 length: rightConnectToClawTop.length
             });
             }
@@ -2513,6 +2650,10 @@ var Game = new Phaser.Class({
               y1: rightConnectToClawTop.pointA.y,
               x2: rightConnectToClawTop.pointB.x,
               y2: rightConnectToClawTop.pointB.y,
+              bodyAX: rightConnectToClawTop.bodyA.position.x,
+              bodyAY: rightConnectToClawTop.bodyA.position.y,
+              bodyBX: rightConnectToClawTop.bodyB.position.x,
+              bodyBY: rightConnectToClawTop.bodyB.position.y,
               length: rightConnectToClawTop.length
             };
           }
