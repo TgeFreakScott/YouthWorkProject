@@ -180,6 +180,7 @@ var playerSevenIcon;
 var playerEightIcon;
 var firstSocket = 0;
 var secondSocket = 0;
+
 var keys;
 var keyQ;
 var keyW;
@@ -1032,10 +1033,11 @@ var Game = new Phaser.Class({
         {
           bodyA: armConnectLeftSprite.body,
           bodyB: clawBodySprite.body,
-          pointA: {x: 35, y: 0 },
+          pointA: {x: 30, y: 0 },
           pointB: {x: -30, y: 70 },
           length: 4, stiffness: 1
         });
+        this.matter.world.add(leftConnectToClaw);
 
         rightConnectToClaw = Phaser.Physics.Matter.Matter.Constraint.create(
         {
@@ -1096,7 +1098,6 @@ var Game = new Phaser.Class({
           length: 200, stiffness: 1
         });
         this.matter.world.add(leftConnectToClawTop);
-        console.log(leftConnectToClawTop);
 
         rightConnectToClawTop = Phaser.Physics.Matter.Matter.Constraint.create(
         {
@@ -1485,7 +1486,7 @@ var Game = new Phaser.Class({
           var pad5 = this.input.gamepad.getPad(4);
           var pad6 = this.input.gamepad.getPad(5);
           var pad7 = this.input.gamepad.getPad(6);
-          var pad8 = this.input.gamepad.getPad(7);*/
+          var pad8 = this.input.gamepad.getPad(7);
           //this.socket.emit('requestSocketID');
           //this.socket.on('passSocketID', function(socketID)
           //{
@@ -1493,9 +1494,8 @@ var Game = new Phaser.Class({
             //Player 1
             //if (pad1.axes.length)// && computerID === socketID.firstConnection)
             //{
-
               //var greyAxisH = pad1.axes[0].getValue();
-
+*/
               if(keyW.isDown) //right
               {
                 console.log("poop");
