@@ -226,12 +226,13 @@ var PlayerEnter = new Phaser.Class({
       /*this.socket.on('getSocketID', function (tempVar)
       {
         computerID = tempVar;
-      });*/
+      });
 
       //this.input.keyboard.on('keydown', function (event) {console.dir(event); });
 
       //keys = this.input.keyboard.addKeys('Q,W,E,A,S,D,Z,X,C,R,T,Y,F,G,H,C,V,B,U,I,O,J,K,L');
       //cursors = this.input.keyboard.createCursorKeys();
+*/
 
       keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
       keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -344,7 +345,7 @@ var PlayerEnter = new Phaser.Class({
       var pad7 = this.input.gamepad.getPad(6);
       var pad8 = this.input.gamepad.getPad(7);*/
       console.log('%c Updating Player Enter ', 'background: green; color: white; display: block;');
-      //this.socket.emit('requestSocketID');
+/*      //this.socket.emit('requestSocketID');
       //this.socket.on('passSocketID', function(socketID)
       //{
         //if(firstSocket !==0 && secondSocket !== 0)
@@ -353,6 +354,8 @@ var PlayerEnter = new Phaser.Class({
           //if(pad1.buttons.length)// && computerID === socketID.firstConnection)
           //{
            //var a1 = pad1.buttons[1].value;
+           */
+
             if (keyE.isDown && !playerOneEnter)
             {
                 console.log("Player 1 entered");
@@ -559,17 +562,11 @@ var YouthElement = new Phaser.Class({
         this.controls;
     },
 
-
-
     create: function ()
     {
       yesSprite = this.add.image(100,100, 'yes').setScale(1);
       noSprite = this.add.image(100,150, 'no').setScale(1);
       maybeSprite = this.add.image(100,200, 'maybe').setScale(1);
-
-      light = this.light.addLight(0,0,200).setScrollFactor(0.0);
-      this.lights.enable().setAmbientColor(0x555555);
-
 
         console.log('%c YouthElement ', 'background: green; color: white; display: block;');
     },
@@ -577,7 +574,6 @@ var YouthElement = new Phaser.Class({
     update: function (time, delta)
     {
           console.log('Youth Element Screen');
-
     }
 
 });
@@ -1668,7 +1664,7 @@ var Game = new Phaser.Class({
                   greenPlayer.setVelocityY(-27);
                   greenJump = true;
               }
-              if (keyY.isDown)
+              if (!keyY.isDown)
               {
                   greenJump = false;
                   greenPlayer.anims.play('walk4', true);
@@ -1678,7 +1674,6 @@ var Game = new Phaser.Class({
             //Second Computer
             //if (pad5.axes.length)// && computerID === socketID.secondConnection)
             //{
-
                 //var pinkAxisH = pad5.axes[0].getValue();
 
                 if(keyG.isDown) //right
@@ -1706,32 +1701,31 @@ var Game = new Phaser.Class({
 
             //if(pad5.buttons.length)// && computerID === socketID.secondConnection)
           //  {
-
                 //var pinkButton = pad5.buttons[1].value;
 
-                if (keyH.isDown && !pinkJump)
+                if (keyH.isDown  && pinkJumpTimer && !pinkJump)
                 {
                     pinkJump = true;
+                    pinkPlayer.anims.play('pinkJump');
+                    lastPinkJump = self.time.now;
                     pinkPlayer.setVelocityY(-27);
                 }
                 if (!keyH.isDown)
                 {
                     pinkJump = false;
+                    pinkPlayer.anims.play('walk5', true);
                 }
           //  }
-
             //if (pad6.axes.length)// && computerID === socketID.secondConnection)
             //{
-
               //var speed = (600 / 2) / 1000;
               // image.x += speed * dt;
-
                 //clawHorizontalAxes = pad6.axes[0].getValue();
                 if(keyB.isDown) //right
                 {
                   if(pipeBodySprite.x < 950)
                   {
-                    pipeBodySprite.x += 2 ;// fps;
+                    pipeBodySprite.x += 2.5 * fps;
                   }
                 }
                 if(keyV.isDown) //left
@@ -1739,15 +1733,13 @@ var Game = new Phaser.Class({
                   //pipeBodySprite.thrustBack(1 * delta);
                   if(pipeBodySprite.x > 50)
                   {
-                    pipeBodySprite.x -= 2 ;// fps;
+                    pipeBodySprite.x -= 2.5 * fps;
                   }
                 }
             //}
               //console.log(speed)
-
           //  if (pad7.axes.length)// && computerID === socketID.secondConnection)
             //{
-
               //clawverticalAxes = pad7.axes[1].getValue();
               if(keyI.isDown) //down
               {
@@ -1767,10 +1759,8 @@ var Game = new Phaser.Class({
               }
 
             //}
-
             //if (pad8.axes.length)// && computerID === socketID.secondConnection)
             //{
-
               //clawGripHorizontalAxes = pad8.axes[0].getValue();
               if(keyK.isDown) //open
               {
@@ -1879,7 +1869,6 @@ var Game = new Phaser.Class({
           {
             greyPlayer.flipX = true;
           }
-
           if(!greyRight)
           {
             greyPlayer.flipX = false;
@@ -1889,7 +1878,6 @@ var Game = new Phaser.Class({
           {
             bluePlayer.flipX = true;
           }
-
           if(!blueRight)
           {
             bluePlayer.flipX = false;
@@ -1899,7 +1887,6 @@ var Game = new Phaser.Class({
           {
             yellowPlayer.flipX = true;
           }
-
           if(!yellowRight)
           {
             yellowPlayer.flipX = false;
@@ -1909,7 +1896,6 @@ var Game = new Phaser.Class({
           {
             greenPlayer.flipX = true;
           }
-
           if(!greenRight)
           {
             greenPlayer.flipX = false;
@@ -1919,7 +1905,6 @@ var Game = new Phaser.Class({
           {
             pinkPlayer.flipX = true;
           }
-
           if(!pinkRight)
           {
             pinkPlayer.flipX = false;
