@@ -101,6 +101,7 @@ var Preloader = new Phaser.Class({
       this.load.image('armConnectBody', 'Sprite/armConnect.png', 'Sprite/physics/armConnectShape.json');
       this.load.image('bucket', 'Sprite/glassPanel.png', 'Sprite/physics/glassPrison.json');
       this.load.image('background', 'Sprite/background.png');
+      this.load.image('youthBackground', 'Sprite/YEStageBackground.png');
       this.load.image('floor', 'Sprite/floor.png');
 
       //claw Sprites
@@ -549,6 +550,10 @@ var GameOverScene = new Phaser.Class({
 var yesSprite;
 var noSprite;
 var maybeSprite;
+var yeBackground;
+
+var light;
+var guide;
 
 var YouthElement = new Phaser.Class({
 
@@ -564,16 +569,47 @@ var YouthElement = new Phaser.Class({
 
     create: function ()
     {
+      yeBackground = this.add.image(510, 300, 'youthBackground').setScale(0.4).setAlpha(0.6);
       yesSprite = this.add.image(100,100, 'yes').setScale(1);
-      noSprite = this.add.image(100,150, 'no').setScale(1);
-      maybeSprite = this.add.image(100,200, 'maybe').setScale(1);
+      noSprite = this.add.image(900,100, 'no').setScale(1);
+      maybeSprite = this.add.image(500,100, 'maybe').setScale(1);
+
+      //pinkPlayer = this.add.image(500,500,'pinkMove').setScale(0.25);
+
+      pinkPlayer = this.add.sprite(500, 500,'pinkMove').setScale(0.25);
+      pinkPlayer.setPipeline('Light2D');
+
+      light = this.lights.addLight(0,0,500).setIntensity(6);
+
+
+      this.lights.enable().setAmbientColor(0x888888);
+
+      keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+      keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+      keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         console.log('%c YouthElement ', 'background: green; color: white; display: block;');
     },
 
     update: function (time, delta)
     {
-          console.log('Youth Element Screen');
+          console.log('Youth Element Update');
+
+          if(keyA.isDown) //LEFT
+          {
+            if( pinkPlayer.x > 100)
+            {
+                pinkPlayer.x -= 15;
+            }
+          }
+
+          if(keyS.isDown) //RIGHT
+          {
+            if(pinkPlayer.x < 900)
+            {
+                pinkPlayer.x += 15;
+            }
+          }
     }
 
 });
@@ -689,7 +725,7 @@ var keyL;
 
 var music;
 var textTimer;
-var timer = 60;
+var timer = 10;
 var nextTimer = 30;
 var textLives;
 var lives = 5;
@@ -885,30 +921,35 @@ var Game = new Phaser.Class({
         greyPlayer.setExistingBody(compoundBody);
         greyPlayer.setPosition(300,500).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+        greyPlayer.label = "player";
 
         bluePlayer = this.matter.add.sprite(300, 500, 'blueMove','blueMove',{shape: shapeGrey.greyCapture})
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         bluePlayer.setExistingBody(compoundBody4);
         bluePlayer.setPosition(400,400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+        bluePlayer.label = "player";
 
         yellowPlayer = this.matter.add.sprite(300, 500, 'yellowMove','yellowMove',{shape: shapeGrey.greyCapture})
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         yellowPlayer.setExistingBody(compoundBody5);
         yellowPlayer.setPosition(200,400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+        yellowPlayer.label = "player";
 
         greenPlayer = this.matter.add.sprite(300, 500, 'greenMove','greenMove',{shape: shapeGrey.greyCapture})
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         greenPlayer.setExistingBody(compoundBody6);
         greenPlayer.setPosition(800,400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+        greenPlayer.label = "player";
 
         pinkPlayer = this.matter.add.sprite(250, 400, 'pinkMove','pinkMove',{shape: shapePink.pinkCapture })
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         pinkPlayer.setExistingBody(compoundBody3);
         pinkPlayer.setPosition(250, 400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
+        pinkPlayer.label = "player";
 
         leftBucket = this.matter.add.image(-15,570, 'bucket','bucket', {shape: shapeBucket.glassPanel})
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
@@ -916,6 +957,7 @@ var Game = new Phaser.Class({
         leftBucket.setExistingBody(compoundCaptureBox2);
         leftBucket.setPosition(70,550)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
+        leftBucket.label = "bucket";
 
          rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket',)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
@@ -923,6 +965,7 @@ var Game = new Phaser.Class({
         rightBucket.setExistingBody(compoundCaptureBox1);
         rightBucket.setPosition(940,550)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
+        rightBucket.label = "bucket";
 
         greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
@@ -1408,6 +1451,17 @@ var Game = new Phaser.Class({
           rightConnectToClawTop.length = rightConnectToClawTopData.length;
         });*/
 
+        this.matter.world.on('collisionstart', function (event, bodyA, bodyB)
+        {
+          if ((bodyA.label === 'player' && bodyB.label === 'bucket') ||
+              (bodyB.label === 'player' && bodyA.label === 'bucket'))
+          {
+            lives--;
+            console.log(lives);
+          }
+        });
+
+
         this.input.setPollAlways();
     },
 
@@ -1423,11 +1477,12 @@ var Game = new Phaser.Class({
         var fps3 = delta / 20;
 
         textTimer.setText([ 'Timer: ' + Math.trunc(timer -= (0.02 * fps3)) ]);
+        textLives.setText(['Lives: ' + lives]);
 
         if(timer < 0)
         {
             this.scene.start('gameOver')
-            timer = 60;
+            timer = 90;
         }
 
         customPipeline.setFloat1('time', pipeTime);
@@ -1798,7 +1853,6 @@ var Game = new Phaser.Class({
             //}
 
         //});
-
         /*  // Keyboard for Claw Machine
         if (cursors.left.isDown)
         {
