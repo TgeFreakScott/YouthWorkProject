@@ -1,4 +1,3 @@
-import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin/src";
 
 var CustomPipeline2 = new Phaser.Class({
 
@@ -76,6 +75,7 @@ var Preloader = new Phaser.Class({
 
     preload: function ()
     {
+
       //Favicon image Function
       setInterval(function() { iconChange();}, 10);
 
@@ -2963,6 +2963,9 @@ var Game = new Phaser.Class({
           }*/
     }
 });
+
+import Phaser from "phaser";
+import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
 
 var config = {
         type: Phaser.AUTO,
