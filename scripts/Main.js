@@ -103,7 +103,7 @@ var Preloader = new Phaser.Class({
       this.load.image('armRightBody', 'Sprite/armRight.png', 'Sprite/physics/armRightShape.json');
       this.load.image('armConnectBody', 'Sprite/armConnect.png', 'Sprite/physics/armConnectShape.json');
       this.load.image('bucket', 'Sprite/glassPanel.png', 'Sprite/physics/glassPrison.json');
-      this.load.image('bucketHitBox, Sprite/glassBox.png');
+      this.load.image('bucketHitBox', 'Sprite/glassBox.png');
       this.load.image('background', 'Sprite/background.png');
       this.load.image('youthBackground', 'Sprite/YEStageBackground.png');
       this.load.image('floor', 'Sprite/floor.png');
