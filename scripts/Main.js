@@ -2971,15 +2971,13 @@ var config = {
         input: {gamepad: true},
         audio: { disableWebAudio: true },
         scene: [ Preloader, MainMenu, PlayerEnter, Game, YouthElement, GameOverScene ],
+        plugin: PhaserMatterCollisionPlugin, // The plugin class
+        key: "matterCollision", // Where to store in Scene.Systems, e.g. scene.sys.matterCollision
+        mapping: "matterCollision", // Where to store in the Scene, e.g. scene.matterCollision
         physics:{
           default: 'matter',
                   arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
                   matter: { debug: true, gravity: { y: 9.78 } },
                   impact: { debug: true } },
-        plugins: {
-                  plugin: PhaserMatterCollisionPlugin, // The plugin class
-                  key: "matterCollision", // Where to store in Scene.Systems, e.g. scene.sys.matterCollision
-                  mapping: "matterCollision" // Where to store in the Scene, e.g. scene.matterCollision
-                  }
   };
   var game = new Phaser.Game(config);
