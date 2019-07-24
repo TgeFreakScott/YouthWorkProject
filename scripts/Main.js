@@ -141,6 +141,9 @@ var Preloader = new Phaser.Class({
       this.load.spritesheet('blueMove' ,'Sprite/bluePlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('greenMove' ,'Sprite/greenPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
 
+      this.load.image('blueDickHead',['Sprite/bluePlayer.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('light','Sprite/light.png' );
+
       this.load.spritesheet('greyJump' ,'Sprite/greyJump.png' ,{ frameWidth: 331, frameHeight: 294 });
       //this.load.spritesheet('redJump' ,'Sprite/redJump.png' ,{ frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('pinkJump' ,'Sprite/pinkJump.png' ,{ frameWidth: 331, frameHeight: 294 });
@@ -582,12 +585,10 @@ var YouthElement = new Phaser.Class({
 
       //pinkPlayer = this.add.image(500,500,'pinkMove').setScale(0.25);
 
-      pinkPlayer = this.add.sprite(500, 500,'pinkMove').setScale(0.25);
-      pinkPlayer.setPipeline('Light2D');
+      bluePlayer = this.add.sprite(500, 500,'blueDickHead').setScale(0.25);
+      bluePlayer.setPipeline('Light2D');
 
-      light = this.lights.addLight(0,0,500).setIntensity(6);
-
-
+      light = this.lights.addLight(500,500,100).setIntensity(3);
       this.lights.enable().setAmbientColor(0x888888);
 
       keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -603,18 +604,20 @@ var YouthElement = new Phaser.Class({
 
           if(keyA.isDown) //LEFT
           {
-            if( pinkPlayer.x > 100)
-            {
-                pinkPlayer.x -= 15;
-            }
+            light.x -=2;
+            //if( bluePlayer.x > 100)
+            //{
+            //    bluePlayer.x -= 15;
+            //}
           }
 
           if(keyS.isDown) //RIGHT
           {
-            if(pinkPlayer.x < 900)
-            {
-                pinkPlayer.x += 15;
-            }
+            light.x+=2;
+          //  if(bluePlayer.x < 900)
+          //  {
+          //      bluePlayer.x += 15;
+          //  }
           }
     }
 
