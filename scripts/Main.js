@@ -589,7 +589,7 @@ var YouthElement = new Phaser.Class({
       bluePlayer.setPipeline('Light2D');
 
       light = this.lights.addLight(500,500,100).setIntensity(3);
-      this.lights.enable().setAmbientColor(0x888888);
+      this.lights.enable().setAmbientColor(0xEAD1DC);
 
       keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
       keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
