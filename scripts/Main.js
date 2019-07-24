@@ -1,3 +1,5 @@
+import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin/src";
+
 var CustomPipeline2 = new Phaser.Class({
 
     Extends: Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline,
@@ -2970,11 +2972,24 @@ var config = {
         pixelArt: true,
         input: {gamepad: true},
         audio: { disableWebAudio: true },
-        scene: [ Preloader, MainMenu, PlayerEnter, Game, YouthElement, GameOverScene ],
+        plugins: {
+          scene: [
+            {
+              plugin: PhaserMatterCollisionPlugin,
+              key: "matterCollision",
+              mapping: "matterCollision"
+            },
+              Preloader,
+              MainMenu,
+              PlayerEnter,
+              Game,
+              YouthElement,
+              GameOverScene ]},
         physics:{
           default: 'matter',
-                  arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
-                  matter: { debug: true, gravity: { y: 9.78 } },
-                  impact: { debug: true } },
+          arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
+          matter: { debug: true, gravity: { y: 9.78 } },
+          impact: { debug: true }
+                },
   };
   var game = new Phaser.Game(config);
