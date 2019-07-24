@@ -1451,15 +1451,23 @@ var Game = new Phaser.Class({
           rightConnectToClawTop.length = rightConnectToClawTopData.length;
         });*/
 
-        this.matter.world.on('collisionstart', function (event, bodyA, bodyB)
+        this.matterCollision.addOnCollideStart(
         {
-          if ((bodyA.label === 'player' && bodyB.label === 'bucket') ||
-              (bodyB.label === 'player' && bodyA.label === 'bucket'))
-          {
+          objectA: greyPlayer,
+          objectB: leftBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
             lives--;
-            console.log(lives);
           }
         });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: greyPlayer,
+          objectB: rightBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            lives--;
+          }
+        });
+
 
 
         this.input.setPollAlways();
