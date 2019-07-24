@@ -1467,8 +1467,70 @@ var Game = new Phaser.Class({
             lives--;
           }
         });
-
-
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: bluePlayer,
+          objectB: leftBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            lives--;
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: bluePlayer,
+          objectB: rightBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            lives--;
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: greenPlayer,
+          objectB: leftBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            lives--;
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: greenPlayer,
+          objectB: rightBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            lives--;
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: yellowPlayer,
+          objectB: leftBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            lives--;
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: yellowPlayer,
+          objectB: rightBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            lives--;
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: pinkPlayer,
+          objectB: leftBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            lives--;
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: pinkPlayer,
+          objectB: rightBucket,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            lives--;
+          }
+        });
 
         this.input.setPollAlways();
     },
@@ -2913,6 +2975,11 @@ var config = {
           default: 'matter',
                   arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
                   matter: { debug: true, gravity: { y: 9.78 } },
-                  impact: { debug: true } }
+                  impact: { debug: true } },
+        plugins: {
+                  plugin: PhaserMatterCollisionPlugin, // The plugin class
+                  key: "matterCollision", // Where to store in Scene.Systems, e.g. scene.sys.matterCollision
+                  mapping: "matterCollision" // Where to store in the Scene, e.g. scene.matterCollision
+                  }
   };
   var game = new Phaser.Game(config);
