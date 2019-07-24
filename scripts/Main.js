@@ -103,6 +103,7 @@ var Preloader = new Phaser.Class({
       this.load.image('armRightBody', 'Sprite/armRight.png', 'Sprite/physics/armRightShape.json');
       this.load.image('armConnectBody', 'Sprite/armConnect.png', 'Sprite/physics/armConnectShape.json');
       this.load.image('bucket', 'Sprite/glassPanel.png', 'Sprite/physics/glassPrison.json');
+      this.load.image('bucketHitBox, Sprite/glassBox.png');
       this.load.image('background', 'Sprite/background.png');
       this.load.image('youthBackground', 'Sprite/YEStageBackground.png');
       this.load.image('floor', 'Sprite/floor.png');
@@ -112,9 +113,11 @@ var Preloader = new Phaser.Class({
       this.load.image('pipeBody','Sprite/clawBarBody.png');
 
       //yes/no/maybe sprites
-      this.load.image('yes', 'Sprite/yes.png');
-      this.load.image('no', 'Sprite/no.png');
+      this.load.image('yes', 'Sprite/agree.png');
+      this.load.image('no', 'Sprite/disagree.png');
       this.load.image('maybe', 'Sprite/maybe.png');
+      this.load.image('agree', 'Sprite/agree.png');
+      this.load.image('disagree', 'Sprite/disagree.png');
 
       this.load.image('greyArrow', 'Sprite/greyArrow.png');
       this.load.image('blueArrow', 'Sprite/blueArrow.png');
@@ -573,9 +576,9 @@ var YouthElement = new Phaser.Class({
     create: function ()
     {
       yeBackground = this.add.image(510, 300, 'youthBackground').setScale(0.4).setAlpha(0.6);
-      yesSprite = this.add.image(100,100, 'yes').setScale(1);
-      noSprite = this.add.image(900,100, 'no').setScale(1);
-      maybeSprite = this.add.image(500,100, 'maybe').setScale(1);
+      yesSprite = this.add.image(100, 50, 'yes').setScale(0.35);
+      noSprite = this.add.image(900, 50, 'no').setScale(0.35);
+      maybeSprite = this.add.image(500, 50, 'maybe').setScale(0.35);
 
       //pinkPlayer = this.add.image(500,500,'pinkMove').setScale(0.25);
 
@@ -664,7 +667,9 @@ var armConnectLeftSprite;
 var armConnectRightSprite;
 
 var leftBucket;
+var leftBucketHitBox;
 var rightBucket;
+var rightBucketHitBox;
 var backgroundSprite;
 var floorSprite;
 
@@ -853,16 +858,18 @@ var Game = new Phaser.Class({
 
         var rectCaptureBoxA1 = Bodies.rectangle(160, 90, 330, 14);
         var rectCaptureBoxB1 = Bodies.rectangle( 0, 0, 14, 190);
-        var circCaptureBoxC1 = Bodies.circle(90, 0, 80, { isSensor: true, label: 'top' });
+        //var rectCaptureBoxLeft = Bodies.rectangle(90, 0, 80,80);
+        //var circCaptureBoxC1 = Bodies.circle(90, 0, 80, { isSensor: true, label: 'top' });
 
         var rectCaptureBoxA2 = Bodies.rectangle( 0, 0, 14, 190);
         var rectCaptureBoxB2 = Bodies.rectangle(-160, 90, 330, 14);
-        var circCaptureBoxC2 = Bodies.circle(-90, 0, 80, { isSensor: true, label: 'top' });
+        //var rectCaptureBoxRight = Bodies.rectangle(90, 0, 80,80);
+        //var circCaptureBoxC2 = Bodies.circle(-90, 0, 80, { isSensor: true, label: 'top' });
 
         var compoundCaptureBox1 = Phaser.Physics.Matter.Matter.Body.create(
-          {parts: [ rectCaptureBoxA1, rectCaptureBoxB1, circCaptureBoxC1 ]});
+          {parts: [ rectCaptureBoxA1, rectCaptureBoxB1]});//, circCaptureBoxC1 ]});
         var compoundCaptureBox2 = Phaser.Physics.Matter.Matter.Body.create(
-          {parts: [ rectCaptureBoxA2, rectCaptureBoxB2, circCaptureBoxC2 ]});
+          {parts: [ rectCaptureBoxA2, rectCaptureBoxB2]});//, circCaptureBoxC2 ]});
 
         var compoundBody = Phaser.Physics.Matter.Matter.Body.create(
           {parts: [ rectA1, rectA2, circleA1, circleA2, circleA3, circleA4 ]});
@@ -924,51 +931,56 @@ var Game = new Phaser.Class({
         greyPlayer.setExistingBody(compoundBody);
         greyPlayer.setPosition(300,500).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
-        greyPlayer.label = "player";
 
         bluePlayer = this.matter.add.sprite(300, 500, 'blueMove','blueMove',{shape: shapeGrey.greyCapture})
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         bluePlayer.setExistingBody(compoundBody4);
         bluePlayer.setPosition(400,400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
-        bluePlayer.label = "player";
 
         yellowPlayer = this.matter.add.sprite(300, 500, 'yellowMove','yellowMove',{shape: shapeGrey.greyCapture})
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         yellowPlayer.setExistingBody(compoundBody5);
         yellowPlayer.setPosition(200,400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
-        yellowPlayer.label = "player";
 
         greenPlayer = this.matter.add.sprite(300, 500, 'greenMove','greenMove',{shape: shapeGrey.greyCapture})
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         greenPlayer.setExistingBody(compoundBody6);
         greenPlayer.setPosition(800,400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
-        greenPlayer.label = "player";
 
         pinkPlayer = this.matter.add.sprite(250, 400, 'pinkMove','pinkMove',{shape: shapePink.pinkCapture })
         .setScale(0.2).setMass(400).setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
         pinkPlayer.setExistingBody(compoundBody3);
         pinkPlayer.setPosition(250, 400).setScale(0.2).setMass(400)
         .setBounce(0.7).setFriction(0).setFixedRotation(true).setAngularVelocity(0);
-        pinkPlayer.label = "player";
 
         leftBucket = this.matter.add.image(-15,570, 'bucket','bucket', {shape: shapeBucket.glassPanel})
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         leftBucket.setExistingBody(compoundCaptureBox2);
-        leftBucket.setPosition(70,550)
+        leftBucket.setPosition(70,600)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
-        leftBucket.label = "bucket";
 
-         rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket',)
+        leftBucketHitBox = this.matter.add.image(-15,570, 'bucketHitBox', {shape:'square'})
+        .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.3);
+
+        leftBucketHitBox.setPosition(72,600)
+        .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
+
+         rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket', {shape: shapeBucket.glassPanel})
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         rightBucket.setExistingBody(compoundCaptureBox1);
-        rightBucket.setPosition(940,550)
+        rightBucket.setPosition(940,600)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
-        rightBucket.label = "bucket";
+
+        rightBucketHitBox = this.matter.add.image(-15,570, 'bucketHitBox', {shape:'square'})
+        .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.3);
+
+        rightBucketHitBox.setPosition(72,600)
+        .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
@@ -1457,80 +1469,90 @@ var Game = new Phaser.Class({
         this.matterCollision.addOnCollideStart(
         {
           objectA: greyPlayer,
-          objectB: leftBucket,
+          objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            greyPlayer.setPosition(500,500);
             lives--;
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: greyPlayer,
-          objectB: rightBucket,
+          objectB: rightBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            greyPlayer.setPosition(500,500);
             lives--;
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: bluePlayer,
-          objectB: leftBucket,
+          objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            bluePlayer.setPosition(500,500);
             lives--;
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: bluePlayer,
-          objectB: rightBucket,
+          objectB: rightBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            bluePlayer.setPosition(500,500);
             lives--;
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: greenPlayer,
-          objectB: leftBucket,
+          objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            greenPlayer.setPosition(500,500);
             lives--;
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: greenPlayer,
-          objectB: rightBucket,
+          objectB: rightBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            greenPlayer.setPosition(500,500);
             lives--;
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: yellowPlayer,
-          objectB: leftBucket,
+          objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            yellowPlayer.setPosition(500,500);
             lives--;
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: yellowPlayer,
-          objectB: rightBucket,
+          objectB: rightBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            yellowPlayer.setPosition(500,500);
             lives--;
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: pinkPlayer,
-          objectB: leftBucket,
+          objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            pinkPlayer.setPosition(500,500);
             lives--;
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: pinkPlayer,
-          objectB: rightBucket,
+          objectB: rightBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+            pinkPlayer.setPosition(500,500);
             lives--;
           }
         });
