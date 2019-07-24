@@ -736,7 +736,12 @@ var keyL;
 
 var music;
 var textTimer;
-var timer = 10;
+var timer = 100;
+var greyRespawnTimer = 5;
+var blueRespawnTimer = 5;
+var greenRespawnTimer = 5;
+var yellowRespawnTimer = 5;
+var pinkRespawnTimer = 5;
 var nextTimer = 30;
 var textLives;
 var lives = 5;
@@ -967,10 +972,10 @@ var Game = new Phaser.Class({
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         leftBucketHitBox = this.matter.add.image(-15,570, 'bucketHitBox', {shape:'square'})
-        .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.3);
+        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.2);
 
-        leftBucketHitBox.setPosition(72,600)
-        .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
+        leftBucketHitBox.setPosition(65,600)
+        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.2);
 
          rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket', {shape: shapeBucket.glassPanel})
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
@@ -980,10 +985,10 @@ var Game = new Phaser.Class({
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
         rightBucketHitBox = this.matter.add.image(-15,570, 'bucketHitBox', {shape:'square'})
-        .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.3);
+        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.2);
 
-        rightBucketHitBox.setPosition(72,600)
-        .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
+        rightBucketHitBox.setPosition(945,600)
+        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.2);
 
         greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
@@ -1474,17 +1479,27 @@ var Game = new Phaser.Class({
           objectA: greyPlayer,
           objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            greyPlayer.setPosition(500,500);
-            lives--;
+            greyRespawnTimer -= 0.5;
+            if(greyRespawnTimer <= 0)
+            {
+              greyPlayer.setPosition(500,500);
+              lives--;
+              greyRespawnTimer = 5;
+            }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: greyPlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
-            greyPlayer.setPosition(500,500);
-            lives--;
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            greyRespawnTimer -= 0.5;
+            if(greyRespawnTimer <= 0)
+            {
+              greyPlayer.setPosition(500,500);
+              lives--;
+              greyRespawnTimer = 5;
+            }
           }
         });
         this.matterCollision.addOnCollideStart(
@@ -1492,17 +1507,27 @@ var Game = new Phaser.Class({
           objectA: bluePlayer,
           objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            bluePlayer.setPosition(500,500);
-            lives--;
+            blueRespawnTimer -= 0.5;
+            if(blueRespawnTimer <= 0)
+            {
+              bluePlayer.setPosition(500,500);
+              lives--;
+              blueRespawnTimer = 5;
+            }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: bluePlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
-            bluePlayer.setPosition(500,500);
-            lives--;
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            blueRespawnTimer -= 0.5;
+            if(blueRespawnTimer <= 0)
+            {
+              bluePlayer.setPosition(500,500);
+              lives--;
+              blueRespawnTimer = 5;
+            }
           }
         });
         this.matterCollision.addOnCollideStart(
@@ -1510,17 +1535,27 @@ var Game = new Phaser.Class({
           objectA: greenPlayer,
           objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            greenPlayer.setPosition(500,500);
-            lives--;
+            greenRespawnTimer -= 0.5;
+            if(greenRespawnTimer <= 0)
+            {
+              greenPlayer.setPosition(500,500);
+              lives--;
+              greenRespawnTimer = 5;
+            }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: greenPlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
-            greenPlayer.setPosition(500,500);
-            lives--;
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            greenRespawnTimer -= 0.5;
+            if(greenRespawnTimer <= 0)
+            {
+              greenPlayer.setPosition(500,500);
+              lives--;
+              greenRespawnTimer = 5;
+            }
           }
         });
         this.matterCollision.addOnCollideStart(
@@ -1528,17 +1563,27 @@ var Game = new Phaser.Class({
           objectA: yellowPlayer,
           objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            yellowPlayer.setPosition(500,500);
-            lives--;
+            yellowRespawnTimer -= 0.5;
+            if(yellowRespawnTimer <= 0)
+            {
+              yellowPlayer.setPosition(500,500);
+              lives--;
+              yellowRespawnTimer = 5;
+            }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: yellowPlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
-            yellowPlayer.setPosition(500,500);
-            lives--;
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            yellowRespawnTimer -= 0.5;
+            if(yellowRespawnTimer <= 0)
+            {
+              yellowPlayer.setPosition(500,500);
+              lives--;
+              yellowRespawnTimer = 5;
+            }
           }
         });
         this.matterCollision.addOnCollideStart(
@@ -1546,17 +1591,27 @@ var Game = new Phaser.Class({
           objectA: pinkPlayer,
           objectB: leftBucketHitBox,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            pinkPlayer.setPosition(500,500);
-            lives--;
+            pinkRespawnTimer -= 0.5;
+            if(pinkRespawnTimer <= 0)
+            {
+              pinkPlayer.setPosition(500,500);
+              lives--;
+              pinkRespawnTimer = 5;
+            }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: pinkPlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
-            pinkPlayer.setPosition(500,500);
-            lives--;
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            pinkRespawnTimer -= 0.5;
+            if(pinkRespawnTimer <= 0)
+            {
+              pinkPlayer.setPosition(500,500);
+              lives--;
+              pinkRespawnTimer = 5;
+            }
           }
         });
 
