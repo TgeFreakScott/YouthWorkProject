@@ -1489,7 +1489,7 @@ var Game = new Phaser.Class({
         {
           objectA: greyPlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
             greyRespawnTimer -= 0.5;
             if(greyRespawnTimer <= 0)
             {
@@ -1517,7 +1517,7 @@ var Game = new Phaser.Class({
         {
           objectA: bluePlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
             blueRespawnTimer -= 0.5;
             if(blueRespawnTimer <= 0)
             {
@@ -1545,7 +1545,7 @@ var Game = new Phaser.Class({
         {
           objectA: greenPlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
             greenRespawnTimer -= 0.5;
             if(greenRespawnTimer <= 0)
             {
@@ -1573,7 +1573,7 @@ var Game = new Phaser.Class({
         {
           objectA: yellowPlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
             yellowRespawnTimer -= 0.5;
             if(yellowRespawnTimer <= 0)
             {
@@ -1601,7 +1601,7 @@ var Game = new Phaser.Class({
         {
           objectA: pinkPlayer,
           objectB: rightBucketHitBox,
-          callback: ({bodyA, gameObjectA, bodyB, gameObjectB,}) => {
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
             pinkRespawnTimer -= 0.5;
             if(pinkRespawnTimer <= 0)
             {
