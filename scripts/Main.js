@@ -146,9 +146,9 @@ var Preloader = new Phaser.Class({
       this.load.image('yellowDickHead',['Sprite/yellowPlayer.png', 'Sprite/bluePlayer_n.png']);
       this.load.image('greyDickHead',['Sprite/greyPlayer.png', 'Sprite/bluePlayer_n.png']);
       this.load.image('greenDickHead',['Sprite/greenPlayer.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('clawOneDickHead',['Sprite/bluePlayer.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('clawTwoDickHead',['Sprite/bluePlayer.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('clawThreeDickHead',['Sprite/bluePlayer.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('clawOneDickHead',['Sprite/clawOneDickhead.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('clawTwoDickHead',['Sprite/clawTwoDickhead.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('clawThreeDickHead',['Sprite/clawThreeDickhead.png', 'Sprite/bluePlayer_n.png']);
 
       this.load.image('light','Sprite/light.png' );
 
@@ -529,6 +529,7 @@ var MainMenu = new Phaser.Class({
 
 });
 
+var whoWon;
 var GameOverScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -539,11 +540,32 @@ var GameOverScene = new Phaser.Class({
         Phaser.Scene.call(this, { key: 'gameOver' });
     },
 
+    init: function(data)
+    {
+      whoWon = data.winner;
+    },
+
     create: function ()
     {
 
+      if(whoWon)
+      {
+        console.log('%c Game Over \n %c Player team won!', 'background: green; color: white; display: block;');
 
-      console.log('%c GameOver ', 'background: green; color: white; display: block;');
+              textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
+                  .setFontSize(64).setFontStyle('bold')
+                  .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+                  .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
+                  .setBackgroundColor('#000000');
+
+              this.input.once('pointerdown', function (){
+                  this.scene.start('youthelement');
+                  console.log('pointer press');
+                    }, this);
+      }
+      else if(!whoWon)
+      {
+        console.log('%c Game Over \n %c Claw team won', 'background: green; color: white; display: block;');
 
             textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
                 .setFontSize(64).setFontStyle('bold')
@@ -555,6 +577,8 @@ var GameOverScene = new Phaser.Class({
                 this.scene.start('youthelement');
                 console.log('pointer press');
                   }, this);
+      }
+
     },
 
     update: function (time, delta)
@@ -594,31 +618,38 @@ var YouthElement = new Phaser.Class({
 
       //pinkPlayer = this.add.image(500,500,'pinkMove').setScale(0.25);
 
-      bluePlayer = this.add.sprite(500, 100,'blueDickHead').setScale(0.25);
+      bluePlayer = this.add.sprite(500, 100,'blueDickHead').setScale(0.2);
       bluePlayer.setPipeline('Light2D');
+      light1 = this.lights.addLight(500,100,100).setIntensity(10);
 
-      pinkPlayer = this.add.sprite(500, 200,'pinkDickHead').setScale(0.25);
+      pinkPlayer = this.add.sprite(500, 170,'pinkDickHead').setScale(0.2);
       pinkPlayer.setPipeline('Light2D');
+      light2 = this.lights.addLight(500,170,100).setIntensity(10);
 
-      greenPlayer = this.add.sprite(500, 300,'greenDickHead').setScale(0.25);
+      greenPlayer = this.add.sprite(500, 240,'greenDickHead').setScale(0.2);
       greenPlayer.setPipeline('Light2D');
+      light3 = this.lights.addLight(500,240,100).setIntensity(10);
 
-      yellowPlayer = this.add.sprite(500, 400,'yellowDickHead').setScale(0.25);
+      yellowPlayer = this.add.sprite(500, 310,'yellowDickHead').setScale(0.2);
       yellowPlayer.setPipeline('Light2D');
+      light4 = this.lights.addLight(500,310,100).setIntensity(10);
 
-      greyPlayer = this.add.sprite(500, 500,'greyDickHead').setScale(0.25);
+      greyPlayer = this.add.sprite(500, 380,'greyDickHead').setScale(0.2);
       greyPlayer.setPipeline('Light2D');
+      light5 = this.lights.addLight(500,380,100).setIntensity(10);
 
-      clawOnePlayer = this.add.sprite(500, 600,'blueDickHead').setScale(0.25);
+      clawOnePlayer = this.add.sprite(500, 450,'clawOneDickHead').setScale(0.2);
       clawOnePlayer.setPipeline('Light2D');
+      light6 = this.lights.addLight(500,450,100).setIntensity(10);
 
-      clawTwoPlayer = this.add.sprite(500, 700,'blueDickHead').setScale(0.25);
+      clawTwoPlayer = this.add.sprite(500, 520,'clawTwoDickHead').setScale(0.2);
       clawTwoPlayer.setPipeline('Light2D');
+      light7 = this.lights.addLight(500,520,100).setIntensity(10);
 
-      clawThreePlayer = this.add.sprite(500, 800,'blueDickHead').setScale(0.25);
+      clawThreePlayer = this.add.sprite(500, 600,'clawThreeDickHead').setScale(0.2);
       clawThreePlayer.setPipeline('Light2D');
+      light8 = this.lights.addLight(500,600,100).setIntensity(10);
 
-      light = this.lights.addLight(500,500,100).setIntensity(10);
       this.lights.enable().setAmbientColor(0xEAD1DC);
 
       keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
@@ -662,90 +693,140 @@ var YouthElement = new Phaser.Class({
 //grey
           if(keyQ.isDown) //LEFT
           {
-
+            light5.x -=2;
+            if( greyPlayer.x > 100)
+            {
+                greyPlayer.x -= 15;
+            }
           }
 
           if(keyW.isDown) //RIGHT
           {
-
+            light5.x +=2;
+            if( greyPlayer.x < 900)
+            {
+                greyPlayer.x += 15;
+            }
           }
 //blue
           if(keyA.isDown) //LEFT
           {
-            light.x -=2;
-            //if( bluePlayer.x > 100)
-            //{
-            //    bluePlayer.x -= 15;
-            //}
+            light1.x -=2;
+            if( bluePlayer.x > 100)
+            {
+                bluePlayer.x -= 15;
+            }
           }
 
           if(keyS.isDown) //RIGHT
           {
-            light.x+=2;
-          //  if(bluePlayer.x < 900)
-          //  {
-          //      bluePlayer.x += 15;
-          //  }
+            light1.x+=2;
+            if(bluePlayer.x < 900)
+            {
+                bluePlayer.x += 15;
+            }
           }
 //yellow
           if(keyZ.isDown) //LEFT
           {
-
+            //light4.x
+            if( yellowPlayer.x > 100)
+            {
+                yellowPlayer.x -= 15;
+            }
           }
 
           if(keyX.isDown) //RIGHT
           {
-
+            if( yellowPlayer.x < 900)
+            {
+                yellowPlayer.x += 15;
+            }
           }
 //green
           if(keyR.isDown) //LEFT
           {
-
+            //light3.x
+            if( greenPlayer.x > 100)
+            {
+                greenPlayer.x -= 15;
+            }
           }
 
           if(keyT.isDown) //RIGHT
           {
-
+            if( greenPlayer.x < 900)
+            {
+                greenPlayer.x += 15;
+            }
           }
 //pink
           if(keyF.isDown) //LEFT
           {
-
+            //light2.x
+            if( pinkPlayer.x > 100)
+            {
+                pinkPlayer.x -= 15;
+            }
           }
 
           if(keyG.isDown) //RIGHT
           {
-
+            if( pinkPlayer.x < 900)
+            {
+                pinkPlayer.x += 15;
+            }
           }
 //left right claw
           if(keyV.isDown) //LEFT
           {
-
+            //light6.x
+            if( clawOnePlayer.x > 100)
+            {
+                clawOnePlayer.x -= 15;
+            }
           }
 
           if(keyB.isDown) //RIGHT
           {
-
+            if( clawOnePlayer.x < 900)
+            {
+                clawOnePlayer.x += 15;
+            }
           }
 //up down claw
           if(keyU.isDown) //LEFT
           {
-
+            //light7.x
+            if( clawTwoPlayer.x > 100)
+            {
+                clawTwoPlayer.x -= 15;
+            }
           }
 
           if(keyI.isDown) //RIGHT
           {
-
+            if( clawTwoPlayer.x < 900)
+            {
+                clawTwoPlayer.x += 15;
+            }
           }
 //open close claw
           if(keyJ.isDown) //LEFT
           {
-
+            //light8.x
+            if( clawThreePlayer.x > 100)
+            {
+                clawThreePlayer.x -= 15;
+            }
           }
 
           if(keyK.isDown) //RIGHT
           {
-
+            if( clawThreePlayer.x < 900)
+            {
+                clawThreePlayer.x += 15;
+            }
           }
     }
 
@@ -862,6 +943,7 @@ var keyJ;
 var keyK;
 var keyL;
 
+var playerWin = false;
 var music;
 var textTimer;
 var timer = 10;
@@ -1633,7 +1715,8 @@ var Game = new Phaser.Class({
               }
               else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               greyRespawnTimer = 5;
             }
@@ -1670,7 +1753,8 @@ var Game = new Phaser.Class({
               }
               else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               greyRespawnTimer = 5;
             }
@@ -1707,7 +1791,8 @@ var Game = new Phaser.Class({
               }
               else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               blueRespawnTimer = 5;
             }
@@ -1744,7 +1829,8 @@ var Game = new Phaser.Class({
               }
               else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               blueRespawnTimer = 5;
             }
@@ -1781,7 +1867,8 @@ var Game = new Phaser.Class({
               }
               else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               greenRespawnTimer = 5;
             }
@@ -1818,7 +1905,8 @@ var Game = new Phaser.Class({
               }
               else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               greenRespawnTimer = 5;
             }
@@ -1855,7 +1943,8 @@ var Game = new Phaser.Class({
               }
               else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               yellowRespawnTimer = 5;
             }
@@ -1874,25 +1963,26 @@ var Game = new Phaser.Class({
               {
                 lives = 4;
               }
-              if(lives === 4)
+              else if(lives === 4)
               {
                 lives = 3;
               }
-              if(lives === 3)
+              else if(lives === 3)
               {
                 lives = 2;
               }
-              if(lives === 2)
+              else if(lives === 2)
               {
                 lives = 1;
               }
-              if(lives === 1)
+              else if(lives === 1)
               {
                 lives = 0;
               }
-              if(lives === 0)
+              else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               yellowRespawnTimer = 5;
             }
@@ -1911,25 +2001,26 @@ var Game = new Phaser.Class({
               {
                 lives = 4;
               }
-              if(lives === 4)
+              else if(lives === 4)
               {
                 lives = 3;
               }
-              if(lives === 3)
+              else if(lives === 3)
               {
                 lives = 2;
               }
-              if(lives === 2)
+              else if(lives === 2)
               {
                 lives = 1;
               }
-              if(lives === 1)
+              else if(lives === 1)
               {
                 lives = 0;
               }
-              if(lives === 0)
+              else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               pinkRespawnTimer = 5;
             }
@@ -1948,25 +2039,26 @@ var Game = new Phaser.Class({
               {
                 lives = 4;
               }
-              if(lives === 4)
+              else if(lives === 4)
               {
                 lives = 3;
               }
-              if(lives === 3)
+              else if(lives === 3)
               {
                 lives = 2;
               }
-              if(lives === 2)
+              else if(lives === 2)
               {
                 lives = 1;
               }
-              if(lives === 1)
+              else if(lives === 1)
               {
                 lives = 0;
               }
-              if(lives === 0)
+              else if(lives === 0)
               {
-                this.scene.start('gameOver');
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
               }
               pinkRespawnTimer = 5;
             }
@@ -1992,7 +2084,9 @@ var Game = new Phaser.Class({
 
         if(timer < 0)
         {
-            this.scene.start('gameOver');
+            //this.scene.start('gameOver');
+            playerWin = true;
+            this.scene.start('gameOver', { winner: playerWin});
             timer = 90;
         }
 
