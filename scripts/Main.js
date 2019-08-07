@@ -685,6 +685,8 @@ var YouthElement = new Phaser.Class({
       keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
 
         console.log('%c YouthElement ', 'background: green; color: white; display: block;');
+
+
     },
 
     update: function (time, delta)
@@ -708,6 +710,22 @@ var YouthElement = new Phaser.Class({
                 greyPlayer.x += 15;
             }
           }
+
+          if(light5.x < 150 )
+          {
+            light5.setColor(0x00ff00).setIntensity(15);
+          }
+
+          if(light5.x > 150 && light5.x < 550 )
+          {
+            light5.setColor(0xEAD1DC).setIntensity(15);
+          }
+
+          if(light5.x > 750 )
+          {
+            light5.setColor(0xff0000).setIntensity(15);
+          }
+
 //blue
           if(keyA.isDown) //LEFT
           {
@@ -725,6 +743,20 @@ var YouthElement = new Phaser.Class({
                 light1.x+=15;
                 bluePlayer.x += 15;
             }
+          }
+          if(light1.x < 150 )
+          {
+            light1.setColor(0x00ff00).setIntensity(15);
+          }
+
+          if(light1.x > 150 && light1.x < 550 )
+          {
+            light1.setColor(0xEAD1DC).setIntensity(15);
+          }
+
+          if(light1.x > 750 )
+          {
+            light1.setColor(0xff0000).setIntensity(15);
           }
 //yellow
           if(keyZ.isDown) //LEFT
@@ -745,6 +777,21 @@ var YouthElement = new Phaser.Class({
                 yellowPlayer.x += 15;
             }
           }
+
+          if(light4.x < 150 )
+          {
+            light4.setColor(0x00ff00).setIntensity(15);
+          }
+
+          if(light4.x > 150 && light4.x < 550 )
+          {
+            light4.setColor(0xEAD1DC).setIntensity(15);
+          }
+
+          if(light4.x > 750 )
+          {
+            light4.setColor(0xff0000).setIntensity(15);
+          }
 //green
           if(keyR.isDown) //LEFT
           {
@@ -763,6 +810,21 @@ var YouthElement = new Phaser.Class({
               light3.x +=15;
               greenPlayer.x += 15;
             }
+          }
+
+          if(light3.x < 150 )
+          {
+            light3.setColor(0x00ff00).setIntensity(15);
+          }
+
+          if(light3.x > 150 && light3.x < 550 )
+          {
+            light3.setColor(0xEAD1DC).setIntensity(15);
+          }
+
+          if(light3.x > 750 )
+          {
+            light3.setColor(0xff0000).setIntensity(15);
           }
 //pink
           if(keyF.isDown) //LEFT
@@ -783,6 +845,21 @@ var YouthElement = new Phaser.Class({
               pinkPlayer.x += 15;
             }
           }
+
+          if(light2.x < 150 )
+          {
+            light2.setColor(0x00ff00).setIntensity(15);
+          }
+
+          if(light2.x > 150 && light2.x < 550 )
+          {
+            light2.setColor(0xEAD1DC).setIntensity(15);
+          }
+
+          if(light2.x > 750 )
+          {
+            light2.setColor(0xff0000).setIntensity(15);
+          }
 //left right claw
           if(keyV.isDown) //LEFT
           {
@@ -801,6 +878,21 @@ var YouthElement = new Phaser.Class({
               light6.x +=15;
               clawOnePlayer.x += 15;
             }
+          }
+
+          if(light6.x < 150 )
+          {
+            light6.setColor(0x00ff00).setIntensity(15);
+          }
+
+          if(light6.x > 150 && light6.x < 550 )
+          {
+            light6.setColor(0xEAD1DC).setIntensity(15);
+          }
+
+          if(light6.x > 750 )
+          {
+            light6.setColor(0xff0000).setIntensity(15);
           }
 //up down claw
           if(keyU.isDown) //LEFT
@@ -821,6 +913,21 @@ var YouthElement = new Phaser.Class({
               clawTwoPlayer.x += 15;
             }
           }
+
+          if(light7.x < 150 )
+          {
+            light7.setColor(0x00ff00).setIntensity(15);
+          }
+
+          if(light7.x > 150 && light7.x < 550 )
+          {
+            light7.setColor(0xEAD1DC).setIntensity(15);
+          }
+
+          if(light7.x > 750 )
+          {
+            light7.setColor(0xff0000).setIntensity(15);
+          }
 //open close claw
           if(keyJ.isDown) //LEFT
           {
@@ -839,6 +946,21 @@ var YouthElement = new Phaser.Class({
               light8.x +=15;
               clawThreePlayer.x += 15;
             }
+          }
+
+          if(light8.x < 150 )
+          {
+            light8.setColor(0x00ff00).setIntensity(15);
+          }
+
+          if(light8.x > 150 && light8.x < 550 )
+          {
+            light8.setColor(0xEAD1DC).setIntensity(15);
+          }
+
+          if(light8.x > 750 )
+          {
+            light8.setColor(0xff0000).setIntensity(15);
           }
     }
 
@@ -964,6 +1086,7 @@ var blueRespawnTimer = 5;
 var greenRespawnTimer = 5;
 var yellowRespawnTimer = 5;
 var pinkRespawnTimer = 5;
+var bounceCounter = 0;
 var nextTimer = 30;
 var textLives;
 var lives = 5;
@@ -2082,36 +2205,21 @@ var Game = new Phaser.Class({
           objectA: greyPlayer,
           objectB: armConnectLeftSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            greyRespawnTimer -= 0.5;
-            if(greyRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              greyPlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              greyRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
@@ -2120,36 +2228,21 @@ var Game = new Phaser.Class({
           objectA: greyPlayer,
           objectB: armConnectRightSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            greyRespawnTimer -= 0.5;
-            if(greyRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              greyPlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              greyRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
@@ -2158,36 +2251,21 @@ var Game = new Phaser.Class({
           objectA: bluePlayer,
           objectB: armConnectLeftSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            blueRespawnTimer -= 0.5;
-            if(blueRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              bluePlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              blueRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
@@ -2196,264 +2274,159 @@ var Game = new Phaser.Class({
           objectA: bluePlayer,
           objectB: armConnectRightSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            blueRespawnTimer -= 0.5;
-            if(blueRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              bluePlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              blueRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: greenPlayer,
-          objectB: leftBucketHitBox,
+          objectB: armConnectLeftSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            greenRespawnTimer -= 0.5;
-            if(greenRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              greenPlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              greenRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: greenPlayer,
-          objectB: rightBucketHitBox,
+          objectB: armConnectRightSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            greenRespawnTimer -= 0.5;
-            if(greenRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              greenPlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              greenRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: yellowPlayer,
-          objectB: leftBucketHitBox,
+          objectB: armConnectLeftSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            yellowRespawnTimer -= 0.5;
-            if(yellowRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              yellowPlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              yellowRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: yellowPlayer,
-          objectB: rightBucketHitBox,
+          objectB: armConnectRightSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            yellowRespawnTimer -= 0.5;
-            if(yellowRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              yellowPlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              yellowRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: pinkPlayer,
-          objectB: leftBucketHitBox,
+          objectB: armConnectLeftSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            pinkRespawnTimer -= 0.5;
-            if(pinkRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              pinkPlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              pinkRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
         this.matterCollision.addOnCollideStart(
         {
           objectA: pinkPlayer,
-          objectB: rightBucketHitBox,
+          objectB: armConnectRightSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
-            pinkRespawnTimer -= 0.5;
-            if(pinkRespawnTimer <= 0)
+            if(bounceCounter === 0)
             {
-              pinkPlayer.setPosition(500,500);
-              if(lives === 5)
-              {
-                lives = 4;
-              }
-              else if(lives === 4)
-              {
-                lives = 3;
-              }
-              else if(lives === 3)
-              {
-                lives = 2;
-              }
-              else if(lives === 2)
-              {
-                lives = 1;
-              }
-              else if(lives === 1)
-              {
-                lives = 0;
-              }
-              else if(lives === 0)
-              {
-                playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
-              }
-              pinkRespawnTimer = 5;
+              bounceCounter = 1;
+            }
+            else if(bounceCounter === 1)
+            {
+              bounceCounter = 2;
+            }
+            else if(bounceCounter === 2)
+            {
+              bounceCounter = 3;
+            }
+            else if(bounceCounter === 3)
+            {
+
             }
           }
         });
