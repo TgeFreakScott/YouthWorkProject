@@ -142,6 +142,14 @@ var Preloader = new Phaser.Class({
       this.load.spritesheet('greenMove' ,'Sprite/greenPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
 
       this.load.image('blueDickHead',['Sprite/bluePlayer.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('pinkDickHead',['Sprite/pinkPlayer.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('yellowDickHead',['Sprite/yellowPlayer.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('greyDickHead',['Sprite/greyPlayer.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('greenDickHead',['Sprite/greenPlayer.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('clawOneDickHead',['Sprite/bluePlayer.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('clawTwoDickHead',['Sprite/bluePlayer.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('clawThreeDickHead',['Sprite/bluePlayer.png', 'Sprite/bluePlayer_n.png']);
+
       this.load.image('light','Sprite/light.png' );
 
       this.load.spritesheet('greyJump' ,'Sprite/greyJump.png' ,{ frameWidth: 331, frameHeight: 294 });
@@ -578,6 +586,7 @@ var YouthElement = new Phaser.Class({
 
     create: function ()
     {
+
       yeBackground = this.add.image(510, 300, 'youthBackground').setScale(0.4).setAlpha(0.6);
       yesSprite = this.add.image(100, 50, 'yes').setScale(0.35);
       noSprite = this.add.image(900, 50, 'no').setScale(0.35);
@@ -585,15 +594,64 @@ var YouthElement = new Phaser.Class({
 
       //pinkPlayer = this.add.image(500,500,'pinkMove').setScale(0.25);
 
-      bluePlayer = this.add.sprite(500, 500,'blueDickHead').setScale(0.25);
+      bluePlayer = this.add.sprite(500, 100,'blueDickHead').setScale(0.25);
       bluePlayer.setPipeline('Light2D');
 
-      light = this.lights.addLight(500,500,100).setIntensity(3);
+      pinkPlayer = this.add.sprite(500, 200,'pinkDickHead').setScale(0.25);
+      pinkPlayer.setPipeline('Light2D');
+
+      greenPlayer = this.add.sprite(500, 300,'greenDickHead').setScale(0.25);
+      greenPlayer.setPipeline('Light2D');
+
+      yellowPlayer = this.add.sprite(500, 400,'yellowDickHead').setScale(0.25);
+      yellowPlayer.setPipeline('Light2D');
+
+      greyPlayer = this.add.sprite(500, 500,'greyDickHead').setScale(0.25);
+      greyPlayer.setPipeline('Light2D');
+
+      clawOnePlayer = this.add.sprite(500, 600,'blueDickHead').setScale(0.25);
+      clawOnePlayer.setPipeline('Light2D');
+
+      clawTwoPlayer = this.add.sprite(500, 700,'blueDickHead').setScale(0.25);
+      clawTwoPlayer.setPipeline('Light2D');
+
+      clawThreePlayer = this.add.sprite(500, 800,'blueDickHead').setScale(0.25);
+      clawThreePlayer.setPipeline('Light2D');
+
+      light = this.lights.addLight(500,500,100).setIntensity(10);
       this.lights.enable().setAmbientColor(0xEAD1DC);
+
+      keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+      keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+      keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
       keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
       keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
       keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+      keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+      keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+      keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
+
+      keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+      keyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
+      keyY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Y);
+
+      keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+      keyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G);
+      keyH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
+
+      keyV = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
+      keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+      keyN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+
+      keyU = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U);
+      keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+      keyO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+
+      keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+      keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+      keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
 
         console.log('%c YouthElement ', 'background: green; color: white; display: block;');
     },
@@ -601,7 +659,17 @@ var YouthElement = new Phaser.Class({
     update: function (time, delta)
     {
           console.log('Youth Element Update');
+//grey
+          if(keyQ.isDown) //LEFT
+          {
 
+          }
+
+          if(keyW.isDown) //RIGHT
+          {
+
+          }
+//blue
           if(keyA.isDown) //LEFT
           {
             light.x -=2;
@@ -618,6 +686,66 @@ var YouthElement = new Phaser.Class({
           //  {
           //      bluePlayer.x += 15;
           //  }
+          }
+//yellow
+          if(keyZ.isDown) //LEFT
+          {
+
+          }
+
+          if(keyX.isDown) //RIGHT
+          {
+
+          }
+//green
+          if(keyR.isDown) //LEFT
+          {
+
+          }
+
+          if(keyT.isDown) //RIGHT
+          {
+
+          }
+//pink
+          if(keyF.isDown) //LEFT
+          {
+
+          }
+
+          if(keyG.isDown) //RIGHT
+          {
+
+          }
+//left right claw
+          if(keyV.isDown) //LEFT
+          {
+
+          }
+
+          if(keyB.isDown) //RIGHT
+          {
+
+          }
+//up down claw
+          if(keyU.isDown) //LEFT
+          {
+
+          }
+
+          if(keyI.isDown) //RIGHT
+          {
+
+          }
+//open close claw
+          if(keyJ.isDown) //LEFT
+          {
+
+          }
+
+          if(keyK.isDown) //RIGHT
+          {
+
           }
     }
 
@@ -736,7 +864,7 @@ var keyL;
 
 var music;
 var textTimer;
-var timer = 100;
+var timer = 10;
 var greyRespawnTimer = 5;
 var blueRespawnTimer = 5;
 var greenRespawnTimer = 5;
@@ -1483,7 +1611,30 @@ var Game = new Phaser.Class({
             if(greyRespawnTimer <= 0)
             {
               greyPlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               greyRespawnTimer = 5;
             }
           }
@@ -1497,7 +1648,30 @@ var Game = new Phaser.Class({
             if(greyRespawnTimer <= 0)
             {
               greyPlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               greyRespawnTimer = 5;
             }
           }
@@ -1511,7 +1685,30 @@ var Game = new Phaser.Class({
             if(blueRespawnTimer <= 0)
             {
               bluePlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               blueRespawnTimer = 5;
             }
           }
@@ -1525,7 +1722,30 @@ var Game = new Phaser.Class({
             if(blueRespawnTimer <= 0)
             {
               bluePlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               blueRespawnTimer = 5;
             }
           }
@@ -1539,7 +1759,30 @@ var Game = new Phaser.Class({
             if(greenRespawnTimer <= 0)
             {
               greenPlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               greenRespawnTimer = 5;
             }
           }
@@ -1553,7 +1796,30 @@ var Game = new Phaser.Class({
             if(greenRespawnTimer <= 0)
             {
               greenPlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               greenRespawnTimer = 5;
             }
           }
@@ -1567,7 +1833,30 @@ var Game = new Phaser.Class({
             if(yellowRespawnTimer <= 0)
             {
               yellowPlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               yellowRespawnTimer = 5;
             }
           }
@@ -1581,7 +1870,30 @@ var Game = new Phaser.Class({
             if(yellowRespawnTimer <= 0)
             {
               yellowPlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              if(lives === 4)
+              {
+                lives = 3;
+              }
+              if(lives === 3)
+              {
+                lives = 2;
+              }
+              if(lives === 2)
+              {
+                lives = 1;
+              }
+              if(lives === 1)
+              {
+                lives = 0;
+              }
+              if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               yellowRespawnTimer = 5;
             }
           }
@@ -1595,7 +1907,30 @@ var Game = new Phaser.Class({
             if(pinkRespawnTimer <= 0)
             {
               pinkPlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              if(lives === 4)
+              {
+                lives = 3;
+              }
+              if(lives === 3)
+              {
+                lives = 2;
+              }
+              if(lives === 2)
+              {
+                lives = 1;
+              }
+              if(lives === 1)
+              {
+                lives = 0;
+              }
+              if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               pinkRespawnTimer = 5;
             }
           }
@@ -1609,7 +1944,30 @@ var Game = new Phaser.Class({
             if(pinkRespawnTimer <= 0)
             {
               pinkPlayer.setPosition(500,500);
-              lives--;
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              if(lives === 4)
+              {
+                lives = 3;
+              }
+              if(lives === 3)
+              {
+                lives = 2;
+              }
+              if(lives === 2)
+              {
+                lives = 1;
+              }
+              if(lives === 1)
+              {
+                lives = 0;
+              }
+              if(lives === 0)
+              {
+                this.scene.start('gameOver');
+              }
               pinkRespawnTimer = 5;
             }
           }
@@ -1634,7 +1992,7 @@ var Game = new Phaser.Class({
 
         if(timer < 0)
         {
-            this.scene.start('gameOver')
+            this.scene.start('gameOver');
             timer = 90;
         }
 
