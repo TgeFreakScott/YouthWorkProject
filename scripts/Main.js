@@ -141,14 +141,14 @@ var Preloader = new Phaser.Class({
       this.load.spritesheet('blueMove' ,'Sprite/bluePlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
       this.load.spritesheet('greenMove' ,'Sprite/greenPlayer.png' ,{ frameWidth: 331, frameHeight: 294 });
 
-      this.load.image('blueDickHead',['Sprite/bluePlayer.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('pinkDickHead',['Sprite/pinkPlayer.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('yellowDickHead',['Sprite/yellowPlayer.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('greyDickHead',['Sprite/greyPlayer.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('greenDickHead',['Sprite/greenPlayer.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('clawOneDickHead',['Sprite/clawOneDickhead.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('clawTwoDickHead',['Sprite/clawTwoDickhead.png', 'Sprite/bluePlayer_n.png']);
-      this.load.image('clawThreeDickHead',['Sprite/clawThreeDickhead.png', 'Sprite/bluePlayer_n.png']);
+      this.load.image('blueDickHead',['Sprite/blueDickhead.png', 'Sprite/blueDickhead_n.png']);
+      this.load.image('pinkDickHead',['Sprite/pinkDickhead.png', 'Sprite/blueDickhead_n.png']);
+      this.load.image('yellowDickHead',['Sprite/yellowDickhead.png', 'Sprite/blueDickhead_n.png']);
+      this.load.image('greyDickHead',['Sprite/greyDickhead.png', 'Sprite/blueDickhead_n.png']);
+      this.load.image('greenDickHead',['Sprite/greenDickhead.png', 'Sprite/blueDickhead_n.png']);
+      this.load.image('clawOneDickHead',['Sprite/clawOneDickhead.png', 'Sprite/blueDickhead_n.png']);
+      this.load.image('clawTwoDickHead',['Sprite/clawTwoDickhead.png', 'Sprite/blueDickhead_n.png']);
+      this.load.image('clawThreeDickHead',['Sprite/clawThreeDickhead.png', 'Sprite/blueDickhead_n.png']);
 
       this.load.image('light','Sprite/light.png' );
 
@@ -550,9 +550,9 @@ var GameOverScene = new Phaser.Class({
 
       if(whoWon)
       {
-        console.log('%c Game Over \n %c Player team won!', 'background: green; color: white; display: block;');
+        console.log('%c Game Over', 'background: green; color: white; display: block;');
 
-              textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
+              textGameOver = this.add.text(300, 250, 'Game Over \n Players win!', { font: '20px Arial' })
                   .setFontSize(64).setFontStyle('bold')
                   .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
                   .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
@@ -565,9 +565,9 @@ var GameOverScene = new Phaser.Class({
       }
       else if(!whoWon)
       {
-        console.log('%c Game Over \n %c Claw team won', 'background: green; color: white; display: block;');
+        console.log('%c Game Over ', 'background: green; color: white; display: block;');
 
-            textGameOver = this.add.text(300, 250, 'Game Over', { font: '20px Arial' })
+            textGameOver = this.add.text(300, 250, 'Game Over \n Claw wins!', { font: '20px Arial' })
                 .setFontSize(64).setFontStyle('bold')
                 .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
                 .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
@@ -693,45 +693,46 @@ var YouthElement = new Phaser.Class({
 //grey
           if(keyQ.isDown) //LEFT
           {
-            light5.x -=2;
             if( greyPlayer.x > 100)
             {
+                light5.x -=15;
                 greyPlayer.x -= 15;
             }
           }
 
           if(keyW.isDown) //RIGHT
           {
-            light5.x +=2;
             if( greyPlayer.x < 900)
             {
+                light5.x +=15;
                 greyPlayer.x += 15;
             }
           }
 //blue
           if(keyA.isDown) //LEFT
           {
-            light1.x -=2;
             if( bluePlayer.x > 100)
             {
+              light1.x -=15;
                 bluePlayer.x -= 15;
             }
           }
 
           if(keyS.isDown) //RIGHT
           {
-            light1.x+=2;
             if(bluePlayer.x < 900)
             {
+                light1.x+=15;
                 bluePlayer.x += 15;
             }
           }
 //yellow
           if(keyZ.isDown) //LEFT
           {
-            //light4.x
+            //
             if( yellowPlayer.x > 100)
             {
+                light4.x -= 15;
                 yellowPlayer.x -= 15;
             }
           }
@@ -740,16 +741,18 @@ var YouthElement = new Phaser.Class({
           {
             if( yellowPlayer.x < 900)
             {
+                light4.x += 15;
                 yellowPlayer.x += 15;
             }
           }
 //green
           if(keyR.isDown) //LEFT
           {
-            //light3.x
+            //
             if( greenPlayer.x > 100)
             {
-                greenPlayer.x -= 15;
+              light3.x -=15;
+              greenPlayer.x -= 15;
             }
           }
 
@@ -757,16 +760,18 @@ var YouthElement = new Phaser.Class({
           {
             if( greenPlayer.x < 900)
             {
-                greenPlayer.x += 15;
+              light3.x +=15;
+              greenPlayer.x += 15;
             }
           }
 //pink
           if(keyF.isDown) //LEFT
           {
-            //light2.x
+            //
             if( pinkPlayer.x > 100)
             {
-                pinkPlayer.x -= 15;
+              light2.x -=15;
+              pinkPlayer.x -= 15;
             }
           }
 
@@ -774,7 +779,8 @@ var YouthElement = new Phaser.Class({
           {
             if( pinkPlayer.x < 900)
             {
-                pinkPlayer.x += 15;
+              light2.x +=15;
+              pinkPlayer.x += 15;
             }
           }
 //left right claw
@@ -783,7 +789,8 @@ var YouthElement = new Phaser.Class({
             //light6.x
             if( clawOnePlayer.x > 100)
             {
-                clawOnePlayer.x -= 15;
+              light6.x -=15;
+              clawOnePlayer.x -= 15;
             }
           }
 
@@ -791,7 +798,8 @@ var YouthElement = new Phaser.Class({
           {
             if( clawOnePlayer.x < 900)
             {
-                clawOnePlayer.x += 15;
+              light6.x +=15;
+              clawOnePlayer.x += 15;
             }
           }
 //up down claw
@@ -800,7 +808,8 @@ var YouthElement = new Phaser.Class({
             //light7.x
             if( clawTwoPlayer.x > 100)
             {
-                clawTwoPlayer.x -= 15;
+              light7.x -=15;
+              clawTwoPlayer.x -= 15;
             }
           }
 
@@ -808,7 +817,8 @@ var YouthElement = new Phaser.Class({
           {
             if( clawTwoPlayer.x < 900)
             {
-                clawTwoPlayer.x += 15;
+              light7.x +=15;
+              clawTwoPlayer.x += 15;
             }
           }
 //open close claw
@@ -817,7 +827,8 @@ var YouthElement = new Phaser.Class({
             //light8.x
             if( clawThreePlayer.x > 100)
             {
-                clawThreePlayer.x -= 15;
+              light8.x -=15;
+              clawThreePlayer.x -= 15;
             }
           }
 
@@ -825,7 +836,8 @@ var YouthElement = new Phaser.Class({
           {
             if( clawThreePlayer.x < 900)
             {
-                clawThreePlayer.x += 15;
+              light8.x +=15;
+              clawThreePlayer.x += 15;
             }
           }
     }
@@ -1802,6 +1814,387 @@ var Game = new Phaser.Class({
         {
           objectA: bluePlayer,
           objectB: rightBucketHitBox,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            blueRespawnTimer -= 0.5;
+            if(blueRespawnTimer <= 0)
+            {
+              bluePlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              blueRespawnTimer = 5;
+            }
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: greenPlayer,
+          objectB: leftBucketHitBox,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            greenRespawnTimer -= 0.5;
+            if(greenRespawnTimer <= 0)
+            {
+              greenPlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              greenRespawnTimer = 5;
+            }
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: greenPlayer,
+          objectB: rightBucketHitBox,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            greenRespawnTimer -= 0.5;
+            if(greenRespawnTimer <= 0)
+            {
+              greenPlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              greenRespawnTimer = 5;
+            }
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: yellowPlayer,
+          objectB: leftBucketHitBox,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            yellowRespawnTimer -= 0.5;
+            if(yellowRespawnTimer <= 0)
+            {
+              yellowPlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              yellowRespawnTimer = 5;
+            }
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: yellowPlayer,
+          objectB: rightBucketHitBox,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            yellowRespawnTimer -= 0.5;
+            if(yellowRespawnTimer <= 0)
+            {
+              yellowPlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              yellowRespawnTimer = 5;
+            }
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: pinkPlayer,
+          objectB: leftBucketHitBox,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            pinkRespawnTimer -= 0.5;
+            if(pinkRespawnTimer <= 0)
+            {
+              pinkPlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              pinkRespawnTimer = 5;
+            }
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: pinkPlayer,
+          objectB: rightBucketHitBox,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            pinkRespawnTimer -= 0.5;
+            if(pinkRespawnTimer <= 0)
+            {
+              pinkPlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              pinkRespawnTimer = 5;
+            }
+          }
+        });
+
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: greyPlayer,
+          objectB: armConnectLeftSprite,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            greyRespawnTimer -= 0.5;
+            if(greyRespawnTimer <= 0)
+            {
+              greyPlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              greyRespawnTimer = 5;
+            }
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: greyPlayer,
+          objectB: armConnectRightSprite,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            greyRespawnTimer -= 0.5;
+            if(greyRespawnTimer <= 0)
+            {
+              greyPlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              greyRespawnTimer = 5;
+            }
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: bluePlayer,
+          objectB: armConnectLeftSprite,
+          callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
+            blueRespawnTimer -= 0.5;
+            if(blueRespawnTimer <= 0)
+            {
+              bluePlayer.setPosition(500,500);
+              if(lives === 5)
+              {
+                lives = 4;
+              }
+              else if(lives === 4)
+              {
+                lives = 3;
+              }
+              else if(lives === 3)
+              {
+                lives = 2;
+              }
+              else if(lives === 2)
+              {
+                lives = 1;
+              }
+              else if(lives === 1)
+              {
+                lives = 0;
+              }
+              else if(lives === 0)
+              {
+                playerWin = false;
+                his.scene.start('gameOver', { winner: playerWin});
+              }
+              blueRespawnTimer = 5;
+            }
+          }
+        });
+        this.matterCollision.addOnCollideStart(
+        {
+          objectA: bluePlayer,
+          objectB: armConnectRightSprite,
           callback: ({bodyA, gameObjectA, bodyB, gameObjectB}) => {
             blueRespawnTimer -= 0.5;
             if(blueRespawnTimer <= 0)
