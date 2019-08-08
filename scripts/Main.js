@@ -1851,7 +1851,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               greyRespawnTimer = 5;
             }
@@ -1889,7 +1889,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               greyRespawnTimer = 5;
             }
@@ -1927,7 +1927,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               blueRespawnTimer = 5;
             }
@@ -1965,7 +1965,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               blueRespawnTimer = 5;
             }
@@ -2003,7 +2003,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               greenRespawnTimer = 5;
             }
@@ -2041,7 +2041,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               greenRespawnTimer = 5;
             }
@@ -2079,7 +2079,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               yellowRespawnTimer = 5;
             }
@@ -2117,7 +2117,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               yellowRespawnTimer = 5;
             }
@@ -2155,7 +2155,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               pinkRespawnTimer = 5;
             }
@@ -2193,7 +2193,7 @@ var Game = new Phaser.Class({
               else if(lives === 0)
               {
                 playerWin = false;
-                his.scene.start('gameOver', { winner: playerWin});
+                this.scene.start('gameOver', { winner: playerWin});
               }
               pinkRespawnTimer = 5;
             }
