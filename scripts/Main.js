@@ -2219,7 +2219,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
@@ -2242,7 +2254,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
@@ -2265,7 +2289,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
@@ -2288,7 +2324,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
@@ -2311,7 +2359,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
@@ -2334,7 +2394,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
@@ -2357,7 +2429,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
@@ -2380,7 +2464,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
@@ -2403,7 +2499,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
@@ -2426,7 +2534,19 @@ var Game = new Phaser.Class({
             }
             else if(bounceCounter === 3)
             {
-
+              if(rightArmToLeftArm.length < 200)
+              {
+                rightArmToLeftArm.length += (7);
+              }
+              if(leftConnectToRightConnect.length < 175)
+              {
+                leftConnectToRightConnect.length += (2);
+              }
+              if(leftConnectToClawTop.length > 185 && rightConnectToClawTop.length > 185)
+              {
+                leftConnectToClawTop.length -= (2);
+                rightConnectToClawTop.length -= (2);
+              }
             }
           }
         });
