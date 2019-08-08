@@ -106,6 +106,7 @@ var Preloader = new Phaser.Class({
       this.load.image('bucketHitBox', 'Sprite/glassBox.png');
       this.load.image('background', 'Sprite/background.png');
       this.load.image('youthBackground', 'Sprite/YEStageBackground.png');
+      this.load.image('gameOverBackground', 'Sprite/GameOverBackground.png');
       this.load.image('floor', 'Sprite/floor.png');
 
       //claw Sprites
@@ -293,6 +294,7 @@ var PlayerEnter = new Phaser.Class({
       playerSixIcon = this.add.sprite(875,250,'notEnter').setScale(0.1).setAlpha(1);
       playerSevenIcon = this.add.sprite(875,306,'notEnter').setScale(0.1).setAlpha(1);
       playerEightIcon = this.add.sprite(875,360,'notEnter').setScale(0.1).setAlpha(1);
+
       var changeToX = this.anims.create({
           key: 'notEntered',
           frames: this.anims.generateFrameNumbers('notEnter'),
@@ -530,6 +532,8 @@ var MainMenu = new Phaser.Class({
 });
 
 var whoWon;
+var gameOverBackgroundSprite;
+
 var GameOverScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -547,45 +551,119 @@ var GameOverScene = new Phaser.Class({
 
     create: function ()
     {
+      keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+      keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+      keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+      keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+      keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+      keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+      keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+      keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+      keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
+
+      keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+      keyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
+      keyY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Y);
+
+      keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+      keyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G);
+      keyH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
+
+      keyV = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
+      keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+      keyN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+
+      keyU = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U);
+      keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+      keyO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+
+      keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+      keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+      keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+
+      gameOverBackgroundSprite = this.add.image(500,300,'gameOverBackground').setScale(0.4);
 
       if(whoWon)
       {
         console.log('%c Game Over', 'background: green; color: white; display: block;');
 
-              textGameOver = this.add.text(300, 250, 'Game Over \n Players win!', { font: '20px Arial' })
+              textGameOver = this.add.text(300, 250, 'Game Over!', { font: '20px Arial' })
                   .setFontSize(64).setFontStyle('bold')
                   .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
                   .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
                   .setBackgroundColor('#000000');
 
-              this.input.once('pointerdown', function (){
-                  this.scene.start('youthelement');
-                  console.log('pointer press');
-                    }, this);
+              whoWonText = this.add.text(275, 400, 'Players win!', { font: '20px Arial' })
+                  .setFontSize(64).setFontStyle('bold')
+                  .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+                  .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
+                  .setBackgroundColor('#000000');
       }
       else if(!whoWon)
       {
         console.log('%c Game Over ', 'background: green; color: white; display: block;');
 
-            textGameOver = this.add.text(300, 250, 'Game Over \n Claw wins!', { font: '20px Arial' })
+            textGameOver = this.add.text(300, 250, 'Game Over!', { font: '20px Arial' })
                 .setFontSize(64).setFontStyle('bold')
                 .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
                 .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
                 .setBackgroundColor('#000000');
 
-            this.input.once('pointerdown', function (){
-                this.scene.start('youthelement');
-                console.log('pointer press');
-                  }, this);
+          whoWonText = this.add.text(275, 400, 'Claw wins!', { font: '20px Arial' })
+                .setFontSize(64).setFontStyle('bold')
+                .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+                .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 })
+                .setBackgroundColor('#000000');
+
       }
 
     },
 
     update: function (time, delta)
     {
-          console.log('Game Over Update Screen');
-    }
+      console.log('Game Over Update Screen');
+      if (keyE.isDown)
+      {
+        this.scene.start('youthelement');
+      }
 
+      if (keyD.isDown)
+      {
+        this.scene.start('youthelement');
+      }
+
+      if (keyC.isDown)
+      {
+        this.scene.start('youthelement');
+      }
+
+      if (keyY.isDown)
+      {
+        this.scene.start('youthelement');
+      }
+
+      if (keyH.isDown)
+      {
+        this.scene.start('youthelement');
+      }
+
+      if (keyN.isDown)
+      {
+        this.scene.start('youthelement');
+      }
+
+      if (keyO.isDown)
+      {
+        this.scene.start('youthelement');
+      }
+
+      if (keyL.isDown)
+      {
+        this.scene.start('youthelement');
+      }
+    }
 });
 
 var yesSprite;
@@ -1080,7 +1158,7 @@ var keyL;
 var playerWin = false;
 var music;
 var textTimer;
-var timer = 10;
+var timer = 30;
 var greyRespawnTimer = 5;
 var blueRespawnTimer = 5;
 var greenRespawnTimer = 5;
@@ -1091,6 +1169,7 @@ var nextTimer = 30;
 var textLives;
 var lives = 5;
 var textGameOver;
+var whoWonText;
 var greyJumpTimer = true;
 var lastGreyJump = 0;
 var blueJumpTimer = true;
@@ -1316,11 +1395,8 @@ var Game = new Phaser.Class({
         leftBucket.setPosition(70,600)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
-        leftBucketHitBox = this.matter.add.image(-15,570, 'bucketHitBox', {shape:'square'})
-        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.2);
-
-        leftBucketHitBox.setPosition(65,600)
-        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.2);
+        leftBucketHitBox = this.matter.add.image(80,600, 'bucketHitBox', {shape:'square'})
+        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.25);
 
          rightBucket = this.matter.add.image(980,570, 'bucket', 'bucket', {shape: shapeBucket.glassPanel})
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
@@ -1329,21 +1405,21 @@ var Game = new Phaser.Class({
         rightBucket.setPosition(940,600)
         .setMass(1000).setStatic(true).setDensity(1000000).setScale(0.5);
 
-        rightBucketHitBox = this.matter.add.image(-15,570, 'bucketHitBox', {shape:'square'})
-        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.2);
-
-        rightBucketHitBox.setPosition(945,600)
-        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.2);
+        rightBucketHitBox = this.matter.add.image(930,600, 'bucketHitBox', {shape:'square'})
+        .setMass(1000).setStatic(true).setDensity(1000000).setSensor(true).setScale(0.25);
 
         greyArrow = this.matter.add.image(50, 300, 'greyArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
             .setFixedRotation(true).setSensor(true).setInteractive();
+
         blueArrow = this.matter.add.image(50, 300, 'blueArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
               .setFixedRotation(true).setSensor(true).setInteractive();
+
         yellowArrow = this.matter.add.image(50, 300, 'yellowArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
             .setFixedRotation(true).setSensor(true).setInteractive();
+
         greenArrow = this.matter.add.image(50, 300, 'greenArrow', null,)
             .setScale(0.1).setMass(1).setBounce(0).setIgnoreGravity(false)
             .setFixedRotation(true).setSensor(true).setInteractive();
