@@ -109,6 +109,8 @@ var Preloader = new Phaser.Class({
       this.load.image('gameOverBackground', 'Sprite/GameOverBackground.png');
       this.load.image('floor', 'Sprite/floor.png');
 
+      this.load.image()
+
       //claw Sprites
       this.load.image('pipe','Sprite/clawBar.png');
       this.load.image('pipeBody','Sprite/clawBarBody.png');
@@ -175,7 +177,7 @@ var Preloader = new Phaser.Class({
     create: function ()
     {
         console.log('%c Preloader ', 'background: green; color: white; display: block;');
-        this.scene.start('playerenter');
+        this.scene.start('mainmenu');
     }
 
 });
@@ -225,6 +227,108 @@ var keyO;
 var keyJ;
 var keyK;
 var keyL;
+
+var MainMenu = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    initialize:
+
+    function MainMenu ()
+    {
+        Phaser.Scene.call(this, { key: 'mainmenu' });
+        window.MENU = this;
+    },
+
+    create: function ()
+    {
+        console.log('%c MainMenu ', 'background: green; color: white; display: block;');
+
+        keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+        keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+        keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
+
+        keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        keyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
+        keyY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Y);
+
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        keyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G);
+        keyH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
+
+        keyV = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
+        keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+        keyN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+
+        keyU = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U);
+        keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+        keyO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+
+        keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+        keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+        keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+
+        //var bg = this.add.image(0, 0, 'buttonBG');
+        //var text = this.add.image(0, 0, 'buttonText');
+        //var container = this.add.container(400, 300, [ bg, text ]);
+
+        //bg.setInteractive();
+        //bg.once('pointerup', function(){ this.scen e.start('game'); }, this);
+
+    },
+
+    update: function (time, delta)
+    {
+      console.log('Main Menu Update Screen');
+      if (keyE.isDown)
+      {
+        this.scene.start('playerenter');
+      }
+
+      if (keyD.isDown)
+      {
+        this.scene.start('playerenter');
+      }
+
+      if (keyC.isDown)
+      {
+        this.scene.start('playerenter');
+      }
+
+      if (keyY.isDown)
+      {
+        this.scene.start('playerenter');
+      }
+
+      if (keyH.isDown)
+      {
+        this.scene.start('youthelement');
+      }
+
+      if (keyN.isDown)
+      {
+        this.scene.start('playerenter');
+      }
+
+      if (keyO.isDown)
+      {
+        this.scene.start('playerenter');
+      }
+
+      if (keyL.isDown)
+      {
+        this.scene.start('playerenter');
+      }
+    }
+
+});
 
 var PlayerEnter = new Phaser.Class({
 
@@ -503,32 +607,6 @@ var PlayerEnter = new Phaser.Class({
       this.scene.start('game');
     }
   }
-});
-
-var MainMenu = new Phaser.Class({
-
-    Extends: Phaser.Scene,
-    initialize:
-
-    function MainMenu ()
-    {
-        Phaser.Scene.call(this, { key: 'mainmenu' });
-        window.MENU = this;
-    },
-
-    create: function ()
-    {
-        console.log('%c MainMenu ', 'background: green; color: white; display: block;');
-
-        //var bg = this.add.image(0, 0, 'buttonBG');
-        //var text = this.add.image(0, 0, 'buttonText');
-        //var container = this.add.container(400, 300, [ bg, text ]);
-
-        //bg.setInteractive();
-        //bg.once('pointerup', function(){ this.scen e.start('game'); }, this);
-
-    }
-
 });
 
 var whoWon;
