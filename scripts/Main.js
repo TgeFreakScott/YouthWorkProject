@@ -109,7 +109,6 @@ var Preloader = new Phaser.Class({
       this.load.image('gameOverBackground', 'Sprite/GameOverBackground.png');
       this.load.image('floor', 'Sprite/floor.png');
 
-      this.load.image()
 
       //claw Sprites
       this.load.image('pipe','Sprite/clawBar.png');
@@ -135,6 +134,12 @@ var Preloader = new Phaser.Class({
       this.load.image('connectScreen', 'Sprite/PlayerEnter.png');
       this.load.spritesheet('enter', 'Sprite/tick.png',{ frameWidth: 455, frameHeight: 480 });
       this.load.spritesheet('notEnter', 'Sprite/x.png',{ frameWidth: 455, frameHeight: 455 });
+
+      //this.load.spritesheet('clawControls', 'Sprite/ClawControls.png',{ frameWidth: 1024, frameHeight: 720 });
+      //this.load.spritesheet('playerControls', 'Sprite/PlayerControls.png',{ frameWidth: 1024, frameHeight: 720 });
+
+      this.load.image('clawControls', 'Sprite/ClawControls.png',{ frameWidth: 1024, frameHeight: 720 });
+      this.load.image('playerControls', 'Sprite/PlayerControls.png',{ frameWidth: 1024, frameHeight: 720 });
 
       //Loading in animated Sprites
       //this.load.spritesheet('redMove', 'Sprite/redPlayer.png', { frameWidth: 331, frameHeight: 294 });
@@ -202,6 +207,9 @@ var playerEightIcon;
 var firstSocket = 0;
 var secondSocket = 0;
 
+var clawControlSprite;
+var playerControlSprite;
+
 var keys;
 var keyQ;
 var keyW;
@@ -227,6 +235,14 @@ var keyO;
 var keyJ;
 var keyK;
 var keyL;
+var keySpace;
+var screenTimer = 0;
+
+var image1;
+var image2;
+
+var clawControlsDone = false;
+
 
 var MainMenu = new Phaser.Class({
 
@@ -241,6 +257,7 @@ var MainMenu = new Phaser.Class({
 
     create: function ()
     {
+
         console.log('%c MainMenu ', 'background: green; color: white; display: block;');
 
         keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
@@ -275,56 +292,205 @@ var MainMenu = new Phaser.Class({
         keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
         keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
 
-        //var bg = this.add.image(0, 0, 'buttonBG');
-        //var text = this.add.image(0, 0, 'buttonText');
-        //var container = this.add.container(400, 300, [ bg, text ]);
+        keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        //bg.setInteractive();
-        //bg.once('pointerup', function(){ this.scen e.start('game'); }, this);
+      //  controlsSprite = this.add.sprite(500, 340, 'clawControl').setScale(0.975).setAlpha(1);
+
+        image1 = this.add.image(500, 340, 'clawControls').setScale(0.975).setAlpha(1);
+
+      /*  var changeToClaw = this.anims.create({
+            key: 'clawControl',
+            frames: this.anims.generateFrameNumbers('clawControls'),
+            frameRate: 8, repeat: 0,
+        });
+        var changeToPlayer = this.anims.create({
+              key: 'playerControl',
+              frames: this.anims.generateFrameNumbers('playerControls'),
+              frameRate: 8, repeat: 0
+        });
+
+        controlsSprite.play('clawControl'); */
 
     },
 
     update: function (time, delta)
     {
       console.log('Main Menu Update Screen');
+      if(clawControlsDone)
+      {
+        screenTimer++;
+      }
       if (keyE.isDown)
       {
-        this.scene.start('playerenter');
+        image1.setScale(110);
+
+        if(!clawControlsDone)
+        {
+          clawControlsDone = true;
+          //controlsSprite.play('playerControl');
+          image2 = this.add.image(500, 330, 'playerControls').setScale(0.9).setAlpha(1);
+
+          var pressSpace = this.add.text(700, 550, 'press SPACE', { font: '6px Arial' })
+              .setFontSize(20).setFontStyle('bold')
+              .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+              .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 });
+        }
+        if(screenTimer >= 300)
+        {
+          this.scene.start('playerEnter');
+        }
       }
 
       if (keyD.isDown)
       {
-        this.scene.start('playerenter');
+        image1.setScale(110);
+
+        if(!clawControlsDone)
+        {
+          clawControlsDone = true;
+          //controlsSprite.play('playerControl');
+          image2 = this.add.image(500, 330, 'playerControls').setScale(0.9).setAlpha(1);
+
+          var pressSpace = this.add.text(700, 550, 'press SPACE', { font: '6px Arial' })
+              .setFontSize(20).setFontStyle('bold')
+              .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+              .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 });
+        }
+        if(screenTimer >= 300)
+        {
+          this.scene.start('playerEnter');
+        }
       }
 
       if (keyC.isDown)
       {
-        this.scene.start('playerenter');
+        image1.setScale(110);
+
+        if(!clawControlsDone)
+        {
+          clawControlsDone = true;
+          //controlsSprite.play('playerControl');
+          image2 = this.add.image(500, 330, 'playerControls').setScale(0.9).setAlpha(1);
+
+          var pressSpace = this.add.text(700, 550, 'press SPACE', { font: '6px Arial' })
+              .setFontSize(20).setFontStyle('bold')
+              .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+              .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 });
+        }
+        if(screenTimer >= 300)
+        {
+          this.scene.start('playerEnter');
+        }
       }
 
       if (keyY.isDown)
       {
-        this.scene.start('playerenter');
+        image1.setScale(110);
+
+        if(!clawControlsDone)
+        {
+          clawControlsDone = true;
+          //controlsSprite.play('playerControl');
+          image2 = this.add.image(500, 330, 'playerControls').setScale(0.9).setAlpha(1);
+
+          var pressSpace = this.add.text(700, 550, 'press SPACE', { font: '6px Arial' })
+              .setFontSize(20).setFontStyle('bold')
+              .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+              .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 });
+        }
+        if(screenTimer >= 300)
+        {
+          this.scene.start('playerEnter');
+        }
       }
 
       if (keyH.isDown)
       {
-        this.scene.start('youthelement');
+        image1.setScale(110);
+
+        if(!clawControlsDone)
+        {
+          clawControlsDone = true;
+          //controlsSprite.play('playerControl');
+          image2 = this.add.image(500, 330, 'playerControls').setScale(0.9).setAlpha(1);
+
+          var pressSpace = this.add.text(700, 550, 'press SPACE', { font: '6px Arial' })
+              .setFontSize(20).setFontStyle('bold')
+              .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+              .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 });
+        }
+        if(screenTimer >= 300)
+        {
+          this.scene.start('playerEnter');
+        }
       }
 
       if (keyN.isDown)
       {
-        this.scene.start('playerenter');
+        image1.setScale(110);
+
+        if(!clawControlsDone)
+        {
+          clawControlsDone = true;
+          //controlsSprite.play('playerControl');
+          image2 = this.add.image(500, 330, 'playerControls').setScale(0.9).setAlpha(1);
+
+          var pressSpace = this.add.text(700, 550, 'press SPACE', { font: '6px Arial' })
+              .setFontSize(20).setFontStyle('bold')
+              .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+              .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 });
+        }
+        if(screenTimer >= 300)
+        {
+          this.scene.start('playerEnter');
+        }
       }
 
       if (keyO.isDown)
       {
-        this.scene.start('playerenter');
+        image1.setScale(110);
+
+        if(!clawControlsDone)
+        {
+          clawControlsDone = true;
+          //controlsSprite.play('playerControl');
+          image2 = this.add.image(500, 330, 'playerControls').setScale(0.9).setAlpha(1);
+
+          var pressSpace = this.add.text(700, 550, 'press SPACE', { font: '6px Arial' })
+              .setFontSize(20).setFontStyle('bold')
+              .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+              .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 });
+        }
+        if(screenTimer >= 300)
+        {
+          this.scene.start('playerEnter');
+        }
       }
 
       if (keyL.isDown)
       {
-        this.scene.start('playerenter');
+        image1.setScale(110);
+
+        if(!clawControlsDone)
+        {
+          clawControlsDone = true;
+          //controlsSprite.play('playerControl');
+          image2 = this.add.image(500, 330, 'playerControls').setScale(0.9).setAlpha(1);
+
+          var pressSpace = this.add.text(700, 550, 'press SPACE', { font: '6px Arial' })
+              .setFontSize(20).setFontStyle('bold')
+              .setTint(0xff000f, 0xfff000, 0x0f000f, 0xf00000)
+              .setPadding({ left: 66 , right: 66, top : 66, bottom: 66 });
+        }
+        if(screenTimer >= 300)
+        {
+          this.scene.start('playerEnter');
+        }
+      }
+
+      if(keySpace.isDown)
+      {
+        this.scene.start('playerEnter');
       }
     }
 
@@ -337,7 +503,7 @@ var PlayerEnter = new Phaser.Class({
 
     function PlayerEnter ()
     {
-        Phaser.Scene.call(this, { key: 'playerenter' });
+        Phaser.Scene.call(this, { key: 'playerEnter' });
         window.MENU = this;
         this.controls;
     },
@@ -874,7 +1040,7 @@ var YouthElement = new Phaser.Class({
 
           if(light5.x > 150 && light5.x < 550 )
           {
-            light5.setColor(0xEAD1DC).setIntensity(15);
+            light5.setColor(0xEAD1DC).setIntensity(5);
           }
 
           if(light5.x > 750 )
@@ -900,6 +1066,7 @@ var YouthElement = new Phaser.Class({
                 bluePlayer.x += 15;
             }
           }
+
           if(light1.x < 150 )
           {
             light1.setColor(0x00ff00).setIntensity(15);
@@ -907,7 +1074,7 @@ var YouthElement = new Phaser.Class({
 
           if(light1.x > 150 && light1.x < 550 )
           {
-            light1.setColor(0xEAD1DC).setIntensity(15);
+            light1.setColor(0xEAD1DC).setIntensity(5);
           }
 
           if(light1.x > 750 )
@@ -941,7 +1108,7 @@ var YouthElement = new Phaser.Class({
 
           if(light4.x > 150 && light4.x < 550 )
           {
-            light4.setColor(0xEAD1DC).setIntensity(15);
+            light4.setColor(0xEAD1DC).setIntensity(5);
           }
 
           if(light4.x > 750 )
@@ -975,7 +1142,7 @@ var YouthElement = new Phaser.Class({
 
           if(light3.x > 150 && light3.x < 550 )
           {
-            light3.setColor(0xEAD1DC).setIntensity(15);
+            light3.setColor(0xEAD1DC).setIntensity(5);
           }
 
           if(light3.x > 750 )
@@ -1009,7 +1176,7 @@ var YouthElement = new Phaser.Class({
 
           if(light2.x > 150 && light2.x < 550 )
           {
-            light2.setColor(0xEAD1DC).setIntensity(15);
+            light2.setColor(0xEAD1DC).setIntensity(5);
           }
 
           if(light2.x > 750 )
@@ -1043,7 +1210,7 @@ var YouthElement = new Phaser.Class({
 
           if(light6.x > 150 && light6.x < 550 )
           {
-            light6.setColor(0xEAD1DC).setIntensity(15);
+            light6.setColor(0xEAD1DC).setIntensity(5);
           }
 
           if(light6.x > 750 )
@@ -1077,7 +1244,7 @@ var YouthElement = new Phaser.Class({
 
           if(light7.x > 150 && light7.x < 550 )
           {
-            light7.setColor(0xEAD1DC).setIntensity(15);
+            light7.setColor(0xEAD1DC).setIntensity(5);
           }
 
           if(light7.x > 750 )
@@ -1111,7 +1278,7 @@ var YouthElement = new Phaser.Class({
 
           if(light8.x > 150 && light8.x < 550 )
           {
-            light8.setColor(0xEAD1DC).setIntensity(15);
+            light8.setColor(0xEAD1DC).setIntensity(5);
           }
 
           if(light8.x > 750 )
@@ -4152,7 +4319,7 @@ var config = {
         physics:{
           default: 'matter',
           arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
-          matter: { debug: true, gravity: { y: 9.78 } },
+          matter: { debug: false, gravity: { y: 9.78 } },
           impact: { debug: true } },
         scene: [
             Preloader,
