@@ -4319,7 +4319,7 @@ var config = {
         physics:{
           default: 'matter',
           arcade: { debug: true, gravity: { y: 60 }, collideWorldBounds: true },
-          matter: { debug: false, gravity: { y: 9.78 } },
+          matter: { debug: true, gravity: { y: 9.78 } },
           impact: { debug: true } },
         scene: [
             Preloader,
